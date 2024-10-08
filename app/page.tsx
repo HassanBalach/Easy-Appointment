@@ -3,6 +3,7 @@ import { Search, MapPin, Phone } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent } from "@/components/ui/card"
+import Link from 'next/link'
 
 export default function page() {
   return (
@@ -18,8 +19,15 @@ export default function page() {
             <a href="#" className="text-gray-600 hover:text-gray-900">Health Blog</a>
           </nav>
           <div className="flex space-x-2">
+            <Link href={`/registration`}>
+            
             <Button variant="outline">Login/Signup</Button>
+            </Link>
+            <Link href={`/doctorRegistration`}>
+            
             <Button>Join as Doctor</Button>
+       
+            </Link>
           </div>
         </div>
       </header>
