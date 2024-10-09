@@ -1,11 +1,11 @@
 import { z } from "zod";
 
-export const userRegistration = z.object({
-  email: z
+export const userSignIn = z.object({
+     email: z
     .string()
     .min(1, { message: "Required Field" })
     .email({ message: "Please enter the valid email" }),
-  password: z.string().min(8, { message: "Password must be 8 characters" }),
+    password: z.string().min(8, { message: "Password must be 8 characters" }),
 });
 
 
@@ -33,8 +33,7 @@ export const doctorRegistration = z.object({
     // gender: z
     //     .string()
     //     .min(1, {message: "This field is required"}),
-   
 
-    
-    
 })
+
+

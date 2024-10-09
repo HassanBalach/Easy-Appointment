@@ -19,7 +19,7 @@ export default function page() {
             <a href="#" className="text-gray-600 hover:text-gray-900">Health Blog</a>
           </nav>
           <div className="flex space-x-2">
-            <Link href={`/registration`}>
+            <Link href={`/login`}>
             
             <Button variant="outline">Login/Signup</Button>
             </Link>

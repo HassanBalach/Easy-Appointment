@@ -2,51 +2,95 @@
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Github, Mail, Newspaper } from "lucide-react"
-
-import { userRegistration } from "@/lib/validation"
+import { Github, Mail } from "lucide-react"
 import { useState } from "react"
 import { useToast } from "@/hooks/use-toast"
+import { createUserWithEmailAndPassword,GoogleAuthProvider, signInWithPopup  } from "firebase/auth"
+import { auth } from "@/firebaseConfig";
+import { useRouter } from 'next/navigation'
 
 
-export default function RegistrationForm() {
-  const {toast} = useToast()
+import { userSignIn } from "@/lib/validation"
+import Link from "next/link"
+
+export default function LoginForm() {
+  const router = useRouter()
+
+
+  const { toast } = useToast()
   const [credentials, setCredentials] = useState({
     email: "",
     password: "",
   })
-  const [errors , setErrors] = useState<{email?: string; password?: string}>({})
- 
+  // const {email , password} = credentials
+  const [errors, setErrors] = useState<{ email?: string; password?: string }>({})
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setCredentials((prev) => ({ ...prev, [name]: value}));
+    setCredentials((prev) => ({ ...prev, [name]: value }));
 
   }
 
   const handleSubmit = () => {
-  const result = userRegistration.safeParse(credentials)
-  if (!result.success) {
-   const formErrors: {email?: string; password?: string} = {}
-   console.log(formErrors)
-   result.error.errors.forEach((error)=>{
-    console.log({error})
-    formErrors[error.path[0] as "email"| "password"] = error.message
 
-   })
-   setErrors(formErrors)
+    const result = userSignIn.safeParse(credentials)
+    if (!result.success) {
 
-   toast({
-    title: "validation Error",
-    description: result.error.errors[0]?.message,
-   })
- 
-   return
+      const formErrors: { email?: string; password?: string } = {}
+      result.error.errors.forEach((error) => {
+        formErrors[error.path[0] as "email" | "password"] = error.message
+      })
+      setErrors(formErrors)
+
+      toast({
+        title: "validation Error",
+        description: result.error.errors[0]?.message,
+      })
+
+      return
+    }
+
+    toast({
+      title: "Success",
+      description: "Form submitted successfully",
+    })
+
+    const email = credentials.email
+    const password = credentials.password
+
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+
+        const user = userCredential.user;
+        console.log({ user })
+
+      })
+      .catch((error) => {
+        console.log(error.code);
+        console.log(error.message);
+        // ..
+      });
+
   }
 
-  toast({
-    title: "Success",
-    description: "Form submitted successfully",
-  })
+  const handleGoogleAuth = ()=>{
+    const provider = new GoogleAuthProvider();
+
+    signInWithPopup(auth, provider)
+    .then((result) => {
+      const credential = GoogleAuthProvider.credentialFromResult(result);
+      const token = credential?.accessToken;    
+      const user = result.user;  
+      router.push('/')
+    }).catch((error) => {
+     
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      const email = error.customData.email;
+      const credential = GoogleAuthProvider.credentialFromError(error);
+   
+    });
+  
   }
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -77,7 +121,7 @@ export default function RegistrationForm() {
               onKeyDown={handleKeyDown}
               required
             />
-        {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
+            {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
 
           </div>
           <div className="space-y-2">
@@ -91,12 +135,12 @@ export default function RegistrationForm() {
               onKeyDown={handleKeyDown}
               required
             />
-          {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
+            {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
 
           </div>
 
-          <Button className="w-full">
-            Sign Up
+          <Button className="w-full" onClick={handleSubmit}>
+            Sign In
           </Button>
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
@@ -108,12 +152,8 @@ export default function RegistrationForm() {
               </span>
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-4">
-            <Button variant="outline">
-              <Github className="mr-2 h-4 w-4" />
-              GitHub
-            </Button>
-            <Button variant="outline">
+          <div className="grid grid-cols-1 gap-4">
+            <Button variant="outline" onClick={handleGoogleAuth}>
               <Mail className="mr-2 h-4 w-4" />
               Google
             </Button>
@@ -122,9 +162,12 @@ export default function RegistrationForm() {
         <CardFooter className="flex flex-wrap items-center justify-between gap-2">
           <div className="text-sm text-muted-foreground">
             Already have an account?{" "}
-            <a className="underline underline-offset-4 hover:text-primary" href="#">
-              Sign in
-            </a>
+            <Link className="underline underline-offset-4 hover:text-primary" href={`/registration`}>
+            
+            
+              Sign Up
+           
+            </Link>
           </div>
         </CardFooter>
       </Card>
