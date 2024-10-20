@@ -1,7 +1,10 @@
-
-import { initializeApp  } from "firebase/app";
+import { getApp, initializeApp  } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getDatabase } from "firebase/database";
+import { getStorage } from "firebase/storage";
+import { getFirestore } from "firebase/firestore";
+
+
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_API_KEY,
@@ -12,10 +15,12 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_APP_ID,
   measurementId: process.env.NEXT_PUBLIC_MEASUREMENT_ID
 };
-// console.log("Firebase_ApiKey",firebaseConfig.apiKey)
 
-const app = initializeApp(firebaseConfig);
-
+export const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const realtimeDatabase = getDatabase(app);
+export const db = getFirestore(app);
 
+
+const firebaseApp = getApp();
+export const storage = getStorage(firebaseApp, "gs://easy-appointment-51320.appspot.com")
