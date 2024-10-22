@@ -4,6 +4,10 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent } from "@/components/ui/card"
 import Link from 'next/link'
+import { doctorConsult } from '@/constant'
+import Image from 'next/image'
+import { conditionSearch } from '@/searchCondition'
+import { searchOnline } from '@/searchCondition/onlineSearch'
 
 export default function page() {
   return (
@@ -20,13 +24,13 @@ export default function page() {
           </nav>
           <div className="flex space-x-2">
             <Link href={`/login`}>
-            
-            <Button variant="outline">Login/Signup</Button>
+
+              <Button variant="outline">Login/Signup</Button>
             </Link>
             <Link href={`/doctorRegistration`}>
-            
-            <Button>Join as Doctor</Button>
-       
+
+              <Button>Join as Doctor</Button>
+
             </Link>
           </div>
         </div>
@@ -48,24 +52,43 @@ export default function page() {
           </div>
         </section>
 
-        <section className="grid md:grid-cols-4 gap-4 mb-8">
-          {['Consult Online Now', 'In-Clinic Appointments', 'Laboratory Tests', 'Procedures & Surgeries'].map((title, index) => (
-            <Card key={index}>
-              <CardContent className="p-4">
-                <h3 className="font-semibold mb-2">{title}</h3>
-                <p className="text-sm text-gray-600">Description of the service goes here.</p>
-              </CardContent>
-            </Card>
-          ))}
-        </section>
+       
+
+        <section className="grid md:grid-cols-5 gap-4 mb-8">
+  {searchOnline.map((specialty, index) => (
+    <Card key={index} className="flex flex-col items-center text-center">
+      <CardContent className="p-4">
+        {/* Center the image */}
+        <div className="flex justify-center mb-4">
+          <Image
+            src={specialty.image}
+            width={150}
+            height={150}
+            alt={specialty.title}
+            className="object-contain"
+          />
+        </div>
+        {/* Title and description beneath the image */}
+        <h3 className="font-semibold mt-4">{specialty.title}</h3>
+        <p className="text-sm text-gray-600 mt-2">{specialty.description}</p>
+      </CardContent>
+    </Card>
+  ))}
+</section>
+
 
         <section className="mb-8">
           <h2 className="text-2xl font-semibold mb-4">Consult best doctors online</h2>
           <div className="grid grid-cols-4 md:grid-cols-7 gap-4">
-            {['Gynecologist', 'Skin Specialist', 'Child Specialist', 'Orthopedic Surgeon', 'ENT Specialist', 'Diabetes Specialist', 'Eye Specialist'].map((specialty, index) => (
-              <div key={index} className="text-center">
-                <div className="w-16 h-16 bg-gray-200 rounded-full mx-auto mb-2"></div>
-                <p className="text-sm">{specialty}</p>
+            {doctorConsult.map((specialty, index) => (
+              <div key={index} className="text-center flex flex-col items-center">
+                <Image
+                  src={specialty.image}
+                  width={100}
+                  height={100}
+                  alt="Picture of the author"
+                />
+                <p className="text-sm">{specialty.title}</p>
               </div>
             ))}
           </div>
@@ -74,10 +97,15 @@ export default function page() {
         <section className="mb-8">
           <h2 className="text-2xl font-semibold mb-4">Search doctor by condition</h2>
           <div className="grid grid-cols-4 md:grid-cols-7 gap-4">
-            {['Fever', 'Heart Attack', 'Pregnancy', 'High Blood Pressure', 'Piles', 'Diarrhea', 'Acne'].map((condition, index) => (
-              <div key={index} className="text-center">
-                <div className="w-16 h-16 bg-gray-200 rounded-full mx-auto mb-2"></div>
-                <p className="text-sm">{condition}</p>
+            {conditionSearch.map((specialty, index) => (
+              <div key={index} className="text-center flex flex-col items-center">
+                <Image
+                  src={specialty.image}
+                  width={100}
+                  height={100}
+                  alt="Picture of the author"
+                />
+                <p className="text-sm">{specialty.title}</p>
               </div>
             ))}
           </div>
