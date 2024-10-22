@@ -13,11 +13,10 @@ export const doctorSchema = z.object({
   phone: z.string().min(1, "Phone number is required"),
   email: z.string().email("Invalid email"),
   password: z.string().min(8, "Password must be at least 6 characters"),
-  city: z.string().min(1, "City is required"),
+  city: z.array(z.string()).min(1, "At least one city is required"),
   specialization: z.array(z.string()).min(1, "At least one specialization is required"),
-  customSpecialization: z.string().optional(),
   gender: z.enum(["male", "female"], { required_error: "Gender is required" }),
-  image: z.string().optional()
+  
 })
 
 type DoctorFormData = z.infer<typeof doctorSchema>
