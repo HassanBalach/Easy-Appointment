@@ -1,4 +1,4 @@
-import { specialityRef } from "@/lib/action";
+import {  specialityRef } from "@/lib/action";
 import MainScreen from "./MainScreen";
 
 interface dropdownDatas {
@@ -7,7 +7,8 @@ interface dropdownDatas {
 }
 export default async function page() {
   const specialties = await specialityRef()
- 
+
+
 
   return <MainScreen specialties={specialties}  />
 }

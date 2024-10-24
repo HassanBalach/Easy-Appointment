@@ -1,7 +1,8 @@
 'use server'
 
 import { ref as dbRef, child, get } from "firebase/database";
-import { realtimeDatabase } from '@/firebaseConfig';
+import {  realtimeDatabase } from '@/firebaseConfig';
+
 
 //Let's retrieve the city from realtime  database
 
