@@ -1,19 +1,20 @@
 'use client'
 
 import { firestoreDatabase } from "@/firebaseConfig";
-import { collection, getDocs } from "firebase/firestore";
-import { createContext, useContext, useEffect, useState } from "react";
+
+import { collection, getDocs, where, query } from "firebase/firestore";
+import { createContext, useContext, useState } from "react";
 
 
 
-interface DoctorContextType{
+interface DoctorContextType {
     doctor: Doctor[]
     loading: boolean
     error: Error | null
-   
+    searchDoctor: (value: string) => Promise<void>;
 }
 
-interface Doctor{
+interface Doctor {
     id: string;
     [key: string]: any;
 }
@@ -21,43 +22,40 @@ interface Doctor{
 const DoctorContext = createContext<DoctorContextType | undefined>(undefined)
 
 
-export const DoctorProvider = ({children}: {children: React.ReactNode})=>{
+export const DoctorProvider = ({ children }: { children: React.ReactNode }) => {
     const [doctor, setDoctor] = useState<Doctor[]>([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState<Error | null>(null)
 
-    console.log("Doctor:", doctor)
+    console.log({ doctor })
 
-    useEffect(()=>{
-        
-    const fetchDoctor = async()=>{
+    const searchDoctor = async (value: string) => {
         setLoading(true)
+        setError(null)
         try {
-         const doctorCollection = collection(firestoreDatabase , "Doctor")
-         console.log("doctorCollection:", doctorCollection)
-         const snapShot = await getDocs(doctorCollection)
-            console.log("snapShot:", snapShot)
-         const doctorData: Doctor[] = [];
+            const doctorCollection = collection(firestoreDatabase, "Doctor")
+            const q = query(doctorCollection, where("specialization", "==", value));
+            const snapShot = await getDocs(q)
+            const doctorData: Doctor[] = [];
 
-         snapShot.forEach((doc)=>{
-            doctorData.push({id: doc.id, ...doc.data()})
-         })
+            snapShot.forEach((doc) => {
+                doctorData.push({ id: doc.id, ...doc.data() })
+            })
 
-         setDoctor(doctorData)
-            
+            setDoctor(doctorData)
+
         } catch (error: any) {
             console.log("Error fetching doctor: ", error)
-            setError(error )
+            setError(error)
         } finally {
             setLoading(false)
         }
     };
 
-        fetchDoctor()
-    },[])
 
-    return(
-        <DoctorContext.Provider value={{doctor, loading, error}}>
+
+    return (
+        <DoctorContext.Provider value={{ doctor, loading, error, searchDoctor }}>
             {children}
         </DoctorContext.Provider>
     )
@@ -68,12 +66,12 @@ export const DoctorProvider = ({children}: {children: React.ReactNode})=>{
 // Custom Hook
 
 
-export const useDoctor = ()=>{
+export const useDoctor = () => {
     const context = useContext(DoctorContext)
 
-    console.log({context})
+    console.log({ context })
 
-    if(context === undefined){
+    if (context === undefined) {
 
         throw new Error("useDoctor must be used within a DoctorProvider")
     }

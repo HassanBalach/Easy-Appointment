@@ -15,35 +15,45 @@ import {
 } from "@/components/ui/sheet"
 
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
-import { useRouter } from 'next/navigation'
+import {  useRouter } from 'next/navigation'
+import { searchDoctor } from '@/lib/action'
 
 
 
 export default function MainScreen({ specialties }: { specialties: string[] }) {
+ 
     const user = false;
     const doctor = false;
     const router = useRouter();
     const [isOpen, setIsOpen] = useState(false)
     const [searchTerm, setSearchTerm] = useState('')
-    const dropdownRef = useRef(null)
+    const dropdownRef = useRef<HTMLDivElement | null>(null)
 
+
+
+    const handleSearch = async () => {
+        await searchDoctor(searchTerm)
+        router.push(`/search-results?term=${encodeURIComponent(searchTerm)}`)
+    }
 
     const filteredSpecialties = specialties.filter(specialty =>
         specialty.toLowerCase().includes(searchTerm.toLowerCase())
     )
+
     useEffect(() => {
-        function handleClickOutside(event) {
-          if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-            setIsOpen(false)
-          }
+        function handleClickOutside(event: any) {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+                setIsOpen(false)
+            }
         }
-    
+
         document.addEventListener("mousedown", handleClickOutside)
         return () => {
-          document.removeEventListener("mousedown", handleClickOutside)
+            document.removeEventListener("mousedown", handleClickOutside)
         }
-      }, [dropdownRef])
-  
+    }, [dropdownRef])
+
+
 
     return (
         <div className="min-h-screen bg-gray-100">
@@ -142,49 +152,51 @@ export default function MainScreen({ specialties }: { specialties: string[] }) {
                         </CardTitle>
                     </CardHeader>
                     <CardContent>
-                    <div className="flex flex-col space-y-4">
-          <div className="flex space-x-2">
-            <div className="relative flex-grow">
-              <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-              <Input
-                type="text"
-                placeholder="Hub"
-                className="pl-10 pr-4 py-2 w-full"
-              />
-            </div>
-            <div className="relative flex-grow" ref={dropdownRef}>
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-              <Input
-                type="text"
-                placeholder="Doctors, Hospital, Conditions"
-                className="pl-10 pr-4 py-2 w-full"
-                onFocus={() => setIsOpen(true)}
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-              {isOpen && (
-                <Card className="absolute z-10 w-full mt-1 overflow-hidden">
-                  <CardContent className="p-0 max-h-[200px] overflow-y-auto custom-scrollbar">
-                    {filteredSpecialties.map((specialty, index) => (
-                      <Button
-                        key={index}
-                        variant="ghost"
-                        className="w-full justify-start text-left"
-                        onClick={() => {
-                          setSearchTerm(specialty)
-                          setIsOpen(false)
-                        }}
-                      >
-                        {specialty}
-                      </Button>
-                    ))}
-                  </CardContent>
-                </Card>
-              )}
-            </div>
-          </div>
-          <Button className="w-full bg-orange-500 hover:bg-orange-600 text-white">Search</Button>
-        </div>
+                        <div className="flex flex-col space-y-4">
+                            <div className="flex space-x-2">
+                                <div className="relative flex-grow">
+                                    <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                                    <Input
+                                        type="text"
+                                        placeholder="Hub"
+                                        className="pl-10 pr-4 py-2 w-full"
+                                    />
+                                </div>
+                                <div className="relative flex-grow" ref={dropdownRef}>
+                                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                                    <Input
+                                        type="text"
+                                        placeholder="Doctors, Hospital, Conditions"
+                                        className="pl-10 pr-4 py-2 w-full"
+                                        onFocus={() => setIsOpen(true)}
+                                        value={searchTerm}
+                                        onChange={(e) => setSearchTerm(e.target.value)}
+
+                                    />
+                                    {isOpen && (
+                                        <Card className="absolute z-10 w-full mt-1 overflow-hidden">
+                                            <CardContent className="p-0 max-h-[200px] overflow-y-auto custom-scrollbar">
+                                                {filteredSpecialties.map((specialty, index) => (
+                                                    <Button
+                                                        key={index}
+                                                        variant="ghost"
+                                                        className="w-full justify-start text-left"
+                                                        onClick={() => {
+                                                            setSearchTerm(specialty)
+                                                            setIsOpen(false)
+                                                        }}
+                                                    >
+                                                        {specialty}
+                                                    </Button>
+                                                ))}
+                                            </CardContent>
+                                        </Card>
+                                    )}
+                                </div>
+                            </div>
+                            <Button className="w-full bg-orange-500 hover:bg-orange-600 text-white" onClick={handleSearch}>Search</Button>
+
+                        </div>
                     </CardContent>
                 </Card>
                 {/* 
@@ -325,3 +337,4 @@ export default function MainScreen({ specialties }: { specialties: string[] }) {
         </div >
     )
 }
+

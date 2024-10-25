@@ -10,7 +10,7 @@ import { useState, ChangeEvent, } from 'react'
 import { ChevronDownIcon, Upload, X } from 'lucide-react'
 import { storage } from '@/firebaseConfig'
 import { ref, uploadBytes } from "firebase/storage"
-import { db } from '@/firebaseConfig'
+import { firestoreDatabase } from '@/firebaseConfig'
 
 
 type DoctorFormData = z.infer<typeof doctorSchema>
@@ -159,7 +159,7 @@ export default function DoctorRegistration({ cities, specialities }: { cities: s
 
             console.log({ filteredData })
 
-            const doctorRef = doc(db, "Doctor", userId);
+            const doctorRef = doc(firestoreDatabase, "Doctor", userId);
 
             try {
                 await setDoc(doctorRef, filteredData)

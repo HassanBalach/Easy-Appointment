@@ -1,4 +1,4 @@
-import {  specialityRef } from "@/lib/action";
+import {  searchDoctor, specialityRef } from "@/lib/action";
 import MainScreen from "./MainScreen";
 
 interface dropdownDatas {
