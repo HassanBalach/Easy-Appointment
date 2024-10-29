@@ -1,39 +1,22 @@
-import { z } from "zod";
+import { z } from 'zod';
 
-export const userSignIn = z.object({
-     email: z
-    .string()
-    .min(1, { message: "Required Field" })
-    .email({ message: "Please enter the valid email" }),
-    password: z.string().min(8, { message: "Password must be 8 characters" }),
+export const authenticateUserSchema = z.object({
+  name: z.string().min(3, 'Name must be at least 3 characters long').max(50, 'Name must be at most 50 characters long'),
+  phoneNumber: z.string().length(11, 'Phone number must be 11 digits long').regex(/^\d+$/, 'Phone number must contain only digits'),
 });
 
 
-export const doctorRegistration = z.object({
-    // title: z.
-    name: z
-        .string()
-        .min(3, {message: "Name is require"})
-        .max(30, {message: "name can be more than 30 characters"}),
-    contact: z
-        .string()
-        .min(11, {message: "provide the valid contact no"}),
-    email: z
-        .string()
-        .min(1, { message: "Required Field" })
-        .email({ message: "Please enter the valid email" }),
-    password: z.string().min(8, { message: "Password must be 8 characters" }),
-    city: z
-        .string()
-        .min(3, {message: "city is require"}),
-    specility: z
-        .string()
-        .min(1, {message: "This field is required"}),
-   
-    // gender: z
-    //     .string()
-    //     .min(1, {message: "This field is required"}),
 
+export const doctorSchema = z.object({
+  title: z.string().min(1, "Title is required"),
+  name: z.string().min(1, "Name is required"),
+  phone: z.string().min(1, "Phone number is required"),
+  email: z.string().email("Invalid email"),
+  password: z.string().min(8, "Password must be at least 6 characters"),
+  city: z.array(z.string()).min(1, "At least one city is required"),
+  specialization: z.array(z.string()).min(1, "At least one specialization is required"),
+  gender: z.enum(["male", "female"], { required_error: "Gender is required" }),
+  
 })
 
-
+type DoctorFormData = z.infer<typeof doctorSchema>
