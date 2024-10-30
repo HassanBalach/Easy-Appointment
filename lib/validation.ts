@@ -16,7 +16,7 @@ export const doctorSchema = z.object({
   city: z.array(z.string()).min(1, "At least one city is required"),
   specialization: z.array(z.string()).min(1, "At least one specialization is required"),
   gender: z.enum(["male", "female"], { required_error: "Gender is required" }),
-  
+  image: z.string().optional(),
 })
 
 type DoctorFormData = z.infer<typeof doctorSchema>

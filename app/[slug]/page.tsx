@@ -33,17 +33,6 @@ export default function SearchId() {
     return (
         <div className="container mx-auto p-36 pt-10">
 
-            <nav className="text-sm breadcrumbs mb-4">
-                <ul className="flex space-x-2">
-                    <li><a href="#" className="text-blue-600">HOME</a></li>
-                    <li>&gt;</li>
-                    <li><a href="#" className="text-blue-600">PAKISTAN</a></li>
-                    <li>&gt;</li>
-                    <li><a href="#" className="text-blue-600">LAHORE</a></li>
-                    <li>&gt;</li>
-                    <li className="text-gray-600">GYNECOLOGISTS IN LAHORE</li>
-                </ul>
-            </nav>
             {doctorData && (
                 doctorData.length === 0 ? (
                     <h1 className="text-3xl font-bold mb-2">No Data Found</h1>
@@ -57,8 +46,8 @@ export default function SearchId() {
                                         <div className="flex flex-col md:flex-row gap-6">
                                             <div className="flex-shrink-0">
                                                 <Image
-                                                    src="/placeholder.svg"
-                                                    alt="Dr. Iqra Ijaz"
+                                                    src={doctor?.image}
+                                                    alt="Image"
                                                     width={100}
                                                     height={100}
                                                     className="rounded-full"

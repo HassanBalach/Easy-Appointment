@@ -4,16 +4,24 @@ import { doc, setDoc } from "firebase/firestore";
 import { useRouter } from 'next/navigation';
 import { doctorSchema } from '@/lib/validation'
 import { useToast } from '@/hooks/use-toast'
-import { createUserWithEmailAndPassword } from 'firebase/auth'
+import { createUserWithEmailAndPassword, User } from 'firebase/auth'
 import { auth } from '@/firebaseConfig'
 import { useState, ChangeEvent, } from 'react'
 import { ChevronDownIcon, Upload, X } from 'lucide-react'
 import { storage } from '@/firebaseConfig'
-import { ref, uploadBytes } from "firebase/storage"
+import { getDownloadURL, ref, uploadBytes, uploadString } from "firebase/storage"
 import { firestoreDatabase } from '@/firebaseConfig'
 
 
-type DoctorFormData = z.infer<typeof doctorSchema>
+type DoctorFormData = z.infer<typeof doctorSchema> & {
+    gender: "male" | "female" | null;
+};
+
+// Define a type for the image parameter
+type ImageData = {
+    name: string;
+    base64: string;
+};
 
 export default function DoctorRegistration({ cities, specialities }: { cities: string[], specialities: string[] }) {
 
@@ -25,9 +33,10 @@ export default function DoctorRegistration({ cities, specialities }: { cities: s
         phone: '',
         email: '',
         password: '',
-        gender: '',
+        gender: null,
         city: [],
         specialization: [],
+        image: null,
     })
 
     const [errors, setErrors] = useState<Partial<Record<keyof DoctorFormData, string>>>({})
@@ -74,109 +83,179 @@ export default function DoctorRegistration({ cities, specialities }: { cities: s
     }
 
 
-    const uploadImage = async (file: File, userId: string) => {
-        const storageRef = ref(storage, `doctor/${userId}/{file.name}`)
-        console.log({ storageRef })
+    // const uploadImage = async (file: File, userId: string): Promise<string | null> => {
+    //     if (!userId || !file.name) {
+    //         console.error("Invalid userId or file name");
+    //         return null;
+    //     }
+
+    //     const storageRef = ref(storage, `doctor/${userId}/${file.name}`);
+    //     console.log("Storage Reference:", storageRef);
+
+    //     try {
+    //         // Upload the file
+    //         const snapshot = await uploadBytes(storageRef, file);
+    //         console.log("Image uploaded successfully");
+
+    //         // Get the download URL after upload
+    //         const downloadURL = await getDownloadURL(snapshot.ref);
+    //         console.log("Download URL:", downloadURL);
+
+    //         return downloadURL;
+    //     } catch (error) {
+    //         console.error("Error uploading image: ", error);
+    //         return null;
+    //     }
+    // };
+    
+    const registerUser = async (email: string, password: string) => {
         try {
-
-            await uploadBytes(storageRef, file)
-            console.log("Image uploaded successfully")
-
-
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            console.log("User registered successfully");
+            return userCredential.user; // User object
         } catch (error) {
-            console.log("Error Uploading image: ", error)
+            console.error("Error registering user:", error);
         }
+    };
 
-    }
+    const uploadImage = async (image: ImageData) => {
+        console.log("Uploading image:", image);
+        const storageRef = ref(storage, `images/${image.name}`);
+        console.log("Storage Reference:", storageRef);
+        await uploadString(storageRef, image.base64, 'data_url'); // Ensure image is in base64 format
+        const downloadURL = await getDownloadURL(storageRef);
+        console.log("Download URL:", downloadURL);
+        return downloadURL; // This is the URL to save in Firestore
+    };
+
+    const saveUserData = async (user: User, filteredData: any) => {
+        const doctorRef = doc(firestoreDatabase, "Doctor", user.uid);
+
+        try {
+            await setDoc(doctorRef, filteredData)
+          
+            router.push("/")
+        } catch (e) {
+            console.error("Error adding document: ", e);
+        }
+    };
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-
-
-        //  let's combine the selected specializations and cities and image with formData
-
+    
         const combinedData = {
-             ...formData, 
-             city: selectedCities, 
-             specialization: selectedSpecializations, 
-             image: imagePreview
-             }
+            ...formData,
+            city: selectedCities,
+            specialization: selectedSpecializations,
+            image: imagePreview,
+        };
 
-         console.log({ combinedData })
-
+        // console.log({ combinedData });  
+  
         const result = doctorSchema.safeParse(combinedData);
-
-        console.log({ result })
-
+    
+     
+    
         if (!result.success) {
-            // Handle validation errors
             const formErrors: Partial<Record<keyof DoctorFormData, string>> = {};
             result.error.errors.forEach((error) => {
                 if (error.path[0]) {
                     formErrors[error.path[0] as keyof DoctorFormData] = error.message;
                 }
             });
-            //   console.log({ formErrors });
             setErrors(formErrors);
-
+    
             toast({
                 title: "Validation Error",
                 description: result.error.errors[0]?.message,
             });
-
+    
             return;
         }
-
-        // Proceed with form submission
+    
         toast({
             title: "Success",
-            description: "Form submitted successfully",
+            description: "Wait for submitting form successfully",
         });
+    
+        // Authenticate Doctor using Firebase Auth
+      try {
+        
+       
+          const { email, password , image } = result.data;
+          const user = await registerUser(email, password);
+          if (user) {
+              let imageUrl = null;
+
+              if (image) {
+                  const imageData: ImageData = {
+                      name: "your_image_name_here", // Replace with actual image name logic
+                      base64: image
+                  };
+                  imageUrl = await uploadImage(imageData);
+                  console.log({ imageUrl });
+              } 
+              const filteredData = { ...result.data, image: imageUrl };
+
+              console.log({ filteredData });
+
+              await saveUserData(user, filteredData);
+              console.log("User registered and data saved!");
+          } else {
+              console.error("User registration failed.");
+          }
+      } catch (error) {
+          console.error("Error registering user or saving data:", error);
+      }
+    
 
 
-        // Authantication of Doctor using firebase auth
-
-        const { email, password } = formData;
-
-        const userCredential = await createUserWithEmailAndPassword(auth, email, password)
-
-        // Uploading image to firebase storage
-
-        if (userCredential) {
-            const user = userCredential.user
-            const userId = user.uid
-            const fileInput = document.getElementById("doctor-image") as HTMLInputElement;
-            const file = fileInput.files?.[0]
-            console.log({ userId })
-
-            if (file) {
-                uploadImage(file, userId)
-            }
-
-            //Uplaading the data to firestore database
-
-            const { email, password, ...filteredData } = result.data;
-
-            console.log({ filteredData })
-
-            const doctorRef = doc(firestoreDatabase, "Doctor", userId);
-
-            try {
-                await setDoc(doctorRef, filteredData)
-                router.push("/")
-                console.log("Doctor data added successfully")
-            } catch (e) {
-                console.error("Error adding document: ", e);
-            }
 
 
-        } else {
-            console.log("Error in userCredintial")
-        }
+        // if (userCredential) {
+            // const user = userCredential.user;
+            // const userId = user.uid;
+    
+            // // Upload image to Firebase Storage and get download URL
+            // const fileInput = document.getElementById("doctor-image") as HTMLInputElement;
+            // const file = fileInput.files?.[0];
+            // console.log({ file });
+    
+            // let downloadURL = "";
+            // if (file) {
+            //     downloadURL = await uploadImage(file, userId) || "";
+            // }
+    
+            // // Update the combined data with the download URL
+            // const { email, password, ...filteredData } = {
+            //     ...result.data,
+            //     image: downloadURL, // Save the download URL instead of the image preview
+            // };
+    
+            // console.log({ filteredData });
+    
+            // // Upload the filtered data to Firestore
+            // const doctorRef = doc(firestoreDatabase, "Doctor", userId);
+    
+            // try {
+            //     await setDoc(doctorRef, filteredData);
+            //     router.push("/");
+            //     console.log("Doctor data added successfully");
+            // } catch (e) {
+            //     console.error("Error adding document: ", e);
+            // }
+        // } else {
+        //     console.log("Error in userCredential");
+        // // }
 
 
-    }
 
+
+
+
+
+    };
+    
     return (
         <div className="min-h-screen bg-gradient-to-br from-blue-100 to-white flex items-center justify-center p-4">
             <div className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-md">
