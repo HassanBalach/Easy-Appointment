@@ -9,7 +9,7 @@ import { auth } from '@/firebaseConfig'
 import { useState, ChangeEvent, } from 'react'
 import { ChevronDownIcon, Upload, X } from 'lucide-react'
 import { storage } from '@/firebaseConfig'
-import { getDownloadURL, ref, uploadBytes, uploadString } from "firebase/storage"
+import { getDownloadURL, ref, uploadString,  } from "firebase/storage"
 import { firestoreDatabase } from '@/firebaseConfig'
 
 
@@ -22,13 +22,18 @@ type ImageData = {
     name: string;
     base64: string;
 };
+type Specialties = {
+    name: string;
+    description: string;
+}
 
-export default function DoctorRegistration({ cities, specialities }: { cities: string[], specialities: string[] }) {
+
+export default function DoctorRegistration({ cities, specialities }: { cities: string[], specialities: Specialties[] }) {
 
     const router = useRouter();
     const { toast } = useToast()
     const [formData, setFormData] = useState({
-        title: '',
+       
         name: '',
         phone: '',
         email: '',
@@ -37,12 +42,15 @@ export default function DoctorRegistration({ cities, specialities }: { cities: s
         city: [],
         specialization: [],
         image: null,
+        experience: '',
     })
 
     const [errors, setErrors] = useState<Partial<Record<keyof DoctorFormData, string>>>({})
     const [selectedSpecializations, setSelectedSpecializations] = useState<string[]>([])
     const [selectedCities, setSelectedCities] = useState<string[]>([])
     const [imagePreview, setImagePreview] = useState<string | null>(null)
+
+
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target
@@ -83,31 +91,6 @@ export default function DoctorRegistration({ cities, specialities }: { cities: s
     }
 
 
-    // const uploadImage = async (file: File, userId: string): Promise<string | null> => {
-    //     if (!userId || !file.name) {
-    //         console.error("Invalid userId or file name");
-    //         return null;
-    //     }
-
-    //     const storageRef = ref(storage, `doctor/${userId}/${file.name}`);
-    //     console.log("Storage Reference:", storageRef);
-
-    //     try {
-    //         // Upload the file
-    //         const snapshot = await uploadBytes(storageRef, file);
-    //         console.log("Image uploaded successfully");
-
-    //         // Get the download URL after upload
-    //         const downloadURL = await getDownloadURL(snapshot.ref);
-    //         console.log("Download URL:", downloadURL);
-
-    //         return downloadURL;
-    //     } catch (error) {
-    //         console.error("Error uploading image: ", error);
-    //         return null;
-    //     }
-    // };
-    
     const registerUser = async (email: string, password: string) => {
         try {
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
@@ -133,7 +116,7 @@ export default function DoctorRegistration({ cities, specialities }: { cities: s
 
         try {
             await setDoc(doctorRef, filteredData)
-          
+
             router.push("/")
         } catch (e) {
             console.error("Error adding document: ", e);
@@ -142,7 +125,7 @@ export default function DoctorRegistration({ cities, specialities }: { cities: s
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-    
+
         const combinedData = {
             ...formData,
             city: selectedCities,
@@ -150,12 +133,13 @@ export default function DoctorRegistration({ cities, specialities }: { cities: s
             image: imagePreview,
         };
 
-        // console.log({ combinedData });  
-  
+         console.log({ combinedData });  
+
         const result = doctorSchema.safeParse(combinedData);
-    
-     
-    
+
+        console.log({ result });
+
+
         if (!result.success) {
             const formErrors: Partial<Record<keyof DoctorFormData, string>> = {};
             result.error.errors.forEach((error) => {
@@ -164,98 +148,54 @@ export default function DoctorRegistration({ cities, specialities }: { cities: s
                 }
             });
             setErrors(formErrors);
-    
+
             toast({
                 title: "Validation Error",
                 description: result.error.errors[0]?.message,
             });
-    
+
             return;
         }
-    
+
         toast({
             title: "Success",
             description: "Wait for submitting form successfully",
         });
-    
+
         // Authenticate Doctor using Firebase Auth
-      try {
-        
-       
-          const { email, password , image } = result.data;
-          const user = await registerUser(email, password);
-          if (user) {
-              let imageUrl = null;
-
-              if (image) {
-                  const imageData: ImageData = {
-                      name: "your_image_name_here", // Replace with actual image name logic
-                      base64: image
-                  };
-                  imageUrl = await uploadImage(imageData);
-                  console.log({ imageUrl });
-              } 
-              const filteredData = { ...result.data, image: imageUrl };
-
-              console.log({ filteredData });
-
-              await saveUserData(user, filteredData);
-              console.log("User registered and data saved!");
-          } else {
-              console.error("User registration failed.");
-          }
-      } catch (error) {
-          console.error("Error registering user or saving data:", error);
-      }
-    
+        try {
 
 
+            const { email, password, image } = result.data;
+            const user = await registerUser(email, password);
+            if (user) {
+                let imageUrl = null;
 
+                if (image) {
+                    const imageData: ImageData = {
+                        name: "your_image_name_here", // Replace with actual image name logic
+                        base64: image
+                    };
+                    imageUrl = await uploadImage(imageData);
+                    console.log({ imageUrl });
+                }
+                const { email, password, ...filteredData } = result.data;
 
-        // if (userCredential) {
-            // const user = userCredential.user;
-            // const userId = user.uid;
-    
-            // // Upload image to Firebase Storage and get download URL
-            // const fileInput = document.getElementById("doctor-image") as HTMLInputElement;
-            // const file = fileInput.files?.[0];
-            // console.log({ file });
-    
-            // let downloadURL = "";
-            // if (file) {
-            //     downloadURL = await uploadImage(file, userId) || "";
-            // }
-    
-            // // Update the combined data with the download URL
-            // const { email, password, ...filteredData } = {
-            //     ...result.data,
-            //     image: downloadURL, // Save the download URL instead of the image preview
-            // };
-    
-            // console.log({ filteredData });
-    
-            // // Upload the filtered data to Firestore
-            // const doctorRef = doc(firestoreDatabase, "Doctor", userId);
-    
-            // try {
-            //     await setDoc(doctorRef, filteredData);
-            //     router.push("/");
-            //     console.log("Doctor data added successfully");
-            // } catch (e) {
-            //     console.error("Error adding document: ", e);
-            // }
-        // } else {
-        //     console.log("Error in userCredential");
-        // // }
+                const doctorRef = {  ...filteredData, image: imageUrl };
 
+                console.log({ doctorRef });
 
-
-
-
-
+                await saveUserData(user, doctorRef);
+                console.log("User registered and data saved!");
+            } else {
+                console.error("User registration failed.");
+            }
+        } catch (error) {
+            console.error("Error registering user or saving data:", error);
+        }
 
     };
-    
+
     return (
         <div className="min-h-screen bg-gradient-to-br from-blue-100 to-white flex items-center justify-center p-4">
             <div className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-md">
@@ -280,28 +220,14 @@ export default function DoctorRegistration({ cities, specialities }: { cities: s
                             className="hidden"
                         />
                     </div>
-                    <div className="flex space-x-2">
-                        <select
-                            name="title"
-                            value={formData.title}
-                            onChange={handleInputChange}
-                            className="flex-1 px-3 py-2 bg-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        >
-                            <option value="">Title</option>
-                            <option value="Mr">Mr.</option>
-                            <option value="Ms">Ms.</option>
-                            <option value="Dr">Dr.</option>
-                            <option value="Prof">Prof.</option>
-                        </select>
-                        <input
-                            type="text"
-                            name="name"
-                            value={formData.name}
-                            onChange={handleInputChange}
-                            placeholder="Name"
-                            className="flex-[3] px-3 py-2 bg-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        />
-                    </div>
+                    <input
+                        type="text"
+                        name="name"
+                        value={formData.name}
+                        onChange={handleInputChange}
+                        placeholder="Name"
+                        className="w-full px-3 py-2 bg-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
                     <input
                         type="tel"
                         name="phone"
@@ -324,6 +250,14 @@ export default function DoctorRegistration({ cities, specialities }: { cities: s
                         value={formData.password}
                         onChange={handleInputChange}
                         placeholder="Password"
+                        className="w-full px-3 py-2 bg-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                    <input
+                        type="text"
+                        name="experience"
+                        value={formData.experience}
+                        onChange={handleInputChange}
+                        placeholder="Experience (e.g., 5 years)"
                         className="w-full px-3 py-2 bg-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                     <div className="space-y-2">
@@ -360,7 +294,7 @@ export default function DoctorRegistration({ cities, specialities }: { cities: s
                             >
                                 <option value="">Add specialization</option>
                                 {specialities.map((spec) => (
-                                    <option key={spec} value={spec}>{spec}</option>
+                                    <option key={spec.name} value={spec.name}>{spec.name}</option>
                                 ))}
                             </select>
                             <ChevronDownIcon className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400" />

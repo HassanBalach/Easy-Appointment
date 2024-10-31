@@ -8,7 +8,7 @@ export const authenticateUserSchema = z.object({
 
 
 export const doctorSchema = z.object({
-  title: z.string().min(1, "Title is required"),
+ 
   name: z.string().min(1, "Name is required"),
   phone: z.string().min(1, "Phone number is required"),
   email: z.string().email("Invalid email"),
@@ -17,6 +17,7 @@ export const doctorSchema = z.object({
   specialization: z.array(z.string()).min(1, "At least one specialization is required"),
   gender: z.enum(["male", "female"], { required_error: "Gender is required" }),
   image: z.string().optional(),
+  experience: z.string().regex(/^\d+$/, "Experience must be a number"),
 })
 
 type DoctorFormData = z.infer<typeof doctorSchema>

@@ -7,6 +7,8 @@ import Image from "next/image"
 import { searchDoctor } from "@/lib/action"
 import { useEffect, useState } from "react"
 import { useSearchParams } from "next/navigation"
+import Link from "next/link"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 
 
@@ -45,13 +47,20 @@ export default function SearchId() {
                                     <CardContent className="p-6">
                                         <div className="flex flex-col md:flex-row gap-6">
                                             <div className="flex-shrink-0">
-                                                <Image
-                                                    src={doctor?.image}
-                                                    alt="Image"
-                                                    width={100}
-                                                    height={100}
-                                                    className="rounded-full"
-                                                />
+                                                <Link href={`/id/${doctor.id}`}>
+                                                    {/* <Image
+                                                        src={doctor?.image}
+                                                        alt="Image"
+                                                        width={100}
+                                                        height={100}
+                                                        className="rounded-full"
+                                                    /> */}
+                                                    <Avatar className="h-16 w-16">
+                                                        {doctorData.image && <AvatarImage src={doctorData.image} />}
+                                                        <AvatarFallback>{doctorData.name.charAt(0)}</AvatarFallback>
+
+                                                    </Avatar>
+                                                </Link>
                                             </div>
                                             <div className="flex-grow">
                                                 <div className="flex items-center gap-2 mb-2">
@@ -79,11 +88,13 @@ export default function SearchId() {
                                                 </div>
                                             </div>
                                             <div className="flex flex-col gap-4">
-                                                <Button className="w-full">
+                                                {/* <Button className="w-full">
                                                     <Video className="w-5 h-5 mr-2" />
                                                     Video Consultation
-                                                </Button>
-                                                <Button className="w-full bg-orange-500 hover:bg-orange-600">Book Appointment</Button>
+                                                </Button> */}
+                                                <Link href={`/id/${doctor.id}`}>
+                                                    <Button className="w-full bg-orange-500 hover:bg-orange-600">Book Appointment</Button>
+                                                </Link>
                                             </div>
                                         </div>
                                     </CardContent>

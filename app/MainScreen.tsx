@@ -18,9 +18,12 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import {  useRouter } from 'next/navigation'
 import { searchDoctor } from '@/lib/action'
 
+type Specialties = {
+    name: string;
+    description: string;
+}
 
-
-export default function MainScreen({ specialties }: { specialties: string[] }) {
+export default function MainScreen({ specialties }: { specialties: Specialties[] }) {
  
     const user = false;
     const doctor = false;
@@ -35,9 +38,10 @@ export default function MainScreen({ specialties }: { specialties: string[] }) {
         await searchDoctor(searchTerm)
         router.push(`/search-results?term=${encodeURIComponent(searchTerm)}`)
     }
-
+    
     const filteredSpecialties = specialties.filter(specialty =>
-        specialty.toLowerCase().includes(searchTerm.toLowerCase())
+        specialty.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        specialty.description.toLowerCase().includes(searchTerm.toLowerCase())
     )
 
     useEffect(() => {
@@ -182,11 +186,14 @@ export default function MainScreen({ specialties }: { specialties: string[] }) {
                                                         variant="ghost"
                                                         className="w-full justify-start text-left"
                                                         onClick={() => {
-                                                            setSearchTerm(specialty)
+                                                            setSearchTerm(specialty.name)
                                                             setIsOpen(false)
                                                         }}
                                                     >
-                                                        {specialty}
+                                                        <div >
+                                                            <div className="font-bold">{specialty.name}</div>
+                                                            <div className="text-sm text-gray-600">{specialty.description}</div>
+                                                        </div>
                                                     </Button>
                                                 ))}
                                             </CardContent>
@@ -199,33 +206,7 @@ export default function MainScreen({ specialties }: { specialties: string[] }) {
                         </div>
                     </CardContent>
                 </Card>
-                {/* 
-                <section className="bg-gradient-to-r from-purple-700 to-indigo-800 rounded-lg p-8 mb-8 text-white lg:p-24">
-
-                    <h1 className="text-4xl font-bold mb-4">Find and Book the Best Doctors near you</h1>
-                    <div className="flex flex-col sm:flex-row bg-white rounded-lg overflow-hidden">
-                        <div className="flex items-center px-4 py-2 sm:py-0 sm:border-r border-gray-200">
-                            <MapPin className="text-gray-400 mr-2" />
-                            <Input type="text" placeholder="Lahore" className="border-0 focus:ring-0" />
-                            <ChevronDown className="text-gray-400 ml-2" />
-                        </div>
-
-
-                        <div className="flex-1 flex items-center px-4 py-2 sm:py-0 relative" >
-                            <Search className="text-gray-400 mr-2" />
-                            <Input
-                                type="text"
-                                placeholder="Doctors, Hospital, Conditions"
-                                className="pl-10 pr-4 py-2 w-full"
-                            />
-                        
-                        </div>
-
-                        <Button className="rounded-none px-8 py-2">Search</Button>
-
-                    </div>
-
-                </section> */}
+              
 
                 <section className="grid md:grid-cols-4 gap-4 mb-8">
                     {['Consult Online Now', 'In-Clinic Appointments', 'Laboratory Tests', 'Procedures & Surgeries'].map((title, index) => (

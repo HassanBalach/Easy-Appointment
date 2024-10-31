@@ -1,0 +1,18 @@
+[
+      {
+        "patientName": "Osman",
+        "phoneNumber": "3121051375",
+        "email": "",
+        "relationship": "self",
+        "date": "2024-10-31T06:18:41.909Z",
+        "selectedTime": "12:15 PM"
+      },
+      {
+        "patientName": "Sumaiya",
+        "phoneNumber": "3121051390",
+        "email": "sumaiya@example.com",
+        "relationship": "self",
+        "date": "2024-10-31T08:30:00.000Z",
+        "selectedTime": "3:45 PM"
+      }
+    ]
