@@ -1,7 +1,7 @@
 import React from 'react';
-import {Card} from '@/components/ui/card';
+import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import {  Star } from "lucide-react";
+import { Star } from "lucide-react";
 
 interface Doctor {
   id: string;
@@ -11,7 +11,7 @@ interface Doctor {
   experience: string;
   satisfiedPatients: string;
   rating: number;
-  imageUrl: string;
+  imageUrl?: string; // Made optional to align with Zod schema
   isPlatinum: boolean;
   onlineConsultationFee: number;
 }
@@ -26,7 +26,11 @@ const DoctorCard: React.FC<DoctorCardProps> = ({ doctors }) => {
       {doctors.map((doctor) => (
         <Card key={doctor.id} className="p-4">
           <div className="flex items-start space-x-4">
-            <img src={doctor.imageUrl} alt={doctor.name} className="w-20 h-20 rounded-full" />
+            <img
+              src={doctor?.imageUrl || '/default-image.jpg'} // Fallback to default image
+              alt={doctor.name}
+              className="w-20 h-20 rounded-full"
+            />
             <div className="flex-grow">
               <div className="flex items-center justify-between">
                 <h3 className="text-lg font-semibold">{doctor.name}</h3>
@@ -35,7 +39,6 @@ const DoctorCard: React.FC<DoctorCardProps> = ({ doctors }) => {
                     PLATINUM DOCTOR
                   </Badge>
                 )}
-
               </div>
               <p className="text-sm text-gray-600">{doctor.title}</p>
               <p className="text-xs text-gray-500">{doctor.qualifications}</p>

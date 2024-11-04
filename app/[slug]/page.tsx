@@ -14,7 +14,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 export default function SearchId() {
     const searchParams = useSearchParams();
-    const slug = searchParams.get('term');
+    const slug = searchParams?.get('term');
     const [doctorData, setDoctorData] = useState<any>(null)
 
     useEffect(() => {
@@ -27,9 +27,6 @@ export default function SearchId() {
         fetchData()
     }, [slug])
 
-    console.log({ doctorData })
-
-    //Map the data in frontend Now,
 
 
     return (
@@ -55,9 +52,10 @@ export default function SearchId() {
                                                         height={100}
                                                         className="rounded-full"
                                                     /> */}
+
                                                     <Avatar className="h-16 w-16">
-                                                        {doctorData.image && <AvatarImage src={doctorData.image} />}
-                                                        <AvatarFallback>{doctorData.name.charAt(0)}</AvatarFallback>
+                                                        {doctor.image && <AvatarImage src={doctor.image} />}
+                                                        <AvatarFallback>{doctor.name.charAt(0)}</AvatarFallback>
 
                                                     </Avatar>
                                                 </Link>
@@ -71,7 +69,7 @@ export default function SearchId() {
                                                 <p className="text-gray-600 mb-4">MBBS, MCPS (Gynecology and Obstetrcian)</p>
                                                 <div className="flex gap-8 mb-4">
                                                     <div>
-                                                        <p className="font-bold">5 Years</p>
+                                                        <p className="font-bold">{doctor?.experience} Years</p>
                                                         <p className="text-gray-600">Experience</p>
                                                     </div>
                                                     <div>

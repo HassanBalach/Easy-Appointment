@@ -9,7 +9,7 @@ interface dropdownDatas {
 
 export default async function page() {
   const specialties = await specialityRef()
-  console.log({ specialties });
   return <MainScreen specialties={specialties}  />
 }
 
+  

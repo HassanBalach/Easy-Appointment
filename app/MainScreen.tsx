@@ -73,14 +73,11 @@ export default function MainScreen({ specialties }: { specialties: Specialties[]
                         ) : user ? (
                             <Button>Joined As Patient</Button>
                         ) : (
-                            <>
-                                <Link href={`/phoneAuth`}>
-                                    <Button variant="outline">Login/Signup</Button>
-                                </Link>
+                          
                                 <Link href={`/doctorRegistration`}>
                                     <Button>Join as Doctor</Button>
                                 </Link>
-                            </>
+                           
                         )}
                     </div>
 
