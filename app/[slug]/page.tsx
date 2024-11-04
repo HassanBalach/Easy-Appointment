@@ -51,6 +51,7 @@ export default function SearchId() {
 
          {doctorData && (
             <>
+<<<<<<< HEAD
                {/* Filter Section */}
                <div className="my-6 p-4 bg-gray-50 rounded-lg">
                   <div className="flex items-center gap-4 flex-wrap">
@@ -197,6 +198,8 @@ export default function SearchId() {
                   </div>
                </div>
 
+=======
+>>>>>>> 54232852043ee8d1c4fa3706b4294f64c1ecfb5b
                {doctorData.length === 0 ? (
                   <h1 className="text-3xl font-bold mb-2">No Data Found</h1>
                ) : (
