@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
-import { Search, MapPin } from "lucide-react";
+import { Search, MapPin, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -10,6 +10,8 @@ import { searchDoctor } from "@/lib/action";
 import Header from "@/components/Header";
 import Image from "next/image";
 import Carousel from "@/components/Caraousel";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 type Specialties = {
    name: string;
@@ -25,6 +27,8 @@ export default function MainScreen({
    const [isOpen, setIsOpen] = useState(false);
    const [searchTerm, setSearchTerm] = useState("");
    const dropdownRef = useRef<HTMLDivElement | null>(null);
+   const doctor = false; 
+   const user = false
 
    const handleSearch = async () => {
       await searchDoctor(searchTerm);

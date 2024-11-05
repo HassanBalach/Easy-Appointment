@@ -5,8 +5,6 @@ import { firestoreDatabase, realtimeDatabase } from '@/firebaseConfig';
 import { collection, getDocs, where, query, doc, getDoc } from "firebase/firestore";
 
 
-//Let's retrieve the city from realtime  database
-
 export async function cityRef() {
     const databaseRef = dbRef(realtimeDatabase)
 
@@ -32,7 +30,6 @@ export async function cityRef() {
 
 //Let's retrieve the specialization from realtime database
 
-
 export async function specialityRef() {
     const databaseRef = dbRef(realtimeDatabase)
 
@@ -56,11 +53,6 @@ export async function specialityRef() {
     }
 }
 
-
-
-
-
-
 // Define an interface for the expected document structure
 interface Doctor {
     id: string;
@@ -74,14 +66,14 @@ export async function searchDoctor(searchTerm: string) {
         return [];
     }
 
-    console.log("Searching for:", searchTerm);
+    // console.log("Searching for:", searchTerm);
 
     const doctorRef = collection(firestoreDatabase, "Doctor");
     const q = query(doctorRef, where("specialization", "array-contains", searchTerm));
 
     try {
         const snapShot = await getDocs(q);
-        console.log("Number of documents found:", snapShot.size);
+        // console.log("Number of documents found:", snapShot.size);
 
         // Use the Doctor interface to type the results
         const results: Doctor[] = snapShot.docs.map(doc => {
@@ -93,11 +85,11 @@ export async function searchDoctor(searchTerm: string) {
         });
 
         // Log only the necessary information
-        console.log("Search results:", results.map(result => ({
-            id: result.id,
-            name: result.name,
-            specialization: result.specialization
-        })));
+        // console.log("Search results:", results.map(result => ({
+        //     id: result.id,
+        //     name: result.name,
+        //     specialization: result.specialization
+        // })));
 
         return results;
     } catch (error) {
@@ -105,9 +97,6 @@ export async function searchDoctor(searchTerm: string) {
         throw error; // Rethrow the error for better error handling upstream
     }
 }
-
-
-
 
 export async function getDoctorById(id: string) {
 
