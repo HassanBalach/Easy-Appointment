@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
-import { Search, MapPin } from "lucide-react";
+import { Search, MapPin, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -9,7 +9,20 @@ import { useRouter } from "next/navigation";
 import { searchDoctor } from "@/lib/action";
 import Header from "@/components/Header";
 import Image from "next/image";
-import Carousel from "@/components/Caraousel";
+import {
+   Accordion,
+   AccordionContent,
+   AccordionItem,
+   AccordionTrigger,
+} from "@/components/ui/accordion";
+import {
+   Sheet,
+   SheetContent,
+   SheetHeader,
+   SheetTitle,
+   SheetTrigger,
+} from "@/components/ui/sheet";
+import FeaturedDoctors from "@/components/FeaturedDoctors";
 
 type Specialties = {
    name: string;
@@ -23,6 +36,8 @@ export default function MainScreen({
 }) {
    const router = useRouter();
    const [isOpen, setIsOpen] = useState(false);
+   const [doctor, setDoctor] = useState(false);
+   const [user, setUser] = useState(false);
    const [searchTerm, setSearchTerm] = useState("");
    const dropdownRef = useRef<HTMLDivElement | null>(null);
 
@@ -54,13 +69,11 @@ export default function MainScreen({
    }, [dropdownRef]);
 
    return (
-      <div className="min-h-screen">
-         <main className="container max-w-[1440px] mx-auto px-4">
-            <Header isShown={true} />
+      <div className="min-h-screen bg-white">
+         <Header isShown={true} />
 
-            <Card className="w-full mx-auto mb-6 py-4 px-4">
-               {" "}
-               {/* Increased mb-4 to mb-6 */}
+         <main className="container max-w-[1400px] mx-auto px-4 py-4 lg:px-32">
+            <Card className="w-full mx-auto mb-4 py-4 px-4">
                <CardHeader>
                   <CardTitle className="text-3xl font-bold">
                      Find and Book the{" "}
@@ -70,9 +83,7 @@ export default function MainScreen({
                </CardHeader>
                <CardContent>
                   <div className="flex flex-col space-y-4">
-                     <div className="flex space-x-4">
-                        {" "}
-                        {/* Increased space-x-2 to space-x-4 */}
+                     <div className="flex space-x-2">
                         <div className="relative flex-grow">
                            <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                            <Input
@@ -93,7 +104,7 @@ export default function MainScreen({
                            />
                            {isOpen && (
                               <Card className="absolute z-10 w-full mt-1 overflow-hidden">
-                                 <CardContent className="p-0 max-h-[200px] overflow-y-auto">
+                                 <CardContent className="p-0 max-h-[200px] overflow-y-auto custom-scrollbar">
                                     {filteredSpecialties.map(
                                        (specialty, index) => (
                                           <Button
@@ -130,99 +141,54 @@ export default function MainScreen({
                   </div>
                </CardContent>
             </Card>
-            <section className="mb-10">
-               <h2 className="text-2xl font-semibold mb-4">Featured Doctors</h2>
-               <div className="my-4">
-                  <Carousel />
-               </div>
-            </section>
 
-            <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-               {" "}
-               {/* Increased gap-4 to gap-6 */}
-               {[
-                  "Consult Online Now",
-                  "In-Clinic Appointments",
-                  "Laboratory Tests",
-                  "Procedures & Surgeries",
-               ].map((title, index) => (
-                  <Card key={index}>
-                     <CardContent className="p-4">
-                        <h3 className="font-semibold mb-2">{title}</h3>
-                        <p className="text-sm text-gray-600">
-                           Description of the service goes here.
-                        </p>
-                     </CardContent>
-                  </Card>
-               ))}
-            </section>
-            <section className="mb-10">
-               {" "}
-               {/* Increased mb-8 to mb-10 */}
+            <FeaturedDoctors />
+
+            <section className="mb-8">
                <h2 className="text-2xl font-semibold mb-4">
                   Consult best doctors online
                </h2>
-               <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-6">
-                  {" "}
-                  {/* Increased gap-4 to gap-6 */}
+               <div className="grid grid-cols-4 md:grid-cols-7 gap-4">
                   {[
                      "Gynecologist",
-                     "Skin-Specialist",
-                     "Child-Specialist",
-                     "Orthopedic-Surgeon",
-                     "ENT-Specialist",
-                     "Diabetes-Specialist",
-                     "Eye-Specialist",
+                     "Skin Specialist",
+                     "Child Specialist",
+                     "Orthopedic Surgeon",
+                     "ENT Specialist",
+                     "Diabetes Specialist",
+                     "Eye Specialist",
                   ].map((specialty, index) => (
                      <div key={index} className="text-center">
-                        <div className="w-16 h-16 bg-gray-200 rounded-full mx-auto mb-2">
-                           <Image
-                              src={`/images/${specialty}.png`}
-                              alt="Doctor"
-                              width={64}
-                              height={64}
-                           />
-                        </div>
+                        <div className="w-16 h-16 bg-gray-200 rounded-full mx-auto mb-2"></div>
                         <p className="text-sm">{specialty}</p>
                      </div>
                   ))}
                </div>
             </section>
-            <section className="mb-10">
-               {" "}
-               {/* Increased mb-8 to mb-10 */}
+
+            <section className="mb-8">
                <h2 className="text-2xl font-semibold mb-4">
                   Search doctor by condition
                </h2>
-               <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-6">
-                  {" "}
-                  {/* Increased gap-4 to gap-6 */}
+               <div className="grid grid-cols-4 md:grid-cols-7 gap-4">
                   {[
                      "Fever",
-                     "Heart-Attack",
+                     "Heart Attack",
                      "Pregnancy",
-                     "High-Blood-Pressure",
+                     "High Blood Pressure",
                      "Piles",
                      "Diarrhea",
                      "Acne",
                   ].map((condition, index) => (
                      <div key={index} className="text-center">
-                        <div className="w-16 h-16 bg-gray-200 rounded-full mx-auto mb-2">
-                           <Image
-                              src={`/images/${condition}.png`}
-                              alt="Doctor"
-                              width={64}
-                              height={64}
-                           />
-                        </div>
+                        <div className="w-16 h-16 bg-gray-200 rounded-full mx-auto mb-2"></div>
                         <p className="text-sm">{condition}</p>
                      </div>
                   ))}
                </div>
             </section>
-            <section className="mb-10">
-               {" "}
-               {/* Increased mb-8 to mb-10 */}
+
+            <section className="mb-8">
                <h2 className="text-2xl font-semibold mb-4">
                   Our Esteemed Partners
                </h2>
@@ -231,9 +197,7 @@ export default function MainScreen({
                   and employees.
                </p>
                <Button variant="outline">Partner with healthdoc</Button>
-               <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-6 mt-4">
-                  {" "}
-                  {/* Increased gap-4 to gap-6 */}
+               <div className="grid grid-cols-4 md:grid-cols-8 gap-4 mt-4">
                   {[...Array(8)].map((_, index) => (
                      <div
                         key={index}

@@ -133,11 +133,11 @@ export default function DoctorRegistration({ cities, specialities }: { cities: s
             image: imagePreview,
         };
 
-         console.log({ combinedData });  
+        //  console.log({ combinedData });  
 
         const result = doctorSchema.safeParse(combinedData);
 
-        console.log({ result });
+        // console.log({ result });
 
 
         if (!result.success) {
@@ -177,13 +177,13 @@ export default function DoctorRegistration({ cities, specialities }: { cities: s
                         base64: image
                     };
                     imageUrl = await uploadImage(imageData);
-                    console.log({ imageUrl });
+                    // console.log({ imageUrl });
                 }
                 const { email, password, ...filteredData } = result.data;
 
                 const doctorRef = {  ...filteredData, image: imageUrl };
 
-                console.log({ doctorRef });
+                // console.log({ doctorRef });
 
                 await saveUserData(user, doctorRef);
                 console.log("User registered and data saved!");

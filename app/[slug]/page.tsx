@@ -22,6 +22,8 @@ export default function SearchId() {
    const slug = searchParams.get("term");
    const [doctorData, setDoctorData] = useState<any>(null);
    const [filters, setFilters] = useState({
+      location: "all",
+      specialization: "all",
       experience: "all",
       fees: "all",
       availability: "all",
@@ -37,12 +39,119 @@ export default function SearchId() {
       fetchData();
    }, [slug]);
 
+   const applyFilter = (key: string, value: string) => {
+      setFilters((prev) => ({ ...prev, [key]: value }));
+      // Update the displayed data based on filters (call searchDoctor or a filter function)
+   };
+
    return (
       <div className="container mx-auto px-36">
          <Header isShown={true} />
 
          {doctorData && (
             <>
+               {/* Filter Section */}
+               <div className="my-6 p-4 bg-gray-50 rounded-lg">
+                  <div className="flex items-center gap-4 flex-wrap">
+                     <div className="flex items-center gap-2">
+                        <Filter className="w-5 h-5" />
+                        <span className="font-semibold">Filters:</span>
+                     </div>
+
+                     <Button
+                        variant="outline"
+                        onClick={() =>
+                           applyFilter("location", "specific-location")
+                        }
+                        className="flex items-center gap-2"
+                     >
+                        <MapPin className="w-4 h-4" />
+                        Location
+                     </Button>
+
+                     <Button
+                        variant="outline"
+                        onClick={() =>
+                           applyFilter(
+                              "specialization",
+                              "specific-specialization"
+                           )
+                        }
+                        className="flex items-center gap-2"
+                     >
+                        <Stethoscope className="w-4 h-4" />
+                        Specialization
+                     </Button>
+
+                     <Button
+                        variant="outline"
+                        onClick={() => applyFilter("availability", "today")}
+                        className="flex items-center gap-2"
+                     >
+                        <Clock className="w-4 h-4" />
+                        Availability
+                     </Button>
+
+                     <Button
+                        variant="outline"
+                        onClick={() => applyFilter("experience", "5+")}
+                     >
+                        Experience: 5+ years
+                     </Button>
+
+                     <Button
+                        variant="outline"
+                        onClick={() => applyFilter("fees", "0-1500")}
+                     >
+                        Fees: ₹0-1500
+                     </Button>
+                  </div>
+               </div>
+
+               {/* Sort Section */}
+               <div className="mb-6 flex justify-between items-center">
+                  <div className="flex gap-4">
+                     <Accordion type="single" collapsible className="w-full">
+                        <AccordionItem value="fees">
+                           <AccordionTrigger className="text-blue-600">
+                              Sort by: Fees
+                           </AccordionTrigger>
+                           <AccordionContent>
+                              <div className="flex flex-col gap-2">
+                                 <Button
+                                    variant="ghost"
+                                    className="justify-start"
+                                 >
+                                    Low to High
+                                 </Button>
+                                 <Button
+                                    variant="ghost"
+                                    className="justify-start"
+                                 >
+                                    High to Low
+                                 </Button>
+                              </div>
+                           </AccordionContent>
+                        </AccordionItem>
+                     </Accordion>
+                     <Button variant="ghost" className="text-blue-600">
+                        Sort by: Experience
+                     </Button>
+                     <Button variant="ghost" className="text-blue-600">
+                        Sort by: Rating
+                     </Button>
+                  </div>
+
+                  <div className="flex gap-2">
+                     <Button variant="outline" className="bg-white">
+                        Available Today
+                     </Button>
+                     <Button variant="outline" className="bg-white">
+                        Video Consult
+                     </Button>
+                  </div>
+               </div>
+
                {doctorData.length === 0 ? (
                   <h1 className="text-3xl font-bold mb-2">No Data Found</h1>
                ) : (

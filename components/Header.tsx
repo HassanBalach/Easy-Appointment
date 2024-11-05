@@ -25,7 +25,7 @@ function Header({ isShown }: { isShown: boolean }) {
    if (!isShown) return <div></div>; // Render nothing if not shown
 
    return (
-      <header className="bg-gray-100 shadow-lg my-4">
+      <header className="bg-gray-100 shadow-xl mb-4 max-w-[1400px] mx-auto rounded-lg">
          <div className="container mx-auto flex items-center justify-between px-4 py-4">
             {/* Logo */}
             <div className="text-2xl font-bold text-orange-500">healthdoc</div>
