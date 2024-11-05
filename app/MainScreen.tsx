@@ -142,7 +142,11 @@ export default function MainScreen({
                </CardContent>
             </Card>
 
-            <FeaturedDoctors />
+            {/* Featured Doctors */}
+            <div className="my-8">
+               <h2 className="text-3xl font-bold mb-4">Featured Doctors</h2>
+               <FeaturedDoctors />
+            </div>
 
             <section className="mb-8">
                <h2 className="text-2xl font-semibold mb-4">
