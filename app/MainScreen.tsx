@@ -1,6 +1,7 @@
 "use client";
+
 import React, { useEffect, useRef, useState } from "react";
-import { Search, MapPin, Phone } from "lucide-react";
+import { Search, MapPin, Facebook, Twitter, Instagram } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -8,36 +9,20 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { searchDoctor } from "@/lib/action";
 import Header from "@/components/Header";
-import Image from "next/image";
-import {
-   Accordion,
-   AccordionContent,
-   AccordionItem,
-   AccordionTrigger,
-} from "@/components/ui/accordion";
-import {
-   Sheet,
-   SheetContent,
-   SheetHeader,
-   SheetTitle,
-   SheetTrigger,
-} from "@/components/ui/sheet";
 import FeaturedDoctors from "@/components/FeaturedDoctors";
 
-type Specialties = {
+type Specialty = {
    name: string;
    description: string;
 };
 
-export default function MainScreen({
-   specialties,
+export default function Component({
+   specialties = [],
 }: {
-   specialties: Specialties[];
+   specialties: Specialty[];
 }) {
    const router = useRouter();
    const [isOpen, setIsOpen] = useState(false);
-   const [doctor, setDoctor] = useState(false);
-   const [user, setUser] = useState(false);
    const [searchTerm, setSearchTerm] = useState("");
    const dropdownRef = useRef<HTMLDivElement | null>(null);
 
@@ -53,10 +38,10 @@ export default function MainScreen({
    );
 
    useEffect(() => {
-      function handleClickOutside(event: any) {
+      function handleClickOutside(event: MouseEvent) {
          if (
             dropdownRef.current &&
-            !dropdownRef.current.contains(event.target)
+            !dropdownRef.current.contains(event.target as Node)
          ) {
             setIsOpen(false);
          }
@@ -69,13 +54,13 @@ export default function MainScreen({
    }, [dropdownRef]);
 
    return (
-      <div className="min-h-screen bg-white">
+      <div className="min-h-screen bg-gray-50">
          <Header isShown={true} />
 
-         <main className="container max-w-[1400px] mx-auto px-4 py-4 lg:px-32">
-            <Card className="w-full mx-auto mb-4 py-4 px-4">
+         <main className="container mx-auto px-4 py-8 space-y-12">
+            <Card className="w-full max-w-7xl mx-auto">
                <CardHeader>
-                  <CardTitle className="text-3xl font-bold">
+                  <CardTitle className="text-3xl font-bold text-center">
                      Find and Book the{" "}
                      <span className="text-orange-500">Best Doctors</span> near
                      you
@@ -83,7 +68,7 @@ export default function MainScreen({
                </CardHeader>
                <CardContent>
                   <div className="flex flex-col space-y-4">
-                     <div className="flex space-x-2">
+                     <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
                         <div className="relative flex-grow">
                            <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                            <Input
@@ -104,7 +89,7 @@ export default function MainScreen({
                            />
                            {isOpen && (
                               <Card className="absolute z-10 w-full mt-1 overflow-hidden">
-                                 <CardContent className="p-0 max-h-[200px] overflow-y-auto custom-scrollbar">
+                                 <CardContent className="p-0 max-h-[200px] overflow-y-auto">
                                     {filteredSpecialties.map(
                                        (specialty, index) => (
                                           <Button
@@ -142,17 +127,16 @@ export default function MainScreen({
                </CardContent>
             </Card>
 
-            {/* Featured Doctors */}
-            <div className="my-8">
-               <h2 className="text-3xl font-bold mb-4">Featured Doctors</h2>
+            <section>
+               <h2 className="text-2xl font-semibold mb-6">Featured Doctors</h2>
                <FeaturedDoctors />
-            </div>
+            </section>
 
-            <section className="mb-8">
-               <h2 className="text-2xl font-semibold mb-4">
+            <section>
+               <h2 className="text-2xl font-semibold mb-6">
                   Consult best doctors online
                </h2>
-               <div className="grid grid-cols-4 md:grid-cols-7 gap-4">
+               <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-7 gap-6">
                   {[
                      "Gynecologist",
                      "Skin Specialist",
@@ -170,11 +154,11 @@ export default function MainScreen({
                </div>
             </section>
 
-            <section className="mb-8">
-               <h2 className="text-2xl font-semibold mb-4">
+            <section>
+               <h2 className="text-2xl font-semibold mb-6">
                   Search doctor by condition
                </h2>
-               <div className="grid grid-cols-4 md:grid-cols-7 gap-4">
+               <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-7 gap-6">
                   {[
                      "Fever",
                      "Heart Attack",
@@ -192,7 +176,7 @@ export default function MainScreen({
                </div>
             </section>
 
-            <section className="mb-8">
+            <section>
                <h2 className="text-2xl font-semibold mb-4">
                   Our Esteemed Partners
                </h2>
@@ -201,7 +185,7 @@ export default function MainScreen({
                   and employees.
                </p>
                <Button variant="outline">Partner with healthdoc</Button>
-               <div className="grid grid-cols-4 md:grid-cols-8 gap-4 mt-4">
+               <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-8 gap-4 mt-6">
                   {[...Array(8)].map((_, index) => (
                      <div
                         key={index}
@@ -212,8 +196,8 @@ export default function MainScreen({
             </section>
          </main>
 
-         <footer className="bg-gray-900 text-white py-8">
-            <div className="container mx-auto px-4 w-screen">
+         <footer className="bg-gray-900 text-white py-12">
+            <div className="container mx-auto px-4">
                <div className="grid md:grid-cols-4 gap-8">
                   <div>
                      <h3 className="text-xl font-bold mb-4">healthdoc</h3>
@@ -243,11 +227,11 @@ export default function MainScreen({
                   </div>
                   <div>
                      <h3 className="text-xl font-bold mb-4">Follow Us</h3>
-                     <ul className="space-y-2">
-                        <li>Facebook</li>
-                        <li>Twitter</li>
-                        <li>Instagram</li>
-                     </ul>
+                     <div className="flex space-x-4">
+                        <Facebook className="w-6 h-6" />
+                        <Twitter className="w-6 h-6" />
+                        <Instagram className="w-6 h-6" />
+                     </div>
                   </div>
                </div>
             </div>
