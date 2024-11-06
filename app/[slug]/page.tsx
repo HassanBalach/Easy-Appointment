@@ -18,8 +18,6 @@ import {
    AccordionTrigger,
 } from "@/components/ui/accordion";
 
-
-
 export default function SearchId() {
    const searchParams = useSearchParams();
    const slug = searchParams?.get("term");
@@ -42,6 +40,10 @@ export default function SearchId() {
       fetchData();
    }, [slug]);
 
+   const applyFilter = (filterType: string, value: string) => {
+      setFilters((prev) => ({ ...prev, [filterType]: value }));
+   };
+
    return (
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 xl:px-36">
          <Header isShown={true} />
@@ -63,42 +65,70 @@ export default function SearchId() {
                                     <div className="flex-shrink-0 flex justify-center md:justify-start">
                                        <Link href={`/id/${doctor.id}`}>
                                           <Avatar className="h-16 w-16">
-                                             {doctor.image && <AvatarImage src={doctor.image} />}
-                                             <AvatarFallback>{doctor.name.charAt(0)}</AvatarFallback>
+                                             {doctor.image && (
+                                                <AvatarImage
+                                                   src={doctor.image}
+                                                />
+                                             )}
+                                             <AvatarFallback>
+                                                {doctor.name.charAt(0)}
+                                             </AvatarFallback>
                                           </Avatar>
                                        </Link>
                                     </div>
                                     <div className="flex-grow">
                                        <div className="flex flex-col sm:flex-row sm:items-center gap-2 mb-2">
-                                          <h2 className="text-xl font-bold">{doctor?.name}</h2>
-                                          <Badge variant="secondary" className="bg-yellow-400 text-white w-fit">
+                                          <h2 className="text-xl font-bold">
+                                             {doctor?.name}
+                                          </h2>
+                                          <Badge
+                                             variant="secondary"
+                                             className="bg-yellow-400 text-white w-fit"
+                                          >
                                              PLATINUM DOCTOR
                                           </Badge>
                                        </div>
-                                       <p className="text-gray-600 mb-2">{doctor?.specialization}</p>
+                                       <p className="text-gray-600 mb-2">
+                                          {doctor?.specialization}
+                                       </p>
                                        <p className="text-gray-600 mb-4">
-                                          MBBS, MCPS (Gynecology and Obstetrcian)
+                                          MBBS, MCPS (Gynecology and
+                                          Obstetrcian)
                                        </p>
                                        <div className="flex flex-wrap gap-8 mb-4">
                                           <div>
-                                             <p className="font-bold">{doctor?.experience} Years</p>
-                                             <p className="text-gray-600">Experience</p>
+                                             <p className="font-bold">
+                                                {doctor?.experience} Years
+                                             </p>
+                                             <p className="text-gray-600">
+                                                Experience
+                                             </p>
                                           </div>
                                           <div>
                                              <p className="font-bold flex items-center">
-                                                99% <Star className="w-4 h-4 text-yellow-400 ml-1" />
+                                                99%{" "}
+                                                <Star className="w-4 h-4 text-yellow-400 ml-1" />
                                              </p>
-                                             <p className="text-gray-600">Satisfied Patients</p>
+                                             <p className="text-gray-600">
+                                                Satisfied Patients
+                                             </p>
                                           </div>
                                        </div>
                                        <div className="p-4 bg-blue-50 rounded-lg inline-flex items-center gap-2 mb-4 flex-wrap">
                                           <Video className="w-5 h-5 text-blue-600" />
-                                          <span>Online Video Consultation (Online)</span>
-                                          <span className="font-bold">Rs. 1,400</span>
+                                          <span>
+                                             Online Video Consultation (Online)
+                                          </span>
+                                          <span className="font-bold">
+                                             Rs. 1,400
+                                          </span>
                                        </div>
                                     </div>
                                     <div className="flex flex-col gap-4 w-full md:w-auto">
-                                       <Link href={`/id/${doctor.id}`} className="w-full">
+                                       <Link
+                                          href={`/id/${doctor.id}`}
+                                          className="w-full"
+                                       >
                                           <Button className="w-full bg-orange-500 hover:bg-orange-600">
                                              Book Appointment
                                           </Button>

@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useEffect, useRef, useState } from "react";
 import { Search, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -10,15 +11,15 @@ import Header from "@/components/Header";
 import Image from "next/image";
 import FeaturedDoctors from "@/components/FeaturedDoctors";
 
-type Specialties = {
+type Specialty = {
    name: string;
    description: string;
 };
 
-export default function MainScreen({
-   specialties,
+export default function Component({
+   specialties = [],
 }: {
-   specialties: Specialties[];
+   specialties: Specialty[];
 }) {
    const router = useRouter();
    const [isOpen, setIsOpen] = useState(false);
@@ -61,7 +62,7 @@ export default function MainScreen({
                </CardHeader>
                <CardContent>
                   <div className="flex flex-col space-y-4">
-                     <div className="flex space-x-2">
+                     <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
                         <div className="relative flex-grow">
                            <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                            <Input
