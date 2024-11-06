@@ -18,7 +18,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 function Header({ isShown }: { isShown: boolean }) {
-   const user = true;
+   const user = false;
    const doctor = false;
    const router = useRouter();
 
@@ -38,9 +38,7 @@ function Header({ isShown }: { isShown: boolean }) {
                   <Button>Joined As Patient</Button>
                ) : (
                   <>
-                     <Link href={`/phoneAuth`}>
-                        <Button variant="outline">Login/Signup</Button>
-                     </Link>
+
                      <Link href={`/doctorRegistration`}>
                         <Button>Join as Doctor</Button>
                      </Link>
@@ -66,13 +64,7 @@ function Header({ isShown }: { isShown: boolean }) {
                         </SheetTitle>
                      </SheetHeader>
                      <div className="flex gap-4 py-4">
-                        <Button
-                           variant="outline"
-                           onClick={() => router.push("/phoneAuth")}
-                           className="flex-1"
-                        >
-                           Patient Login
-                        </Button>
+                      
                         <Button
                            variant="outline"
                            onClick={() => router.push("/doctorRegistration")}

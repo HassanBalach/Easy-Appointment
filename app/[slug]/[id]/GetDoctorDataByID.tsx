@@ -139,16 +139,15 @@ export default function GetDoctorDataByID({ doctorData }: { doctorData: any }) {
 
             console.log({ result });
 
-            if (result.success) {
-               console.log("SMS sent successfully");
-               toast({
-                  title: "Success",
-                  description:
-                     "Congratulations! Appointment booked successfully",
-               });
-            } else {
-               console.error("Error sending SMS: ", result.error);
-            }
+                    if (result.success) {
+                        console.log("SMS sent successfully");
+                        toast({
+                            title: "Success",
+                            description: "Congratulations! Appointment booked successfully",
+                        });
+                    } else {
+                        console.error("Error sending SMS: ", result.error);
+                    }
 
             setShowDialog(false);
          } catch (error) {

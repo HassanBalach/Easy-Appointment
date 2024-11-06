@@ -21,43 +21,38 @@ export default function FeaturedDoctors() {
          }),
       ]
    );
-
+   // E:\MyLearnings\EasyAppointment\easy-appointment\public\images\Dr.Majeed.png
    const items = [
       {
          id: 1,
-         name: "Dr. Emily Chen",
-         specialty: "Cardiologist",
-         image: "/placeholder.svg?height=300&width=400",
+         name: "",
+         image: "/images/Dr.Majeed.png",
       },
       {
          id: 2,
-         name: "Dr. Michael Lee",
-         specialty: "Neurologist",
-         image: "/placeholder.svg?height=300&width=400",
+         name: "",
+         image: "/images/Doctor.jpg",
       },
       {
          id: 3,
-         name: "Dr. Sarah Johnson",
-         specialty: "Pediatrician",
-         image: "/placeholder.svg?height=300&width=400",
+         name: "",
+         image: "/images/surger.webp",
       },
+    
       {
          id: 4,
-         name: "Dr. David Brown",
-         specialty: "Orthopedic Surgeon",
-         image: "/placeholder.svg?height=300&width=400",
+         name: "",
+         image: "/images/doctor2.jpg",
       },
       {
          id: 5,
-         name: "Dr. Lisa Taylor",
-         specialty: "Dermatologist",
-         image: "/placeholder.svg?height=300&width=400",
+         name: "",
+         image: "/images/doctor3.webp",
       },
       {
          id: 6,
-         name: "Dr. James Wilson",
-         specialty: "Oncologist",
-         image: "/placeholder.svg?height=300&width=400",
+         name: "",
+         image: "/images/doctor4.jpg",
       },
    ];
 
@@ -82,7 +77,7 @@ export default function FeaturedDoctors() {
                               {item.name}
                            </h3>
                            <p className="text-sm text-white">
-                              {item.specialty}
+                              {/* {item.specialty} */}
                            </p>
                         </div>
                      </div>
