@@ -121,7 +121,7 @@ export default function GetDoctorDataByID({ doctorData }: { doctorData: any }) {
                             description: "Congratulations! Appointment booked successfully",
                         });
                     } else {
-                        console.error("Error sending SMS: ", result.error);
+                        console.error("Error SMS sending: ", result.error);
                     }
 
                     setShowDialog(false);
