@@ -22,6 +22,7 @@ import {
 import Image from "next/image";
 import Footer from "@/components/footer";
 import Loader from "@/components/loader";
+import Testimonials from "@/components/home/testimonials";
 
 type Specialties = {
    name: string;
@@ -202,6 +203,9 @@ export default function MainScreen({
 
          {/* Specialities */}
          <Speciality />
+
+         {/* Testimonials */}
+         <Testimonials />
 
          {/* Footer */}
          <Footer />
