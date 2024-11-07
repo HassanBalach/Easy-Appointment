@@ -7,8 +7,6 @@ import { Card } from "@/components/ui/card";
 
 interface Doctor {
    id: number;
-   name: string;
-   specialty: string;
    available: boolean;
    imageUrl: string;
 }
@@ -29,15 +27,23 @@ export default function DoctorsCarousel() {
          }),
       ]
    );
+   const imageUrl= [
+      '/images/Doctor.jpg',
+      '/images/doctor2.jpg',
+      // '/images/doctor3.jpg',
+      '/images/doctor4.jpg',
+      '/images/Dr.Majeed.png',
+      '/images/surger.webp'
+    
+   ]
 
-   const doctors: Doctor[] = Array(10)
+   const doctors: Doctor[] = Array(5)
       .fill(null)
       .map((_, index) => ({
          id: index + 1,
-         name: "Dr. Richard James",
-         specialty: "General Physician",
+       
          available: true,
-         imageUrl: "/images/doctor2.jpg",
+         imageUrl: imageUrl[index],
       }));
 
    return (
@@ -59,7 +65,7 @@ export default function DoctorsCarousel() {
                      className="flex-[0_0_100%] sm:flex-[0_0_50%] md:flex-[0_0_40%] min-w-0 pl-4 sm:pl-6 cursor-pointer"
                   >
                      <Card className="overflow-hidden bg-slate-50 h-full relative rounded-xl">
-                        {/* Status at Top Left */}
+          
                         {doctor.available && (
                            <div className="absolute top-2 left-2 px-2 py-1 bg-green-500 text-white text-xs rounded-full">
                               Available
@@ -69,17 +75,12 @@ export default function DoctorsCarousel() {
                         <div className="aspect-[4/3] relative">
                            <img
                               src={doctor.imageUrl}
-                              alt={doctor.name}
+                              alt="Doctor"
                               className="object-cover w-full h-full"
                            />
-                           {/* Overlay for Name and Specialty */}
+                           
                            <div className="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-40 text-center text-white p-2">
-                              <h3 className="font-bold text-base sm:text-lg">
-                                 {doctor.name}
-                              </h3>
-                              <p className="text-sm sm:text-md">
-                                 {doctor.specialty}
-                              </p>
+                              
                            </div>
                         </div>
                      </Card>

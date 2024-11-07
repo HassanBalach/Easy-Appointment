@@ -23,7 +23,7 @@ function Speciality() {
                "Diabetes-Specialist",
                "Eye-Specialist",
                "Fever",
-               "Heart-Attack",
+               "Cardiologist",
                "Pregnancy",
                "High-Blood-Pressure",
                "Piles",
