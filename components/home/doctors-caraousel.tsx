@@ -30,6 +30,15 @@ export default function DoctorsCarousel() {
       ]
    );
 
+   const imageUrl = [
+      "/images/Doctor.jpg",
+      "/images/doctor2.jpg",
+      "/images/doctor3.jpg",
+      "/images/doctor4.jpg",
+      "/images/Dr.Majeed.png",
+      "/images/surger.webp",
+   ];
+
    const doctors: Doctor[] = Array(10)
       .fill(null)
       .map((_, index) => ({
@@ -37,7 +46,7 @@ export default function DoctorsCarousel() {
          name: "Dr. Richard James",
          specialty: "General Physician",
          available: true,
-         imageUrl: "/images/doctor2.jpg",
+         imageUrl: imageUrl[index],
       }));
 
    return (
