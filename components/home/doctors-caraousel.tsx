@@ -44,6 +44,7 @@ export default function DoctorsCarousel() {
        
          available: true,
          imageUrl: imageUrl[index],
+         imageUrl: imageUrl[index],
       }));
 
    return (

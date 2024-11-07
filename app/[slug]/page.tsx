@@ -1,35 +1,43 @@
 "use client";
 
-import * as React from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Star, Video, Filter, MapPin, Stethoscope, Menu } from "lucide-react";
+import { Star, Video } from "lucide-react";
+import {
+   Sheet,
+   SheetContent,
+   SheetHeader,
+   SheetTitle,
+   SheetTrigger,
+} from "@/components/ui/sheet";
 import { searchDoctor } from "@/lib/action";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import Header from '@/components/Header'
-import { cn } from "@/lib/utils";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import Header from "@/components/header";
+import { Card, CardContent } from "@/components/ui/card";
 
 export default function SearchId() {
 
    const searchParams = useSearchParams();
    const slug = searchParams?.get("term");
    const [doctorData, setDoctorData] = useState<any>(null);
-   const [selectedSpecialty, setSelectedSpecialty] =
-      React.useState("Gynecologist");
-   const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
+   const [selectedFilter, setSelectedFilter] = useState<string | null>(null);
 
-   const specialties = [
-      "General physician",
+   const filters = [
       "Gynecologist",
-      "Dermatologist",
-      "Pediatricians",
-      "Neurologist",
-      "Gastroenterologist",
+      "Skin-Specialist",
+      "Orthopedic-Surgeon",
+      "ENT-Specialist",
+      "Diabetes-Specialist",
+      "Eye-Specialist",
+      "Fever",
+      "Heart-Attack",
+      "Pregnancy",
+      "High-Blood-Pressure",
+      "Piles",
+      "Diarrhea",
    ];
 
    useEffect(() => {
@@ -42,81 +50,88 @@ export default function SearchId() {
       fetchData();
    }, [slug]);
 
-   const Sidebar = () => (
-      <nav className="w-full p-4 space-y-2 bg-white rounded-lg shadow">
-         <h2 className="text-lg font-semibold mb-4">Specialties</h2>
-         {specialties.map((specialty) => (
-            <button
-               key={specialty}
-               onClick={() => {
-                  setSelectedSpecialty(specialty);
-                  setIsSidebarOpen(false);
-               }}
-               className={cn(
-                  "w-full px-4 py-2 text-sm rounded-full transition-colors",
-                  "hover:bg-blue-50 hover:text-blue-600",
-                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500",
-                  selectedSpecialty === specialty
-                     ? "bg-blue-100 text-blue-600"
-                     : "bg-white text-gray-700"
-               )}
-            >
-               {specialty}
-            </button>
-         ))}
-      </nav>
-   );
-
    return (
-      <>
-         <Header isShown={true} />
-         <div className="container mx-auto px-4 sm:px-6 lg:px-8 xl:px-36">
-            <div className="flex flex-col lg:flex-row gap-8">
-               {/* Mobile Sidebar Trigger */}
-               <Sheet open={isSidebarOpen} onOpenChange={setIsSidebarOpen}>
-                  <SheetTrigger asChild>
-                     <Button variant="outline" className="lg:hidden mb-4">
-                        <Menu className="mr-2 h-4 w-4" /> Specialties
-                     </Button>
-                  </SheetTrigger>
-                  <SheetContent side="left" className="w-[300px] sm:w-[400px]">
-                     <Sidebar />
-                  </SheetContent>
-               </Sheet>
-
-               {/* Desktop Sidebar */}
-               <div className="hidden lg:block w-72">
-                  <Sidebar />
-               </div>
+      <div className="flex flex-col min-h-screen max-w-7xl mx-auto">
+         <div className="w-full">
+            <Header isShown={true} />
+         </div>
+         <div className="mx-auto flex flex-col">
+            <div className="flex flex-col md:flex-row gap-6 mt-6">
+               {/* Sidebar for Large Screens */}
+               <aside className="hidden lg:block lg:w-1/4 md:w-1/3 p-6 rounded-lg">
+                  <h2 className="text-lg font-semibold mb-4">Filters</h2>
+                  <div className="space-y-4">
+                     {filters.map((filter, index) => (
+                        <Button
+                           key={index}
+                           variant="outline"
+                           className={`w-full text-left rounded-xl my-2 ${
+                              selectedFilter === filter
+                                 ? "bg-blue-100 border-blue-500 text-blue-700"
+                                 : "bg-white border-gray-300 text-gray-800"
+                           }`}
+                           onClick={() => setSelectedFilter(filter)}
+                        >
+                           {filter}
+                        </Button>
+                     ))}
+                  </div>
+               </aside>
 
                {/* Main Content */}
-               <div className="flex-1">
+               <main className="flex-1">
+                  {/* ShadCN Sheet for Small Screens */}
+                  <div className="block lg:hidden mb-4">
+                     <Sheet>
+                        <SheetTrigger asChild>
+                           <Button
+                              variant="outline"
+                              className="w-full bg-[var(--primary-accent)] text-white"
+                           >
+                              Open Filters
+                           </Button>
+                        </SheetTrigger>
+                        <SheetContent side="left">
+                           <SheetHeader>
+                              <SheetTitle>Filters</SheetTitle>
+                           </SheetHeader>
+                           <div className="space-y-2 p-4">
+                              {filters.map((filter, index) => (
+                                 <Button
+                                    key={index}
+                                    variant="outline"
+                                    className={`w-full text-left rounded-lg ${
+                                       selectedFilter === filter
+                                          ? "bg-blue-100 border-blue-500 text-blue-700"
+                                          : "bg-white border-gray-300 text-gray-800"
+                                    }`}
+                                    onClick={() => setSelectedFilter(filter)}
+                                 >
+                                    {filter}
+                                 </Button>
+                              ))}
+                           </div>
+                        </SheetContent>
+                     </Sheet>
+                  </div>
+
+                  {/* Doctor Cards */}
                   {doctorData && (
                      <>
                         {doctorData.length === 0 ? (
-                           <div className="flex flex-col items-center justify-center py-6 px-4">
-                              <div className="text-gray-200 text-xl font-semibold mb-2">
-                                 No matches found
-                              </div>
-                              <div className="text-gray-400 text-md text-center">
-                                 Try searching with different keywords or browse
-                                 our specialties below
-                              </div>
-                              <div className="text-gray-400 text-md mt-1">
-                                 Example: "Cardiologist", "Dentist", "Skin
-                                 Specialist"
-                              </div>
-                           </div>
+                           <h1 className="text-3xl font-bold mb-2">
+                              No Doctor Found
+                           </h1>
                         ) : (
                            <>
-                              <h1 className="text-3xl font-bold mb-2">
+                              <h1 className="text-3xl font-bold mb-6 text-center sm:text-left">
                                  {doctorData.length} Best in Hub
                               </h1>
-                              {doctorData.map((doctor: any) => (
-                                 <div key={doctor.id} className="mb-6">
-                                    <Card className="w-full">
-                                       <CardContent className="p-4 sm:p-6">
-                                          <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
+                              <div className="space-y-6">
+                                 {doctorData.map((doctor: any) => (
+                                    <Card key={doctor.id} className="w-full">
+                                       <CardContent className="p-6">
+                                          <div className="flex flex-col sm:flex-row md:flex-row gap-6 sm:gap-8 md:gap-10">
                                              <div className="flex-shrink-0 flex justify-center sm:justify-start">
                                                 <Link href={`/id/${doctor.id}`}>
                                                    <Avatar className="h-16 w-16">
@@ -132,44 +147,39 @@ export default function SearchId() {
                                                 </Link>
                                              </div>
                                              <div className="flex-grow">
-                                                <div className="flex flex-col sm:flex-row sm:items-center gap-2 mb-2">
-                                                   <h2 className="text-xl font-bold">
+                                                <div className="flex flex-col sm:flex-row md:flex-row sm:items-center gap-2 mb-2">
+                                                   <h2 className="text-xl font-bold text-center sm:text-left">
                                                       {doctor?.name}
                                                    </h2>
-                                                   <Badge
-                                                      variant="secondary"
-                                                      className="bg-yellow-400 text-white w-fit"
-                                                   >
-                                                      PLATINUM DOCTOR
-                                                   </Badge>
                                                 </div>
-                                                <p className="text-gray-600 mb-2">
+                                                <p className="text-gray-600 mb-2 text-center sm:text-left">
                                                    {doctor?.specialization}
                                                 </p>
-                                                <p className="text-gray-600 mb-4">
+                                                <p className="text-gray-600 mb-4 text-center sm:text-left">
                                                    MBBS, MCPS (Gynecology and
-                                                   Obstetrcian)
+                                                   Obstetrics)
                                                 </p>
-                                                <div className="flex flex-wrap gap-4 sm:gap-8 mb-4">
+                                                <div className="flex flex-wrap gap-8 mb-4 justify-center sm:justify-start md:justify-start">
                                                    <div>
-                                                      <p className="font-bold">
-                                                         {doctor?.experience} Years
+                                                      <p className="font-bold text-center sm:text-left">
+                                                         {doctor?.experience}{" "}
+                                                         Years
                                                       </p>
-                                                      <p className="text-gray-600">
+                                                      <p className="text-gray-600 text-center sm:text-left">
                                                          Experience
                                                       </p>
                                                    </div>
                                                    <div>
-                                                      <p className="font-bold flex items-center">
+                                                      <p className="font-bold flex items-center justify-center sm:justify-start">
                                                          99%{" "}
                                                          <Star className="w-4 h-4 text-yellow-400 ml-1" />
                                                       </p>
-                                                      <p className="text-gray-600">
+                                                      <p className="text-gray-600 text-center sm:text-left">
                                                          Satisfied Patients
                                                       </p>
                                                    </div>
                                                 </div>
-                                                <div className="p-3 sm:p-4 bg-blue-50 rounded-lg inline-flex items-center gap-2 mb-4 flex-wrap">
+                                                <div className="p-4 bg-blue-50 rounded-lg inline-flex items-center gap-2 mb-4 flex-wrap justify-center sm:justify-start">
                                                    <Video className="w-5 h-5 text-blue-600" />
                                                    <span>
                                                       Online Video Consultation
@@ -193,15 +203,15 @@ export default function SearchId() {
                                           </div>
                                        </CardContent>
                                     </Card>
-                                 </div>
-                              ))}
+                                 ))}
+                              </div>
                            </>
                         )}
                      </>
                   )}
-               </div>
+               </main>
             </div>
          </div>
-      </>
+      </div>
    );
 }

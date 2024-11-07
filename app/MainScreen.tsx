@@ -22,6 +22,7 @@ import {
 import Image from "next/image";
 import Footer from "@/components/footer";
 import Loader from "@/components/loader";
+import Testimonials from "@/components/home/testimonials";
 
 type Specialty = {
    name: string;
@@ -64,7 +65,7 @@ export default function Component({
          {/* Hero and Search Bar */}
          <Dialog>
             {/* Hero Section */}
-            <section className="relative py-12 sm:py-16 lg:py-20 lg:pb-36 bg-[var(--primary-accent)] max-w-7xl mx-auto rounded-2xl">
+            <section className="relative py-12 sm:py-16 lg:py-20 lg:pb-36 max-w-7xl mx-auto rounded-2xl bg-gradient-to-l from-[#9FD3C7] to-white">
                <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
                   <div className="grid max-w-lg grid-cols-1 mx-auto lg:max-w-full lg:items-center lg:grid-cols-2 gap-y-4 lg:gap-x-8">
                      <div>
@@ -202,6 +203,9 @@ export default function Component({
 
          {/* Specialities */}
          <Speciality />
+
+         {/* Testimonials */}
+         <Testimonials />
 
          {/* Footer */}
          <Footer />
