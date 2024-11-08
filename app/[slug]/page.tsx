@@ -15,7 +15,7 @@ import React, { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import Header from "@/components/header";
+import Header from "@/components/Header";
 import { Card, CardContent } from "@/components/ui/card";
 
 export default function SearchId() {

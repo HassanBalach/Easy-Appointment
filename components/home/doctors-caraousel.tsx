@@ -41,10 +41,11 @@ export default function DoctorsCarousel() {
       .fill(null)
       .map((_, index) => ({
          id: index + 1,
-       
+         
+          
          available: true,
          imageUrl: imageUrl[index],
-         imageUrl: imageUrl[index],
+         
       }));
 
    return (
