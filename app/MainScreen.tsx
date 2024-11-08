@@ -77,8 +77,8 @@ export default function MainScreen({
 
          {/* Hero and Search Bar */}
          <Dialog open={isOpen} onOpenChange={setIsOpen}>
-            <section className="relative py-8 sm:py-10 md:py-12 lg:pb-36 max-w-7xl mx-auto rounded-2xl bg-gradient-to-l from-[#9FD3C7] to-white">
-               <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
+            <section className="relative py-8 sm:py-10 md:py-12 lg:pb-36 max-w-6xl mx-auto rounded-2xl bg-gradient-to-l from-[#9FD3C7] to-white">
+               <div className="px-4 mx-auto max-w-6xl sm:px-6 lg:px-8">
                   <div className="grid max-w-lg grid-cols-1 mx-auto lg:max-w-full lg:items-center lg:grid-cols-2 gap-y-4 lg:gap-x-8">
                      <div>
                         <div className="text-center lg:text-left">

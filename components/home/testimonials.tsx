@@ -20,8 +20,8 @@ const RatingStars = ({ rating }: { rating: number }) => {
 
 function Testimonials() {
    return (
-      <section className="py-8 sm:py-10 md:py-12 max-w-7xl mx-auto">
-         <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
+      <section className="py-8 sm:py-10 md:py-12 max-w-6xl mx-auto">
+         <div className="px-4 mx-auto max-w-6xl sm:px-6 lg:px-8">
             <div className="text-center">
                <p className="text-lg font-medium text-gray-600 font-pj">
                   2,157 people have said how good QuickCare

@@ -19,7 +19,7 @@ export default function InfoCards() {
    ];
 
    return (
-      <div className="mx-auto max-w-7xl">
+      <div className="mx-auto max-w-6xl">
          <div className="flex justify-center gap-4 py-6">
             {cardData.map((card, index) => (
                <div

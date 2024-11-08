@@ -50,7 +50,7 @@ export default function DoctorsCarousel() {
       }));
 
    return (
-      <div className="py-6 sm:py-8 md:py-10 px-6 sm:px-8 lg:px-10 mx-auto max-w-7xl">
+      <div className="py-6 sm:py-8 md:py-10 px-6 sm:px-8 lg:px-10 mx-auto max-w-6xl">
          <div className="text-center mb-8 sm:mb-10">
             <h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-2">
                Top Doctors to Book

@@ -182,7 +182,7 @@ export default function GetDoctorDataByID({ doctorData }: { doctorData: any }) {
    return (
       <>
          <Header isShown={true} />
-         <div className="mx-auto max-w-7xl">
+         <div className="mx-auto max-w-6xl">
             <div className="flex flex-col lg:flex-row gap-4 max-w-6xl w-full mx-auto mb-8 px-4">
                <Card className="w-full lg:w-[300px] h-[250px] lg:h-[325px] overflow-hidden flex-shrink-0 rounded-xl">
                   <Image
