@@ -24,7 +24,7 @@ export default function SearchId() {
    const slug = searchParams?.get("term");
    const [doctorData, setDoctorData] = useState<any>(null);
    const [selectedFilter, setSelectedFilter] = useState<string | null>(null);
-   const [loading, setLoading] = useState(true); // Loading state
+
 
    const filters = [
       "Endocrinologist",
@@ -47,10 +47,10 @@ export default function SearchId() {
    useEffect(() => {
       async function fetchData() {
          if (slug) {
-            setLoading(true); // Start loading
+            
             const data = await searchDoctor(slug);
             setDoctorData(data);
-            setLoading(false); // Stop loading
+           
          }
       }
       fetchData();
@@ -64,9 +64,8 @@ export default function SearchId() {
          <Header isShown={true} />
          </div>
          <div className="mx-auto flex flex-col">
-            {loading ? ( // Show Loader while loading
-               <Loader />
-            ) : (
+            {
+             
                <div className="flex flex-col md:flex-row gap-6">
                   {/* Sidebar and Filters */}
                   <aside className="hidden lg:block lg:w-1/4 md:w-1/3 p-2 rounded-lg">
@@ -222,7 +221,7 @@ export default function SearchId() {
                      )}
                   </main>
                </div>
-            )}
+            }
          </div>
       </div>
    );

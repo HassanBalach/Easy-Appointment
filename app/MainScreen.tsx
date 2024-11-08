@@ -132,6 +132,7 @@ export default function Component({
                         className="pl-10 pr-24 h-12 bg-gray-50 border-gray-200 rounded-xl"
                         placeholder="Enter location"
                         value={"Hub"}
+                        onChange={()=>{}}
                      />
                      <Button
                         onClick={handleSearch}
