@@ -1,11 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import {
-   CheckCircle,
-   Circle,
-   Info,
-} from "lucide-react";
+import { CheckCircle, Circle, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -346,61 +342,42 @@ export default function GetDoctorDataByID({ doctorData }: { doctorData: any }) {
                   <DialogHeader>
                      <DialogTitle>Confirm Your Appointment</DialogTitle>
                   </DialogHeader>
-                  <div className="space-y-4">
-                     <div>
-                        <Label htmlFor="name">Patient Name</Label>
-                        <Input
-                           id="name"
-                           value={patientName}
-                           onChange={(e) => setPatientName(e.target.value)}
-                        />
-                        {errors.name && (
-                           <p className="text-xs text-red-500">{errors.name}</p>
-                        )}
-                     </div>
-                     <div>
-                        <Label htmlFor="phone">Phone Number</Label>
-                        <Input
-                           id="phone"
-                           value={phoneNumber}
-                           onChange={(e) => setPhoneNumber(e.target.value)}
-                        />
-                        {errors.phone && (
-                           <p className="text-xs text-red-500">
-                              {errors.phone}
-                           </p>
-                        )}
-                     </div>
-                     <div>
-                        <Label htmlFor="email">Email</Label>
-                        <Input
-                           id="email"
-                           value={email}
-                           onChange={(e) => setEmail(e.target.value)}
-                        />
-                        {errors.email && (
-                           <p className="text-xs text-red-500">
-                              {errors.email}
-                           </p>
-                        )}
-                     </div>
-                     <div>
-                        <Label htmlFor="relationship">Relationship</Label>
-                        <Select
-                           value={relationship}
-                           onValueChange={setRelationship}
-                        >
-                           <SelectTrigger>
-                              <SelectValue placeholder="Select relationship" />
-                           </SelectTrigger>
-                           <SelectContent>
-                              <SelectItem value="self">Self</SelectItem>
-                              <SelectItem value="family">Family</SelectItem>
-                              <SelectItem value="friend">Friend</SelectItem>
-                           </SelectContent>
-                        </Select>
-                     </div>
+                  <div className="space-y-2">
+                     <Label htmlFor="patientName">Name</Label>
+                     <Input
+                        id="patientName"
+                        value={patientName}
+                        onChange={(e) => setPatientName(e.target.value)} // onChange handler added
+                     />
+                     {errors.name && (
+                        <p className="text-red-500 text-xs">{errors.name}</p>
+                     )}
                   </div>
+
+                  <div>
+                     <Label htmlFor="phoneNumber">Phone Number</Label>
+                     <Input
+                        id="phoneNumber"
+                        value={phoneNumber}
+                        onChange={(e) => setPhoneNumber(e.target.value)} // onChange handler added
+                     />
+                     {errors.phone && (
+                        <p className="text-red-500 text-xs">{errors.phone}</p>
+                     )}
+                  </div>
+
+                  <div>
+                     <Label htmlFor="email">Email Address</Label>
+                     <Input
+                        id="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)} // onChange handler added
+                     />
+                     {errors.email && (
+                        <p className="text-red-500 text-xs">{errors.email}</p>
+                     )}
+                  </div>
+
                   <div className="flex justify-end space-x-2 mt-4">
                      <Button
                         variant="outline"

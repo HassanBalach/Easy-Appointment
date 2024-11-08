@@ -1,8 +1,25 @@
 import GetDoctorDataByID from "./GetDoctorDataByID";
 import { getDoctorById } from "@/lib/action";
 
-export default async function Page({ params }: { params: Promise<{ id: string }> }) {
-    const { id } = await params;
-    const DoctorData = await getDoctorById(id);
-    return <GetDoctorDataByID doctorData={DoctorData} />
+export default async function Page({
+   params,
+}: {
+   params: Promise<{ id: string }>;
+}) {
+   try {
+      const { id } = await params; // Awaiting Promise
+      const doctorData = await getDoctorById(id); // Fetching doctor data using the id
+
+      // Check if doctor data exists
+      if (!doctorData) {
+         return <h1 className="text-red-500 text-xl">Doctor not found</h1>;
+      }
+
+      return <GetDoctorDataByID doctorData={doctorData} />;
+   } catch (error) {
+      console.error("Error fetching doctor data:", error);
+      return (
+         <h1 className="text-red-500 text-xl">Error fetching doctor data</h1>
+      );
+   }
 }

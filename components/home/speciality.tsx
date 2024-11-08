@@ -31,9 +31,9 @@ function Speciality() {
                "High-Blood",
                "Piles",
                "Diarrhea",
-            ].map((specialty, index) => (
+            ].map((specialty) => (
                <div
-                  key={index}
+                  key={specialty} // Use `specialty` instead of `index` for better key uniqueness
                   className="flex flex-col items-center text-center"
                >
                   {/* Image Container */}
@@ -45,6 +45,7 @@ function Speciality() {
                            width={96}
                            height={96}
                            className="rounded-full object-cover w-full h-full"
+                           loading="lazy" // Adding lazy loading for images
                         />
                      </div>
                      {/* Specialty Name */}
