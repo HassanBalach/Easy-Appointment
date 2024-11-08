@@ -33,7 +33,6 @@ export default function DoctorsCarousel() {
    const imageUrl = [
       "/images/Doctor.jpg",
       "/images/doctor2.jpg",
-      "/images/doctor3.jpg",
       "/images/doctor4.jpg",
       "/images/Dr.Majeed.png",
       "/images/surger.webp",
@@ -50,7 +49,7 @@ export default function DoctorsCarousel() {
       }));
 
    return (
-      <div className="py-8 sm:py-12 md:py-16 px-6 sm:px-8 lg:px-10 mx-auto max-w-7xl">
+      <div className="py-6 sm:py-8 md:py-10 px-6 sm:px-8 lg:px-10 mx-auto max-w-7xl">
          <div className="text-center mb-8 sm:mb-10">
             <h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-2">
                Top Doctors to Book

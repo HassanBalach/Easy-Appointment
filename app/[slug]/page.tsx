@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/sheet";
 import { searchDoctor } from "@/lib/action";
 import React, { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Header from "@/components/header";
@@ -25,18 +25,21 @@ export default function SearchId() {
    const [selectedFilter, setSelectedFilter] = useState<string | null>(null);
 
    const filters = [
+      "Endocrinologist",
+      "Cardiologist",
+      "Dermatologist",
+      "Gastroenterologist",
+      "Pediatrician",
+      "Neurologist",
+      "Psychiatrist",
+      "Oncologist",
       "Gynecologist",
-      "Skin-Specialist",
-      "Orthopedic-Surgeon",
-      "ENT-Specialist",
-      "Diabetes-Specialist",
-      "Eye-Specialist",
-      "Fever",
-      "Heart-Attack",
-      "Pregnancy",
-      "High-Blood-Pressure",
-      "Piles",
-      "Diarrhea",
+      "Orthopedist",
+      "Ophthalmologist",
+      "Pulmonologist",
+      "Rheumatologist",
+      "Allergist/Immunologist",
+      "Otolaryngologist",
    ];
 
    useEffect(() => {
@@ -49,15 +52,17 @@ export default function SearchId() {
       fetchData();
    }, [slug]);
 
+   const router = useRouter();
+
    return (
       <div className="flex flex-col min-h-screen max-w-7xl mx-auto">
          <div className="w-full">
             <Header isShown={true} />
          </div>
          <div className="mx-auto flex flex-col">
-            <div className="flex flex-col md:flex-row gap-6 mt-6">
+            <div className="flex flex-col md:flex-row gap-6">
                {/* Sidebar for Large Screens */}
-               <aside className="hidden lg:block lg:w-1/4 md:w-1/3 p-6 rounded-lg">
+               <aside className="hidden lg:block lg:w-1/4 md:w-1/3 p-2 rounded-lg">
                   <h2 className="text-lg font-semibold mb-4">Filters</h2>
                   <div className="space-y-4">
                      {filters.map((filter, index) => (
@@ -69,7 +74,10 @@ export default function SearchId() {
                                  ? "bg-blue-100 border-blue-500 text-blue-700"
                                  : "bg-white border-gray-300 text-gray-800"
                            }`}
-                           onClick={() => setSelectedFilter(filter)}
+                           onClick={() => {
+                              setSelectedFilter(filter);
+                              router.push(`/search-results?term=${filter}`);
+                           }}
                         >
                            {filter}
                         </Button>
@@ -83,12 +91,14 @@ export default function SearchId() {
                   <div className="block lg:hidden mb-4">
                      <Sheet>
                         <SheetTrigger asChild>
+                           <div className="flex justify-center">
                            <Button
-                              variant="outline"
-                              className="w-full bg-[var(--primary-accent)] text-white"
-                           >
-                              Open Filters
-                           </Button>
+                                 variant="outline"
+                                 className="w-[80%] bg-[var(--primary-accent)] text-white rounded-xl"
+                              >
+                                 Open Filters
+                              </Button>
+                           </div>
                         </SheetTrigger>
                         <SheetContent side="left">
                            <SheetHeader>
@@ -104,7 +114,12 @@ export default function SearchId() {
                                           ? "bg-blue-100 border-blue-500 text-blue-700"
                                           : "bg-white border-gray-300 text-gray-800"
                                     }`}
-                                    onClick={() => setSelectedFilter(filter)}
+                                    onClick={() => {
+                                       setSelectedFilter(filter);
+                                       router.push(
+                                          `/search-results?term=${filter}`
+                                       );
+                                    }}
                                  >
                                     {filter}
                                  </Button>

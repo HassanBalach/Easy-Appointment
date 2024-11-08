@@ -1,317 +1,462 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { ThumbsUp } from "lucide-react"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { Calendar } from "@/components/ui/calendar"
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { format } from "date-fns"
-import { realtimeDatabase } from "@/firebaseConfig"
+import React, { useState } from "react";
+import {
+   CheckCircle,
+   Circle,
+   Info,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import {
+   Dialog,
+   DialogContent,
+   DialogHeader,
+   DialogTitle,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+   Select,
+   SelectContent,
+   SelectItem,
+   SelectTrigger,
+   SelectValue,
+} from "@/components/ui/select";
+import { format, isBefore, startOfDay } from "date-fns";
+import { realtimeDatabase } from "@/firebaseConfig";
 import { ref, push } from "firebase/database";
-import { useToast } from "@/hooks/use-toast"
+import { useToast } from "@/hooks/use-toast";
+import {
+   Accordion,
+   AccordionContent,
+   AccordionTrigger,
+   AccordionItem,
+} from "@/components/ui/accordion";
 
-
-
-
+import Header from "@/components/header";
+import Image from "next/image";
 
 export default function GetDoctorDataByID({ doctorData }: { doctorData: any }) {
-    const [date, setDate] = useState<Date | undefined>(new Date())
-    const [selectedTime, setSelectedTime] = useState<string | null>(null)
-    const [showDialog, setShowDialog] = useState(false)
-    const [patientName, setPatientName] = useState("")
-    const [phoneNumber, setPhoneNumber] = useState("")
-    const [email, setEmail] = useState("")
-    const [relationship, setRelationship] = useState("self")
-    const [errors, setErrors] = useState<{ [key: string]: string }>({})
+   const [date, setDate] = useState<Date | undefined>(new Date());
+   const [selectedDate, setSelectedDate] = useState<Date | undefined>(
+      new Date()
+   );
+   const [selectedTime, setSelectedTime] = useState<string | null>(null);
+   const [showDialog, setShowDialog] = useState(false);
+   const [patientName, setPatientName] = useState("");
+   const [phoneNumber, setPhoneNumber] = useState("");
+   const [email, setEmail] = useState("");
+   const [relationship, setRelationship] = useState("self");
+   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
+   const { toast } = useToast();
 
-    const { toast } = useToast()
-    const morningSlots = ["11:45 AM"]
-    const afternoonSlots = [
-        "12:00 PM", "12:15 PM", "12:30 PM", "12:45 PM", "01:15 PM",
-        "01:30 PM", "01:45 PM", "02:00 PM", "02:15 PM", "02:30 PM",
-        "02:45 PM"
-    ]
+   const doctors = [
+      {
+         name: "Dr. Richard James",
+         specialty: "General physician",
+         image: "/images/Doctor.jpg",
+      },
+      {
+         name: "Dr. Richard James",
+         specialty: "General physician",
+         image: "/images/Doctor.jpg",
+      },
+      {
+         name: "Dr. Richard James",
+         specialty: "General physician",
+         image: "/images/Doctor.jpg",
+      },
+      {
+         name: "Dr. Richard James",
+         specialty: "General physician",
+         image: "/images/Doctor.jpg",
+      },
+   ];
 
-    const handleTimeSelect = (time: string) => {
-        setSelectedTime(time)
-        setShowDialog(true)
-    }
+   const timeSlots: { [key: string]: string[] } = {
+      "2024-11-06": ["08:30", "11:30", "15:00", "18:30"],
+      "2024-11-07": ["09:00", "12:00", "16:00", "19:00"],
+      "2024-11-08": ["08:00", "11:00", "14:00", "17:00"],
+      "2024-11-09": ["08:00", "15:00", "19:00", "20:00"],
+      "2024-11-10": ["08:00", "13:00", "18:00", "20:00"],
+      "2024-11-11": ["08:00", "12:00", "18:00", "21:00"],
+      "2024-11-16": ["08:00", "15:00", "19:00", "20:00"],
+      "2024-11-17": ["08:00", "13:00", "18:00", "20:00"],
+      "2024-11-18": ["08:00", "12:00", "18:00", "21:00"],
+      "2024-11-19": ["08:00", "12:00", "18:00", "21:00"],
+   };
 
-    const validateForm = () => {
-        const newErrors: { [key: string]: string } = {}
+   const validateForm = () => {
+      const newErrors: { [key: string]: string } = {};
 
-        if (!patientName.trim()) {
-            newErrors.name = "Patient name is required"
-        }
+      if (!patientName.trim()) {
+         newErrors.name = "Patient name is required";
+      }
 
-        if (!phoneNumber.trim()) {
-            newErrors.phone = "Phone number is required"
-        } else if (!/^\d{10}$/.test(phoneNumber)) {
-            newErrors.phone = "Please enter a valid 10-digit phone number"
-        }
+      if (!phoneNumber.trim()) {
+         newErrors.phone = "Phone number is required";
+      } else if (!/^\d{11}$/.test(phoneNumber)) {
+         newErrors.phone = "Please enter a valid 10-digit phone number";
+      }
 
-        if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-            newErrors.email = "Please enter a valid email address"
-        }
+      if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+         newErrors.email = "Please enter a valid email address";
+      }
 
-        setErrors(newErrors)
-        return Object.keys(newErrors).length === 0
-    }
+      setErrors(newErrors);
+      return Object.keys(newErrors).length === 0;
+   };
 
+   const handleSubmitClick = async () => {
+      if (validateForm()) {
+         const appointmentsRef = ref(realtimeDatabase, "appointments");
 
-  
+         let formattedPhoneNumber = phoneNumber;
 
-    const handleSubmitClick = async () => {
+         if (!phoneNumber.startsWith("+")) {
+            formattedPhoneNumber = `+92${phoneNumber}`;
+         }
 
-        if (validateForm()) {
-            const appointmentsRef = ref(realtimeDatabase, "appointments");
-           
-             let formattedPhoneNumber = phoneNumber;
-           
-             if (!phoneNumber.startsWith('+')) {
-                 formattedPhoneNumber = `+92${phoneNumber}`;
-             }
-        
-                const data = {
-                    patientName,
-                    phoneNumber: formattedPhoneNumber,
-                    email,
-                    relationship,
-                    date,
-                    selectedTime
-                }
-           
-                console.log(data)
-           
-            
+         const data = {
+            patientName,
+            phoneNumber: formattedPhoneNumber,
+            email,
+            relationship,
+            date,
+            selectedTime,
+         };
 
-                try {
-                    await push(appointmentsRef, data);
-                    console.log("Appointment booked successfully");
+         try {
+            await push(appointmentsRef, data);
 
-                    // Send SMS confirmation
-                    const smsResponse = await fetch('/api/sms-send', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
-                            to: data.phoneNumber, // Assuming `data` contains `phoneNumber`
-                            message: `Hello ${data.patientName}, your appointment is confirmed!`
-                        }),
-                    });
+            const smsResponse = await fetch("/api/sms-send", {
+               method: "POST",
+               headers: {
+                  "Content-Type": "application/json",
+               },
+               body: JSON.stringify({
+                  to: data.phoneNumber,
+                  message: `Hello ${data.patientName}, your appointment is confirmed!`,
+               }),
+            });
 
-                    console.log({ smsResponse })
+            const result = await smsResponse.json();
 
-                    const result = await smsResponse.json();
-
-                    console.log({ result })
-
-                    if (result.success) {
-                        console.log("SMS sent successfully");
-                        toast({
-                            title: "Success",
-                            description: "Congratulations! Appointment booked successfully",
-                        });
-                    } else {
-                        console.error("Error SMS sending: ", result.error);
-                    }
-
-                    setShowDialog(false);
-                } catch (error) {
-                    console.error("Error booking appointment: ", error);
-                }
+            if (result.success) {
+               toast({
+                  title: "Success",
+                  description:
+                     "Congratulations! Appointment booked successfully",
+               });
             }
-        };
 
+            setShowDialog(false);
+         } catch (error) {
+            console.error("Error booking appointment: ", error);
+         }
+      }
+   };
 
+   const isTimeSlotDisabled = (time: string, currentDate: Date) => {
+      if (!date) return false;
 
-        return (
-            <div className="container mx-auto p-4 max-w-3xl">
-                <Card className="mb-8">
-                    <CardContent className="p-6">
-                        <div className="flex items-center gap-4 mb-6">
-                            <Avatar className="h-16 w-16">
-                                {doctorData.image && <AvatarImage src={doctorData.image} />}
-                                <AvatarFallback>{doctorData.name.charAt(0)}</AvatarFallback>
+      const selectedDate = startOfDay(date);
+      const currentDay = startOfDay(currentDate);
 
-                            </Avatar>
-                            <div>
-                                <h2 className="text-xl font-bold">{doctorData.name}</h2>
-                                <p className="text-sm text-muted-foreground">healthdoc Care The Patient</p>
-                                <p className="text-sm font-semibold">Fee: Rs. 1,400</p>
-                            </div>
-                        </div>
+      if (isBefore(selectedDate, currentDay)) {
+         return true;
+      }
 
-                        <div className="mb-6">
-                            <Calendar
-                                mode="single"
-                                selected={date}
-                                onSelect={setDate}
-                                className="rounded-md border mx-auto"
-                                initialFocus
-                            />
-                        </div>
+      return false;
+   };
 
-                        <div className="flex items-center justify-between mb-4">
-                            <h3 className="text-lg font-medium">
-                                Available slots for {date ? format(date, 'MMMM d, yyyy') : 'today'}
-                            </h3>
-                        </div>
+   const weekDates = Array.from({ length: 7 }, (_, i) => {
+      const date = new Date();
+      date.setDate(date.getDate() + i);
+      return date;
+   });
 
-                        <div className="space-y-6">
-                            <div>
-                                <h3 className="text-sm font-medium mb-3">Morning Slots</h3>
-                                <div className="flex flex-wrap gap-2">
-                                    {morningSlots.map((time) => (
-                                        <Button
-                                            key={time}
-                                            variant={selectedTime === time ? "default" : "outline"}
-                                            onClick={() => handleTimeSelect(time)}
-                                            className="w-24"
-                                        >
-                                            {time}
-                                        </Button>
-                                    ))}
-                                </div>
-                            </div>
+   const handleTimeSelect = (time: string) => {
+      setSelectedTime(time);
+      setShowDialog(true);
+   };
 
-                            <div>
-                                <h3 className="text-sm font-medium mb-3">Afternoon Slots</h3>
-                                <div className="flex flex-wrap gap-2">
-                                    {afternoonSlots.map((time) => (
-                                        <Button
-                                            key={time}
-                                            variant={selectedTime === time ? "default" : "outline"}
-                                            onClick={() => handleTimeSelect(time)}
-                                            className="w-24"
-                                        >
-                                            {time}
-                                        </Button>
-                                    ))}
-                                </div>
-                            </div>
-                        </div>
-                    </CardContent>
-                </Card>
+   return (
+      <>
+         <Header isShown={true} />
+         <div className="mx-auto max-w-7xl">
+            <div className="flex flex-col lg:flex-row gap-4 max-w-6xl w-full mx-auto mb-8 px-4">
+               <Card className="w-full lg:w-[300px] h-[250px] lg:h-[325px] overflow-hidden flex-shrink-0 rounded-xl">
+                  <Image
+                     src="/images/Doctor.jpg"
+                     alt="Doctor profile photo"
+                     className="object-cover w-full h-full"
+                     width={300}
+                     height={325}
+                     priority
+                  />
+               </Card>
+               <Card className="w-full flex-grow p-4 lg:p-6 rounded-xl">
+                  <div className="space-y-3 lg:space-y-4">
+                     <div className="flex items-center gap-2">
+                        <h1 className="text-lg lg:text-xl font-semibold">
+                           Dr. Richard James
+                        </h1>
+                        <CheckCircle
+                           className="w-4 h-4 lg:w-5 lg:h-5 text-blue-500"
+                           aria-label="Verified"
+                        />
+                     </div>
 
-                <Dialog open={showDialog} onOpenChange={setShowDialog}>
-                    <DialogContent className="sm:max-w-[425px]">
-                        <DialogHeader>
-                            <DialogTitle>Enter Patient Details</DialogTitle>
-                        </DialogHeader>
-                        <div className="grid gap-4 py-4">
-                            <div className="grid gap-2">
-                                <Label htmlFor="name">Patient Name*</Label>
-                                <Input
-                                    id="name"
-                                    value={patientName}
-                                    onChange={(e) => setPatientName(e.target.value)}
-                                    placeholder="Enter patient name"
-                                />
-                                {errors.name && <p className="text-sm text-red-500">{errors.name}</p>}
-                            </div>
-                            <div className="grid gap-2">
-                                <Label htmlFor="phone">Phone Number*</Label>
-                                <div className="flex gap-2">
-                                    <Input
-                                        className="w-[80px]"
-                                        value="+92"
-                                        disabled
-                                    />
-                                    <Input
-                                        id="phone"
-                                        value={phoneNumber}
-                                        onChange={(e) => setPhoneNumber(e.target.value)}
-                                        placeholder="Enter phone number"
-                                        className="flex-1"
-                                    />
-                                </div>
-                                {errors.phone && <p className="text-sm text-red-500">{errors.phone}</p>}
-                            </div>
-                            <div className="grid gap-2">
-                                <Label htmlFor="email">Email Address (Optional)</Label>
-                                <Input
-                                    id="email"
-                                    type="email"
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    placeholder="Enter email address"
-                                />
-                                {errors.email && <p className="text-sm text-red-500">{errors.email}</p>}
-                            </div>
-                            <div className="grid gap-2">
-                                <Label htmlFor="relationship">Appoinment For</Label>
-                                <Select value={relationship} onValueChange={setRelationship}>
-                                    <SelectTrigger id="relationship">
-                                        <SelectValue placeholder="Select relationship" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectItem value="self">Self</SelectItem>
-                                        <SelectItem value="family">Family Member</SelectItem>
-                                        <SelectItem value="friend">Friend</SelectItem>
-                                    </SelectContent>
-                                </Select>
-                            </div>
-                            <div className="bg-muted p-3 rounded-lg space-y-1">
-                                <h4 className="text-sm font-medium">Your Appointment</h4>
-                                <div className="flex items-center gap-2 text-sm">
-                                    <Avatar className="h-6 w-6">
-                                        <AvatarImage src={doctorData.image} />
-                                        <AvatarFallback>{doctorData.name.charAt(0)}</AvatarFallback>
-                                    </Avatar>
-                                    <span>{doctorData.name}</span>
-                                </div>
-                                <p className="text-sm text-muted-foreground">
-                                    {date && selectedTime ? `${format(date, 'MMM dd')}, ${selectedTime}` : ''}
-                                </p>
-                            </div>
-                        </div>
-                        <Button onClick={handleSubmitClick} className="w-full">
-                            Continue
-                        </Button>
-                    </DialogContent>
-                </Dialog>
+                     <div className="flex flex-wrap items-center gap-2">
+                        <span className="text-xs lg:text-sm text-gray-600">
+                           MBBS - General Physician
+                        </span>
+                     </div>
 
-                <Card>
-                    <CardHeader>
-                        <div className="flex items-center gap-2 mb-2">
-                            <div className="bg-primary/10 p-2 rounded-full">
-                                <ThumbsUp className="h-4 w-4 text-primary" />
-                            </div>
-                            <p className="font-medium">95% patients feel satisfied after booking appointment from oladoc</p>
-                        </div>
-                        <p className="text-sm text-muted-foreground">It takes only 30 sec to book an appointment</p>
-                    </CardHeader>
-                    <CardContent>
-                        <CardTitle className="text-lg mb-4">Reviews About Dr. Sadaf Khalid (102)</CardTitle>
-                        <ScrollArea className="h-[300px] pr-4">
-                            {[1, 2, 3, 4].map((review) => (
-                                <div key={review} className="mb-4 p-4 border rounded-lg">
-                                    <div className="flex items-center gap-2 mb-2">
-                                        <ThumbsUp className="h-4 w-4 text-primary" />
-                                        <span className="font-medium">I recommend the doctor</span>
-                                    </div>
-                                    <p className="text-sm mb-2">"Very good experience."</p>
-                                    <div className="text-sm text-muted-foreground">
-                                        <span>Verified Patient</span> • <span>5 days ago</span>
-                                    </div>
-                                </div>
-                            ))}
-                        </ScrollArea>
-                        <Button variant="outline" className="w-full mt-4">
-                            Load more reviews
-                        </Button>
-                    </CardContent>
-                </Card>
+                     <div>
+                        <h2 className="text-xs lg:text-sm font-medium mb-1 lg:mb-2 flex items-center gap-2">
+                           About{" "}
+                           <Info className="w-3 h-3 lg:w-4 lg:h-4 text-gray-400" />
+                        </h2>
+                        <p className="text-gray-600 text-xs leading-relaxed line-clamp-4 lg:line-clamp-none">
+                           Dr. Davis has a strong commitment to delivering
+                           comprehensive medical care, focusing on preventive
+                           medicine, early diagnosis, and effective treatment
+                           strategies. Dr. Davis has a strong commitment to
+                           delivering comprehensive medical care, focusing on
+                           preventive medicine, early diagnosis, and effective
+                           treatment strategies.
+                        </p>
+                     </div>
 
+                     <div>
+                        <h2 className="text-xs lg:text-sm font-medium mb-1 text-gray-600">
+                           Appointment fee
+                        </h2>
+                        <p className="text-base lg:text-lg font-semibold">
+                           $50
+                        </p>
+                     </div>
+                  </div>
+               </Card>
             </div>
-        )
-    }
+
+            <div className="mx-4 sm:mx-6 lg:mx-8 my-4">
+               <Accordion
+                  type="single"
+                  collapsible
+                  className="w-full border-2 border-gray-200 rounded-xl max-w-4xl mx-auto"
+               >
+                  <AccordionItem value="booking">
+                     <AccordionTrigger className="text-lg lg:text-xl bg-gray-200 px-4 py-4 rounded-t-xl">
+                        Zahid Medical Center
+                     </AccordionTrigger>
+                     <AccordionContent className="px-4 py-4">
+                        <div className="flex flex-col gap-8">
+                           <div className="text-center">
+                              <h2 className="text-lg md:text-xl font-semibold">
+                                 Select Your Preferred Slot
+                              </h2>
+                           </div>
+
+                           <div className="grid grid-cols-3 sm:grid-cols-5 md:grid-cols-7 gap-4 sm:gap-6 w-full">
+                              {weekDates.map((date) => (
+                                 <div
+                                    key={date.toString()}
+                                    className={`cursor-pointer p-3 rounded-xl text-center transition-colors ${
+                                       date.toDateString() ===
+                                       selectedDate?.toDateString()
+                                          ? "bg-blue-500 text-white"
+                                          : "bg-gray-100 hover:bg-blue-100"
+                                    }`}
+                                    onClick={() => {
+                                       setSelectedDate(date);
+                                       setSelectedTime(null);
+                                    }}
+                                 >
+                                    <div
+                                       className={`${
+                                          date.toDateString() ===
+                                          selectedDate?.toDateString()
+                                             ? "text-white"
+                                             : "text-gray-500"
+                                       }`}
+                                    >
+                                       {format(date, "EEE")}
+                                    </div>
+                                    <div className="text-lg font-semibold">
+                                       {format(date, "d")}
+                                    </div>
+                                 </div>
+                              ))}
+                           </div>
+
+                           {selectedDate && (
+                              <div className="w-full">
+                                 <h3 className="text-lg font-medium text-center md:text-left">
+                                    Select a Time for{" "}
+                                    {format(selectedDate, "MMM dd, yyyy")}
+                                 </h3>
+                                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-4">
+                                    {timeSlots[
+                                       format(selectedDate, "yyyy-MM-dd")
+                                    ]?.map((time) => (
+                                       <button
+                                          key={time}
+                                          className={`p-2 rounded-lg border ${
+                                             selectedTime === time
+                                                ? "bg-blue-500 text-white border-blue-500"
+                                                : "bg-gray-100 text-gray-700 hover:bg-blue-100"
+                                          }`}
+                                          onClick={() => handleTimeSelect(time)}
+                                       >
+                                          {time}
+                                       </button>
+                                    ))}
+                                 </div>
+                              </div>
+                           )}
+
+                           <div className="bg-gray-100 p-4 rounded-xl flex flex-col sm:flex-row items-center justify-between gap-4">
+                              <div className="text-center sm:text-left font-medium">
+                                 {selectedDate && selectedTime ? (
+                                    <span className="text-lg">
+                                       {format(selectedDate, "d MMMM, yyyy")} |{" "}
+                                       {selectedTime}
+                                    </span>
+                                 ) : (
+                                    "Select a date and time"
+                                 )}
+                              </div>
+                              <button className="px-8 py-2 text-lg rounded-xl bg-[#D5E834] text-black hover:bg-[#c2d42f]">
+                                 Book
+                              </button>
+                           </div>
+                        </div>
+                     </AccordionContent>
+                  </AccordionItem>
+               </Accordion>
+            </div>
+
+            <Dialog open={showDialog} onOpenChange={setShowDialog}>
+               <DialogContent className="sm:max-w-[425px]">
+                  <DialogHeader>
+                     <DialogTitle>Confirm Your Appointment</DialogTitle>
+                  </DialogHeader>
+                  <div className="space-y-4">
+                     <div>
+                        <Label htmlFor="name">Patient Name</Label>
+                        <Input
+                           id="name"
+                           value={patientName}
+                           onChange={(e) => setPatientName(e.target.value)}
+                        />
+                        {errors.name && (
+                           <p className="text-xs text-red-500">{errors.name}</p>
+                        )}
+                     </div>
+                     <div>
+                        <Label htmlFor="phone">Phone Number</Label>
+                        <Input
+                           id="phone"
+                           value={phoneNumber}
+                           onChange={(e) => setPhoneNumber(e.target.value)}
+                        />
+                        {errors.phone && (
+                           <p className="text-xs text-red-500">
+                              {errors.phone}
+                           </p>
+                        )}
+                     </div>
+                     <div>
+                        <Label htmlFor="email">Email</Label>
+                        <Input
+                           id="email"
+                           value={email}
+                           onChange={(e) => setEmail(e.target.value)}
+                        />
+                        {errors.email && (
+                           <p className="text-xs text-red-500">
+                              {errors.email}
+                           </p>
+                        )}
+                     </div>
+                     <div>
+                        <Label htmlFor="relationship">Relationship</Label>
+                        <Select
+                           value={relationship}
+                           onValueChange={setRelationship}
+                        >
+                           <SelectTrigger>
+                              <SelectValue placeholder="Select relationship" />
+                           </SelectTrigger>
+                           <SelectContent>
+                              <SelectItem value="self">Self</SelectItem>
+                              <SelectItem value="family">Family</SelectItem>
+                              <SelectItem value="friend">Friend</SelectItem>
+                           </SelectContent>
+                        </Select>
+                     </div>
+                  </div>
+                  <div className="flex justify-end space-x-2 mt-4">
+                     <Button
+                        variant="outline"
+                        onClick={() => setShowDialog(false)}
+                     >
+                        Cancel
+                     </Button>
+                     <Button onClick={handleSubmitClick}>Confirm</Button>
+                  </div>
+               </DialogContent>
+            </Dialog>
+            <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+               <div className="space-y-2 text-center mb-8">
+                  <h2 className="text-2xl font-semibold text-gray-900">
+                     Related Doctors
+                  </h2>
+                  <p className="text-gray-600">
+                     Simply browse through our extensive list of trusted
+                     doctors.
+                  </p>
+               </div>
+
+               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                  {doctors.map((doctor, index) => (
+                     <Card
+                        key={index}
+                        className="overflow-hidden bg-[#F3F4F6] border-none rounded-md border-2 border-gray-200"
+                     >
+                        <div className="aspect-square relative">
+                           <Image
+                              src={doctor.image}
+                              alt={doctor.name}
+                              fill
+                              className="object-cover"
+                              sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, (max-width: 1280px) 25vw, 20vw"
+                           />
+                        </div>
+                        <div className="p-3 space-y-1">
+                           <div className="flex items-center gap-1">
+                              <Circle className="w-3 h-3 fill-green-500 text-green-500" />
+                              <span className="text-green-500 text-xs">
+                                 Available
+                              </span>
+                           </div>
+                           <h3 className="font-medium text-sm text-gray-900">
+                              {doctor.name}
+                           </h3>
+                           <p className="text-xs text-gray-600">
+                              {doctor.specialty}
+                           </p>
+                        </div>
+                     </Card>
+                  ))}
+               </div>
+            </div>
+         </div>
+      </>
+   );
+}
