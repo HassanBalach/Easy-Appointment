@@ -35,6 +35,7 @@ export default function MainScreen({
    const [searchTerm, setSearchTerm] = useState("");
    const [loading, setLoading] = useState(false);
    const [searchLoading, setSearchLoading] = useState(false);
+   const [location, setLocation] = useState("Hub");
    const dropdownRef = useRef<HTMLDivElement | null>(null);
 
    const [isSearchFocused, setIsSearchFocused] = React.useState(false);
@@ -131,7 +132,8 @@ export default function MainScreen({
                      <Input
                         className="pl-10 pr-24 h-12 bg-gray-50 border-gray-200 rounded-xl"
                         placeholder="Enter location"
-                        value={"Hub"}
+                        value={location}
+                        onChange={(e) => setLocation(e.target.value)}
                      />
                      <Button
                         onClick={handleSearch}

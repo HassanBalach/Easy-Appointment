@@ -154,6 +154,7 @@ export default function SearchId() {
                                                       {doctor.image && (
                                                          <AvatarImage
                                                             src={doctor.image}
+                                                            alt={doctor.name}
                                                          />
                                                       )}
                                                       <AvatarFallback>

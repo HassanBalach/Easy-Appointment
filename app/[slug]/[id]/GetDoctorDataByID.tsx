@@ -346,8 +346,8 @@ export default function GetDoctorDataByID({ doctorData }: { doctorData: any }) {
                      <Label htmlFor="patientName">Name</Label>
                      <Input
                         id="patientName"
-                        value={patientName}
-                        onChange={(e) => setPatientName(e.target.value)} // onChange handler added
+                        defaultValue={patientName}
+                        onChange={(e) => setPatientName(e.target.value)}
                      />
                      {errors.name && (
                         <p className="text-red-500 text-xs">{errors.name}</p>
@@ -358,8 +358,8 @@ export default function GetDoctorDataByID({ doctorData }: { doctorData: any }) {
                      <Label htmlFor="phoneNumber">Phone Number</Label>
                      <Input
                         id="phoneNumber"
-                        value={phoneNumber}
-                        onChange={(e) => setPhoneNumber(e.target.value)} // onChange handler added
+                        defaultValue={phoneNumber}
+                        onChange={(e) => setPhoneNumber(e.target.value)}
                      />
                      {errors.phone && (
                         <p className="text-red-500 text-xs">{errors.phone}</p>
@@ -370,8 +370,8 @@ export default function GetDoctorDataByID({ doctorData }: { doctorData: any }) {
                      <Label htmlFor="email">Email Address</Label>
                      <Input
                         id="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)} // onChange handler added
+                        defaultValue={email}
+                        onChange={(e) => setEmail(e.target.value)}
                      />
                      {errors.email && (
                         <p className="text-red-500 text-xs">{errors.email}</p>
