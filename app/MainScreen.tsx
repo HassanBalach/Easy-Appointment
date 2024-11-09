@@ -20,22 +20,21 @@ import Footer from "@/components/footer";
 import Loader from "@/components/loader";
 import Testimonials from "@/components/home/testimonials";
 
-type Specialties = {
+type Specialty = {
    name: string;
    description: string;
 };
 
-export default function MainScreen({
-   specialties,
+export default function Component({
+   specialties = [],
 }: {
-   specialties: Specialties[];
+   specialties: Specialty[];
 }) {
    const router = useRouter();
    const [isOpen, setIsOpen] = useState(false);
    const [searchTerm, setSearchTerm] = useState("");
    const [loading, setLoading] = useState(false);
    const [searchLoading, setSearchLoading] = useState(false);
-   const [location, setLocation] = useState("Hub");
    const dropdownRef = useRef<HTMLDivElement | null>(null);
 
    const [isSearchFocused, setIsSearchFocused] = React.useState(false);
@@ -77,33 +76,34 @@ export default function MainScreen({
 
          {/* Hero and Search Bar */}
          <Dialog open={isOpen} onOpenChange={setIsOpen}>
-            <section className="relative py-8 sm:py-10 md:py-12 lg:pb-36 max-w-6xl mx-auto rounded-2xl bg-gradient-to-l from-[#9FD3C7] to-white">
-               <div className="px-4 mx-auto max-w-6xl sm:px-6 lg:px-8">
-                  <div className="grid max-w-lg grid-cols-1 mx-auto lg:max-w-full lg:items-center lg:grid-cols-2 gap-y-4 lg:gap-x-8">
-                     <div>
+            <section className="relative py-3 sm:py-6 md:py-8 lg:pb-4 max-w-5xl mx-auto rounded-xl bg-gradient-to-l from-[#9FD3C7] to-white">
+               <div className="px-4 mx-auto max-w-5xl sm:px-5 lg:px-7">
+                  <div className="flex flex-col lg:flex-row items-center justify-between gap-5 sm:gap-7">
+                     <div className="lg:w-1/2 h-full mt-4 sm:mt-7">
                         <div className="text-center lg:text-left">
-                           <h1 className="text-4xl font-bold text-gray-900 sm:text-5xl sm:leading-3 lg:leading-none lg:text-6xl">
+                           <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 md:text-3xl lg:text-3xl xl:text-4xl">
                               Find The Best Doctors
                            </h1>
-                           <p className="mt-4 text-xl text-gray-600 sm:mt-10 font-inter">
+                           <p className="mt-2 sm:mt-3 text-sm sm:text-base text-gray-600 font-inter lg:text-base xl:text-lg">
                               Lorem ipsum dolor sit amet, consectetur adipiscing
                               elit.
                            </p>
                         </div>
-                        <div className="relative p-2 mt-8 sm:mt-10 lg:mt-12">
+                        <div className="relative p-2 mt-5 sm:mt-7 lg:mt-9">
                            <DialogTrigger asChild>
-                              <Button className="w-full inline-flex justify-center items-center px-6 py-6 sm:px-8 sm:py-8 lg:px-8 lg:py-6 text-lg sm:text-xl lg:text-lg font-medium text-white bg-[var(--secondary-accent)] rounded-xl transition-all duration-200 focus:bg-[var(--button-hover-background)] hover:bg-[var(--button-hover-background)]">
+                              <Button className="w-full inline-flex justify-center items-center px-4 py-3 sm:px-5 sm:py-4 lg:px-4 lg:py-3 text-base sm:text-lg lg:text-base font-medium text-white bg-[var(--secondary-accent)] rounded-xl transition-all duration-200 focus:bg-[var(--button-hover-background)] hover:bg-[var(--button-hover-background)]">
                                  Search Doctors
                               </Button>
                            </DialogTrigger>
                         </div>
                      </div>
-                     <div className="mr-8">
+                     <div className="lg:w-1/2 mt-4 sm:mt-0 hidden sm:block">
                         <Image
                            src={"/images/hero.png"}
                            alt="hero"
-                           width={700}
-                           height={700}
+                           width={450}
+                           height={450}
+                           className="w-full max-w-md mx-auto"
                         />
                      </div>
                   </div>
@@ -111,59 +111,59 @@ export default function MainScreen({
             </section>
 
             {/* Dialog Content */}
-            <DialogContent className="sm:max-w-[600px] p-0 rounded-2xl">
-               <DialogHeader className="p-4 border-b rounded-t-2xl">
+            <DialogContent className="sm:max-w-[540px] p-0 rounded-2xl sm:mx-auto mx-auto">
+               <DialogHeader className="p-4 sm:p-6 border-b rounded-t-2xl">
                   <div className="flex items-center justify-between">
-                     <DialogTitle className="text-xl font-semibold text-center flex-grow pr-8">
+                     <DialogTitle className="text-lg sm:text-xl font-semibold text-center flex-grow pr-6">
                         Search for doctors
                      </DialogTitle>
                      <Button
                         variant="ghost"
                         size="icon"
-                        className="h-auto w-auto p-1.5 absolute right-4 rounded-xl"
+                        className="h-auto w-auto p-0 absolute right-3 rounded-xl"
                         onClick={() => setIsOpen(false)}
                      />
                   </div>
                </DialogHeader>
 
-               <div className="p-4 space-y-2">
+               <div className="p-4 sm:p-6 space-y-4">
                   <div className="relative">
                      <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
                      <Input
-                        className="pl-10 pr-24 h-12 bg-gray-50 border-gray-200 rounded-xl"
+                        className="pl-10 pr-24 h-12 text-base bg-gray-50 border-gray-200 rounded-xl"
                         placeholder="Enter location"
-                        value={location}
-                        onChange={(e) => setLocation(e.target.value)}
+                        value={"Hub"}
+                        onChange={() => {}}
                      />
                      <Button
                         onClick={handleSearch}
                         variant="outline"
-                        className="absolute right-2 top-1/2 -translate-y-1/2 h-10 w-24 text-lg font-medium hover:bg-[var(--primary-accent)] text-white px-3 bg-[var(--secondary-accent)] rounded-xl"
+                        className="absolute right-2 top-1/2 -translate-y-1/2 h-9 text-sm font-medium hover:bg-[var(--primary-accent)] text-white px-4 bg-[var(--secondary-accent)] rounded-xl"
                      >
                         {searchLoading ? "Searching..." : "Search"}
                      </Button>
                   </div>
 
                   <div className="relative" ref={searchRef}>
-                     <Search className="absolute left-3 top-3 h-5 w-5 text-gray-400 z-10" />
+                     <Search className="absolute left-3 top-3.5 h-5 w-5 text-gray-400 z-10" />
                      <div
                         className={`relative bg-gray-50 border border-gray-200 rounded-xl ${
-                           isSearchFocused ? "ring-2 ring-blue-500" : ""
+                           isSearchFocused ? "ring-1 ring-blue-500" : ""
                         }`}
                      >
                         <Input
                            value={searchTerm}
                            onChange={(e) => setSearchTerm(e.target.value)}
                            onFocus={() => setIsSearchFocused(true)}
-                           className="w-full pl-10 pr-4 py-3 bg-transparent outline-none rounded-xl"
+                           className="w-full pl-10 pr-3 py-3 bg-transparent outline-none rounded-xl text-base"
                            placeholder="Search for doctors, hospitals, specialties, services, diseases"
                         />
                         {isSearchFocused && (
-                           <div className="border-t mt-4 max-h-[300px] overflow-y-auto rounded-b-xl">
+                           <div className="border-t mt-2.5 max-h-[240px] overflow-y-auto rounded-b-lg">
                               {filteredSpecialties.map((specialty, index) => (
                                  <button
                                     key={index}
-                                    className="w-full flex items-center justify-between px-4 py-3 hover:bg-gray-100 text-left rounded-xl"
+                                    className="w-full flex items-center text-base justify-between px-4 py-3 hover:bg-gray-100 text-left rounded-xl"
                                     onClick={() => {
                                        setSearchTerm(specialty.name);
                                        setIsSearchFocused(false);

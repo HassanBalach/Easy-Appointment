@@ -4,52 +4,52 @@ import Link from "next/link";
 
 function Speciality() {
    return (
-      <section className="my-10 sm:my-16 flex flex-col items-center justify-center max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="my-6 sm:my-10 flex flex-col items-center justify-center max-w-5xl mx-auto px-2 sm:px-4 lg:px-5">
          {/* Section Header */}
-         <div className="text-center mb-8">
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold my-4">
+         <div className="text-center mb-3 sm:mb-5">
+            <h2 className="text-xl sm:text-xl lg:text-[2rem] font-semibold mb-1 sm:my-2">
                Find By Speciality
             </h2>
-            <h3 className="text-sm sm:text-base lg:text-lg text-gray-500 max-w-2xl mx-auto my-4">
+            <h3 className="text-xs sm:text-xs lg:text-sm text-gray-500 max-w-[35rem] mx-auto my-2">
                We have a wide range of doctors across different specialties to
                ensure you get the best care possible.
             </h3>
          </div>
 
          {/* Speciality Grid */}
-         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 w-full">
+         <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 sm:gap-6 w-full">
             {[
                "Gynecologist",
                "Skin-Specialist",
-               "Orthopedic",
+               "Orthopedic", 
                "ENT-Specialist",
                "Diabetes",
                "Eye-Specialist",
                "Fever",
-               "Heart-Attack",
+               "Cardiologist", 
                "Pregnancy",
                "High-Blood",
                "Piles",
-               "Diarrhea",
+               "Diarrhea"
             ].map((specialty) => (
                <div
-                  key={specialty} // Use `specialty` instead of `index` for better key uniqueness
-                  className="flex flex-col items-center text-center"
+                  key={specialty}
+                  className="flex flex-col items-center justify-center text-center"
                >
                   {/* Image Container */}
                   <Link href={`/search-results?term=${specialty}`}>
-                     <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 bg-gray-200 rounded-full shadow-md mb-2 overflow-hidden">
+                     <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gray-200 rounded-full shadow-md mb-2 overflow-hidden">
                         <Image
                            src={`/images/${specialty}.png`}
                            alt={specialty}
-                           width={96}
-                           height={96}
+                           width={80}
+                           height={80}
                            className="rounded-full object-cover w-full h-full"
-                           loading="lazy" // Adding lazy loading for images
+                           loading="lazy"
                         />
                      </div>
                      {/* Specialty Name */}
-                     <p className="text-xs sm:text-sm md:text-base font-medium text-gray-700">
+                     <p className="text-xs sm:text-sm font-medium text-gray-700">
                         {specialty.replace("-", " ")}
                      </p>
                   </Link>

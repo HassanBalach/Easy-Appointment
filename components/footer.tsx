@@ -2,12 +2,12 @@ import React from "react";
 
 function Footer() {
    return (
-      <footer className="bg-gray-900 text-white py-8 sm:mt-8 md:mt-12">
+      <footer className="bg-gray-900 text-white py-7 sm:mt-7 md:mt-11">
          <div className="container mx-auto px-4">
-            <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+            <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-7">
                <div>
-                  <h3 className="text-xl font-bold mb-4">healthdoc</h3>
-                  <p className="text-sm">
+                  <h3 className="text-lg font-bold mb-3.5">healthdoc</h3>
+                  <p className="text-xs">
                      Book appointments with the best doctors and specialists
                      such as Gynecologists, Skin Specialists, Child Specialists,
                      Surgeons, etc. We provide convenient access to trusted
@@ -15,8 +15,8 @@ function Footer() {
                   </p>
                </div>
                <div>
-                  <h3 className="text-xl font-bold mb-4">Services</h3>
-                  <ul className="space-y-2">
+                  <h3 className="text-lg font-bold mb-3.5">Services</h3>
+                  <ul className="space-y-1.8">
                      <li>Consult Online</li>
                      <li>In-Clinic Appointments</li>
                      <li>Laboratory Tests</li>
@@ -26,8 +26,8 @@ function Footer() {
                   </ul>
                </div>
                <div>
-                  <h3 className="text-xl font-bold mb-4">Contact</h3>
-                  <ul className="space-y-2">
+                  <h3 className="text-lg font-bold mb-3.5">Contact</h3>
+                  <ul className="space-y-1.8">
                      <li>Phone: +123 456 789</li>
                      <li>Email: info@healthdoc.com</li>
                      <li>Address: 123 Medical Street, City</li>
@@ -35,8 +35,8 @@ function Footer() {
                   </ul>
                </div>
                <div>
-                  <h3 className="text-xl font-bold mb-4">Follow Us</h3>
-                  <ul className="flex space-x-4">
+                  <h3 className="text-lg font-bold mb-3.5">Follow Us</h3>
+                  <ul className="flex space-x-3.5">
                      <li>
                         <a
                            href="https://facebook.com"
@@ -73,7 +73,7 @@ function Footer() {
                </div>
             </div>
          </div>
-         <div className="text-center text-sm mt-8 border-t border-gray-700 pt-4">
+         <div className="text-center text-xs mt-7 border-t border-gray-700 pt-3.5">
             <p>&copy; 2024 healthdoc. All rights reserved.</p>
          </div>
       </footer>

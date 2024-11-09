@@ -20,39 +20,39 @@ function Header({ isShown }: { isShown: boolean }) {
    if (!isShown) return <div></div>; // Render nothing if not shown
 
    return (
-      <header className="bg-gray-200 shadow-2xl mb-4 mx-4 sm:mx-6 lg:mx-8 xl:mx-auto max-w-7xl rounded-xl">
-         <div className="container mx-auto flex items-center justify-between p-4">
+      <header className="bg-gray-200 shadow-lg mb-2 sm:mx-auto lg:mx-auto xl:mx-auto max-w-5xl mx-auto rounded-xl">
+         <div className="container mx-auto flex items-center justify-between p-2 sm:p-3">
             {/* Logo */}
             <Link href={"/"}>
-               <div className="text-xl sm:text-2xl font-bold text-[var(--secondary-accent)] cursor-pointer">
+               <div className="text-lg sm:text-xl font-bold text-[var(--secondary-accent)] cursor-pointer">
                   HealthDoc
                </div>
             </Link>
 
             {/* Desktop Navigation Links */}
-            <div className="hidden lg:block flex-1 max-w-2xl mx-8">
+            <div className="hidden lg:block flex-1 max-w-xl mx-6">
                <nav className="flex justify-between">
                   <Link
                      href="/"
-                     className="text-gray-700 hover:text-green-600 text-sm sm:text-base"
+                     className="text-xs sm:text-sm text-gray-700 hover:text-green-600"
                   >
                      Home
                   </Link>
                   <Link
                      href="/doctors"
-                     className="text-gray-700 hover:text-green-600 text-sm sm:text-base"
+                     className="text-xs sm:text-sm text-gray-700 hover:text-green-600"
                   >
                      Doctors
                   </Link>
                   <Link
                      href="/about"
-                     className="text-gray-700 hover:text-green-600 text-sm sm:text-base"
+                     className="text-xs sm:text-sm text-gray-700 hover:text-green-600"
                   >
                      About
                   </Link>
                   <Link
                      href="/contact"
-                     className="text-gray-700 hover:text-green-600 text-sm sm:text-base"
+                     className="text-xs sm:text-sm text-gray-700 hover:text-green-600"
                   >
                      Contact Us
                   </Link>
@@ -60,19 +60,19 @@ function Header({ isShown }: { isShown: boolean }) {
             </div>
 
             {/* Desktop Auth Buttons */}
-            <nav className="hidden lg:flex space-x-4">
+            <nav className="hidden lg:flex space-x-3">
                {doctor ? (
-                  <Button className="text-sm sm:text-base bg-[var(--secondary-accent)] rounded-xl">
+                  <Button className="text-xs sm:text-sm bg-[var(--secondary-accent)] rounded-xl px-3 py-1">
                      Joined as Doctor
                   </Button>
                ) : user ? (
-                  <Button className="text-sm sm:text-base bg-[var(--secondary-accent)] rounded-xl">
+                  <Button className="text-xs sm:text-sm bg-[var(--secondary-accent)] rounded-xl px-3 py-1">
                      Joined As Patient
                   </Button>
                ) : (
                   <>
                      <Link href={`/doctorRegistration`}>
-                        <Button className="text-sm sm:text-base bg-[var(--secondary-accent)] rounded-xl">
+                        <Button className="text-xs sm:text-sm bg-[var(--secondary-accent)] rounded-xl px-3 py-1">
                            Join as Doctor
                         </Button>
                      </Link>
@@ -86,58 +86,58 @@ function Header({ isShown }: { isShown: boolean }) {
                   <SheetTrigger asChild>
                      <Button
                         variant="outline"
-                        className="text-sm sm:text-base rounded-xl"
+                        className="text-xs sm:text-sm rounded-xl px-2 py-1"
                      >
                         Menu
                      </Button>
                   </SheetTrigger>
-                  <SheetContent className="w-[85vw] sm:w-[400px]">
+                  <SheetContent className="w-[80vw] sm:w-[350px]">
                      <SheetHeader>
                         <SheetTitle className="flex items-center justify-between">
-                           <span className="text-xl sm:text-2xl font-bold text-[var(--secondary-accent)]">
+                           <span className="text-lg sm:text-xl font-bold text-[var(--secondary-accent)]">
                               HealthDoc
                            </span>
                         </SheetTitle>
                      </SheetHeader>
-                     <div className="flex flex-col gap-4 py-4">
-                        <nav className="flex flex-col space-y-6">
+                     <div className="flex flex-col gap-3 py-3">
+                        <nav className="flex flex-col space-y-4">
                            <Link
                               href="/"
-                              className="text-gray-700 hover:text-green-600 text-sm sm:text-base"
+                              className="text-xs sm:text-sm text-gray-700 hover:text-green-600"
                            >
                               Home
                            </Link>
                            <Link
                               href="/doctors"
-                              className="text-gray-700 hover:text-green-600 text-sm sm:text-base"
+                              className="text-xs sm:text-sm text-gray-700 hover:text-green-600"
                            >
                               Doctors
                            </Link>
                            <Link
                               href="/about"
-                              className="text-gray-700 hover:text-green-600 text-sm sm:text-base"
+                              className="text-xs sm:text-sm text-gray-700 hover:text-green-600"
                            >
                               About
                            </Link>
                            <Link
                               href="/contact"
-                              className="text-gray-700 hover:text-green-600 text-sm sm:text-base"
+                              className="text-xs sm:text-sm text-gray-700 hover:text-green-600"
                            >
                               Contact Us
                            </Link>
                         </nav>
 
                         {doctor ? (
-                           <Button className="text-sm sm:text-base bg-[var(--secondary-accent)] rounded-xl">
+                           <Button className="text-xs sm:text-sm bg-[var(--secondary-accent)] rounded-xl px-3 py-1">
                               Joined as Doctor
                            </Button>
                         ) : user ? (
-                           <Button className="text-sm sm:text-base bg-[var(--secondary-accent)] rounded-xl">
+                           <Button className="text-xs sm:text-sm bg-[var(--secondary-accent)] rounded-xl px-3 py-1">
                               Joined As Patient
                            </Button>
                         ) : (
                            <Link href={`/doctorRegistration`}>
-                              <Button className="w-full text-sm sm:text-base bg-[var(--secondary-accent)] rounded-xl">
+                              <Button className="w-full text-xs sm:text-sm bg-[var(--secondary-accent)] rounded-xl px-3 py-1">
                                  Join as Doctor
                               </Button>
                            </Link>

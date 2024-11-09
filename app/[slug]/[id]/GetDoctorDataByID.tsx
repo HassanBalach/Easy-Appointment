@@ -12,13 +12,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-   Select,
-   SelectContent,
-   SelectItem,
-   SelectTrigger,
-   SelectValue,
-} from "@/components/ui/select";
+
 import { format, isBefore, startOfDay } from "date-fns";
 import { realtimeDatabase } from "@/firebaseConfig";
 import { ref, push } from "firebase/database";
@@ -32,6 +26,7 @@ import {
 
 import Header from "@/components/header";
 import Image from "next/image";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export default function GetDoctorDataByID({ doctorData }: { doctorData: any }) {
    const [date, setDate] = useState<Date | undefined>(new Date());
@@ -182,34 +177,27 @@ export default function GetDoctorDataByID({ doctorData }: { doctorData: any }) {
    return (
       <>
          <Header isShown={true} />
-         <div className="mx-auto max-w-6xl">
-            <div className="flex flex-col lg:flex-row gap-4 max-w-6xl w-full mx-auto mb-8 px-4">
-               <Card className="w-full lg:w-[300px] h-[250px] lg:h-[325px] overflow-hidden flex-shrink-0 rounded-xl">
-                  <Image
-                     src="/images/Doctor.jpg"
-                     alt="Doctor profile photo"
-                     className="object-cover w-full h-full"
-                     width={300}
-                     height={325}
-                     priority
-                  />
-               </Card>
+         <div className="mx-auto max-w-5xl">
+            <div className="flex flex-col lg:flex-row gap-4 max-w-5xl w-full mx-auto mb-8 px-4">
                <Card className="w-full flex-grow p-4 lg:p-6 rounded-xl">
                   <div className="space-y-3 lg:space-y-4">
                      <div className="flex items-center gap-2">
+                        <Avatar className="h-16 w-16">
+                           {doctorData.image && (
+                              <AvatarImage src={doctorData.image} />
+                           )}
+                           <AvatarFallback>
+                              {doctorData.name.charAt(0)}
+                           </AvatarFallback>
+                        </Avatar>
                         <h1 className="text-lg lg:text-xl font-semibold">
-                           Dr. Richard James
+                           {doctorData.name}
                         </h1>
+
                         <CheckCircle
                            className="w-4 h-4 lg:w-5 lg:h-5 text-blue-500"
                            aria-label="Verified"
                         />
-                     </div>
-
-                     <div className="flex flex-wrap items-center gap-2">
-                        <span className="text-xs lg:text-sm text-gray-600">
-                           MBBS - General Physician
-                        </span>
                      </div>
 
                      <div>
@@ -302,7 +290,7 @@ export default function GetDoctorDataByID({ doctorData }: { doctorData: any }) {
                                     ]?.map((time) => (
                                        <button
                                           key={time}
-                                          className={`p-2 rounded-lg border ${
+                                          className={`p-2 rounded-xl border ${
                                              selectedTime === time
                                                 ? "bg-blue-500 text-white border-blue-500"
                                                 : "bg-gray-100 text-gray-700 hover:bg-blue-100"
@@ -389,7 +377,7 @@ export default function GetDoctorDataByID({ doctorData }: { doctorData: any }) {
                   </div>
                </DialogContent>
             </Dialog>
-            <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                <div className="space-y-2 text-center mb-8">
                   <h2 className="text-2xl font-semibold text-gray-900">
                      Related Doctors
