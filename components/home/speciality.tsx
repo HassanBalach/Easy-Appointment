@@ -20,17 +20,17 @@ function Speciality() {
          <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 sm:gap-6 w-full">
             {[
                "Gynecologist",
-               "Skin-Specialist",
-               "Orthopedic", 
-               "ENT-Specialist",
+               "Dermatologist",
+               "Orthopedic Surgeon", 
+               "ENT Specialist",
                "Diabetes",
                "Eye-Specialist",
                "Fever",
                "Cardiologist", 
                "Pregnancy",
-               "High-Blood",
-               "Piles",
-               "Diarrhea"
+               "Hematologist",
+               "Urologist",
+               "General Physician"
             ].map((specialty) => (
                <div
                   key={specialty}

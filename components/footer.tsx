@@ -6,8 +6,8 @@ function Footer() {
          <div className="container mx-auto px-4">
             <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-7">
                <div>
-                  <h3 className="text-lg font-bold mb-3.5">healthdoc</h3>
-                  <p className="text-xs">
+                  <h3 className="text-lg font-bold mb-3.5">LasDoc</h3>
+                  <p className="space-y-1.8">
                      Book appointments with the best doctors and specialists
                      such as Gynecologists, Skin Specialists, Child Specialists,
                      Surgeons, etc. We provide convenient access to trusted
@@ -29,9 +29,9 @@ function Footer() {
                   <h3 className="text-lg font-bold mb-3.5">Contact</h3>
                   <ul className="space-y-1.8">
                      <li>Phone: +123 456 789</li>
-                     <li>Email: info@healthdoc.com</li>
-                     <li>Address: 123 Medical Street, City</li>
-                     <li>Support: support@healthdoc.com</li>
+                     <li>Email: themudhouse@gmail.com</li>
+                     <li>Address: Zarhi street in Maymar -e- Noe Academy</li>
+                     <li>Support: support@LasDoc.com</li>
                   </ul>
                </div>
                <div>
@@ -74,7 +74,7 @@ function Footer() {
             </div>
          </div>
          <div className="text-center text-xs mt-7 border-t border-gray-700 pt-3.5">
-            <p>&copy; 2024 healthdoc. All rights reserved.</p>
+            <p>&copy; 2024 Lasdoc. All rights reserved.</p>
          </div>
       </footer>
    );

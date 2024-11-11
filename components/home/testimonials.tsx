@@ -21,24 +21,24 @@ const RatingStars = ({ rating }: { rating: number }) => {
 const reviews = [
    {
       rating: 5,
-      text: "The doctor appointment booking process was incredibly smooth. I got an appointment with a specialist within hours. Highly recommend this service!",
-      name: "Sarah Johnson",
-      role: "Patient", 
-      image: "https://cdn.rareblocks.xyz/collection/clarity/images/testimonial/4/avatar-female-1.png"
+      text: "Welcome to LasDoc, your friendly healthcare hub! We're making quality care easily accessible, thanks to innovative tech and compassionate experts.",
+      name: "Hassan Qazy",
+      role: "Co-founder of LasDoc", 
+      // image: "https://cdn.rareblocks.xyz/collection/clarity/images/testimonial/4/avatar-female-1.png"
    },
    {
       rating: 5,
-      text: "As someone who's always busy, this platform saved me so much time. No more waiting on calls to book appointments. The interface is user-friendly and efficient.",
-      name: "Michael Chen",
-      role: "Regular Patient",
-      image: "https://cdn.rareblocks.xyz/collection/clarity/images/testimonial/4/avatar-male-1.png"
+      text: "LasDoc is your modern healthcare buddy! We're bringing doctors to your doorstep (or device!) with cutting-edge tech and a warm, caring touch.",
+      name: "Siraj Burfat",
+      role: "Co-founder of LasDoc",
+      // image: "https://cdn.rareblocks.xyz/collection/clarity/images/testimonial/4/avatar-male-1.png"
    },
    {
       rating: 5,
-      text: "I love how I can see doctor reviews before booking. Found an amazing pediatrician for my kids through this platform. The whole experience was seamless.",
-      name: "Emily Rodriguez", 
-      role: "Parent",
-      image: "https://cdn.rareblocks.xyz/collection/clarity/images/testimonial/4/avatar-female-2.png"
+      text: "Meet LasDoc, your partner in health! Our innovative platform connects you with top medical minds, making healthcare easy, approachable, and totally stress-free.",
+      name: "Ghulam Mubeen ", 
+      role: "Founder of TheMudHouseStudio",
+      // image: "https://cdn.rareblocks.xyz/collection/clarity/images/testimonial/4/avatar-female-2.png"
    }
 ];
 
@@ -48,10 +48,10 @@ function Testimonials() {
          <div className="px-2 mx-auto max-w-4xl sm:px-4 lg:px-5">
             <div className="text-center">
                <p className="text-xs sm:text-sm font-medium text-gray-600 font-pj">
-                  2,157 people have shared their experience
+               Founders vision 
                </p>
                <h2 className="mt-1 sm:mt-2 text-lg sm:text-xl md:text-2xl xl:text-3xl font-bold text-gray-900 font-pj">
-                  What our patients say
+               Your Voice, Your Health
                </h2>
             </div>
 
@@ -60,7 +60,7 @@ function Testimonials() {
                   href="#"
                   className="pb-0.5 sm:pb-1 text-xs sm:text-sm font-bold leading-5 text-gray-900 transition-all duration-200 border-b-2 border-gray-900 hover:border-gray-600 font-pj focus:outline-none focus:ring-1 focus:ring-gray-900 focus:ring-offset-2 hover:text-gray-600"
                >
-                  Check all 2,157 reviews
+                Innovated by TheMudHouseStudio
                </a>
             </div>
 
@@ -89,11 +89,11 @@ function Testimonials() {
                            </div>
 
                            <div className="flex items-center mt-3 sm:mt-4">
-                              <img
+                              {/* <img
                                  className="flex-shrink-0 object-cover rounded-full w-6 h-6 sm:w-7 sm:h-7"
                                  src={review.image}
                                  alt={review.name}
-                              />
+                              /> */}
                               <div className="ml-2 sm:ml-3">
                                  <p className="text-xs sm:text-sm font-bold text-gray-900 font-pj">
                                     {review.name}

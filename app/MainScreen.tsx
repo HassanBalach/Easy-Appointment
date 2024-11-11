@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
 import { searchDoctor } from "@/lib/action";
-import Header from "@/components/header";
+import Header from "@/components/Header";
 import Speciality from "@/components/home/speciality";
 import DoctorsCarousel from "@/components/home/doctors-caraousel";
 import {
@@ -82,12 +82,9 @@ export default function Component({
                      <div className="lg:w-1/2 h-full mt-4 sm:mt-7">
                         <div className="text-center lg:text-left">
                            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 md:text-3xl lg:text-3xl xl:text-4xl">
-                              Find The Best Doctors
+                              Find The Best Doctors Near You
                            </h1>
-                           <p className="mt-2 sm:mt-3 text-sm sm:text-base text-gray-600 font-inter lg:text-base xl:text-lg">
-                              Lorem ipsum dolor sit amet, consectetur adipiscing
-                              elit.
-                           </p>
+                     
                         </div>
                         <div className="relative p-2 mt-5 sm:mt-7 lg:mt-9">
                            <DialogTrigger asChild>

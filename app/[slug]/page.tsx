@@ -14,7 +14,7 @@ import React, { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import Header from "@/components/header";
+import Header from "@/components/Header";
 import { Card, CardContent } from "@/components/ui/card";
 import Loader from "@/components/loader"; // Import the loader component
 
