@@ -25,7 +25,7 @@ function Header({ isShown }: { isShown: boolean }) {
             {/* Logo */}
             <Link href={"/"}>
                <div className="text-lg sm:text-xl font-bold text-[var(--secondary-accent)] cursor-pointer">
-                  HealthDoc
+                  LasDoc
                </div>
             </Link>
 

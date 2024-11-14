@@ -20,17 +20,17 @@ function Speciality() {
          <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 sm:gap-6 w-full">
             {[
                "Gynecologist",
-               "Skin-Specialist",
-               "Orthopedic", 
-               "ENT-Specialist",
+               "Dermatologist",
+               "Orthopedic Surgeon",
+               "ENT Specialist",
                "Diabetes",
                "Eye-Specialist",
                "Fever",
-               "Cardiologist", 
+               "Cardiologist",
                "Pregnancy",
-               "High-Blood",
-               "Piles",
-               "Diarrhea"
+               "Hematologist",
+               "Urologist",
+               "General Physician",
             ].map((specialty) => (
                <div
                   key={specialty}
@@ -38,7 +38,13 @@ function Speciality() {
                >
                   {/* Image Container */}
                   <Link href={`/search-results?term=${specialty}`}>
-                     <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gray-200 rounded-full shadow-md mb-2 overflow-hidden">
+                     <div
+                        className={`w-16 h-16 sm:w-20 sm:h-20 bg-gray-200 rounded-full shadow-md mb-2 overflow-hidden ${
+                           specialty === "General Physician" ? "ml-3" : ""
+                        } 
+                        ${specialty === "Orthopedic Surgeon" ? "ml-4" : ""}
+                        }`}
+                     >
                         <Image
                            src={`/images/${specialty}.png`}
                            alt={specialty}
