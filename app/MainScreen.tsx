@@ -73,7 +73,7 @@ export default function Component({
    return (
       <div className="shadow-2xl">
          <Header isShown={true} />
-
+         console.log("Change")
          {/* Hero and Search Bar */}
          <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <section className="relative py-8 sm:py-8 md:py-10 lg:pb-6 max-w-5xl mx-auto rounded-xl bg-gradient-to-l from-[#9FD3C7] to-white">
@@ -214,7 +214,7 @@ export default function Component({
                </div>
             </DialogContent>
          </Dialog>
-
+                        
          <DoctorsCarousel />
          <Speciality />
          <Testimonials />
