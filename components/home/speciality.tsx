@@ -2,19 +2,32 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 
+import gynecologist from '@/public/images/gynecologist.png'
+import dermatologist from '@/public/images/dermatologist.png'
+import orthopedic_surgeon from '@/public/images/orthopedic-surgeon.png'
+import ent_specialist from '@/public/images/ent-specialist.png'
+import diabetes from '@/public/images/diabetes.png'
+import eye_specialist from '@/public/images/eye-specialist.png'
+import fever from '@/public/images/fever.png'
+import cardiologist from '@/public/images/cardiologist.png'
+import pregnancy from '@/public/images/pregnancy.png'
+import hematologist from '@/public/images/hematologist.png'
+import urologist from '@/public/images/urologist.png'
+import general_physician from '@/public/images/general-physician.png'
+
 const specialities = [
-   { field: "Gynecologist", image: "gynecologist.png", alt: "Gynecologist" },
-   { field: "Dermatologist", image: "dermatologist.png", alt: "Dermatologist" },
-   { field: "Orthopedic Surgeon", image: "orthopedic-surgeon.png", alt: "Orthopedic Surgeon" },
-   { field: "ENT Specialist", image: "ent-specialist.png", alt: "ENT Specialist" },
-   { field: "Diabetes", image: "diabetes.png", alt: "Diabetes Specialist" },
-   { field: "Eye-Specialist", image: "eye-specialist.png", alt: "Eye Specialist" },
-   { field: "Fever", image: "fever.png", alt: "Fever Treatment Specialist" },
-   { field: "Cardiologist", image: "cardiologist.png", alt: "Cardiologist" },
-   { field: "Pregnancy", image: "pregnancy.png", alt: "Pregnancy Specialist" },
-   { field: "Hematologist", image: "hematologist.png", alt: "Hematologist" },
-   { field: "Urologist", image: "urologist.png", alt: "Urologist" },
-   { field: "General Physician", image: "general-physician.png", alt: "General Physician" },
+   { field: "Gynecologist", image: gynecologist, alt: "Gynecologist" },
+   { field: "Dermatologist", image: dermatologist, alt: "Dermatologist" },
+   { field: "Orthopedic Surgeon", image: orthopedic_surgeon, alt: "Orthopedic Surgeon" },
+   { field: "ENT Specialist", image: ent_specialist, alt: "ENT Specialist" },
+   { field: "Diabetes", image: diabetes, alt: "Diabetes Specialist" },
+   { field: "Eye-Specialist", image: eye_specialist, alt: "Eye Specialist" },
+   { field: "Fever", image: fever, alt: "Fever Treatment Specialist" },
+   { field: "Cardiologist", image: cardiologist, alt: "Cardiologist" },
+   { field: "Pregnancy", image: pregnancy, alt: "Pregnancy Specialist" },
+   { field: "Hematologist", image: hematologist, alt: "Hematologist" },
+   { field: "Urologist", image: urologist, alt: "Urologist" },
+   { field: "General Physician", image: general_physician, alt: "General Physician" },
 ]
 
 
@@ -48,7 +61,7 @@ function Speciality() {
                         }`}
                      >
                         <Image
-                           src={`/images/${specialty.image}`}
+                           src={specialty.image}
                            alt={`${specialty.alt}`}
                            width={80}
                            height={80}
