@@ -1,6 +1,5 @@
 import React from "react";
 import { Button } from "./ui/button";
-import { Phone } from "lucide-react";
 
 import {
    Sheet,
@@ -10,7 +9,6 @@ import {
    SheetTrigger,
 } from "./ui/sheet";
 
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 function Header({ isShown }: { isShown: boolean }) {

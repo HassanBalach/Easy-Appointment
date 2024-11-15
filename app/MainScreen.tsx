@@ -1,6 +1,6 @@
 "use client";
-import React, { useRef, useState } from "react";
-import { Search, MapPin, Loader2 } from "lucide-react";
+import React, { useState } from "react";
+import { Search, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
@@ -34,15 +34,16 @@ export default function Component({
    const [isOpen, setIsOpen] = useState(false);
    const [searchTerm, setSearchTerm] = useState("");
    const [loading, setLoading] = useState(false);
-   const [searchLoading, setSearchLoading] = useState(false);
-   const dropdownRef = useRef<HTMLDivElement | null>(null);
 
    const [isSearchFocused, setIsSearchFocused] = React.useState(true);
    const searchRef = React.useRef<HTMLDivElement | null>(null);
 
    React.useEffect(() => {
-      function handleClickOutside(event: any) {
-         if (searchRef.current && !searchRef.current?.contains(event.target)) {
+      function handleClickOutside(event: globalThis.MouseEvent) {
+         if (
+            searchRef.current &&
+            !searchRef.current?.contains(event.target as Node)
+         ) {
             setIsSearchFocused(false);
          }
       }
@@ -53,9 +54,8 @@ export default function Component({
    }, []);
 
    const handleSearch = async () => {
-      setSearchLoading(true);
       await searchDoctor(searchTerm);
-      setSearchLoading(false);
+
       router.push(`/search-results?term=${encodeURIComponent(searchTerm)}`);
    };
 
@@ -169,7 +169,9 @@ export default function Component({
                                        setSearchTerm(specialty.name);
                                        setIsSearchFocused(false);
                                        setLoading(true);
-                                       await router.push(`/search-results?term=${specialty.name}`);
+                                       await router.push(
+                                          `/search-results?term=${specialty.name}`
+                                       );
                                        setLoading(false);
                                        setIsOpen(false);
                                     }}

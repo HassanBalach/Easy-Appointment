@@ -16,18 +16,25 @@ import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Header from "@/components/Header";
 import { Card, CardContent } from "@/components/ui/card";
-import Loader from "@/components/loader";
+
+interface Doctor {
+   id: string;
+   name: string;
+   image?: string;
+   specialization: string[];
+   experience?: number;
+}
 
 export default function SearchId() {
    const searchParams = useSearchParams();
    const slug = searchParams?.get("term");
-   const [doctorData, setDoctorData] = useState<any>(null);
+   const [doctorData, setDoctorData] = useState<Doctor[] | null>(null);
    const [selectedFilter, setSelectedFilter] = useState<string | null>(null);
    const [isSheetOpen, setIsSheetOpen] = useState(false);
 
    const filters = [
       "Endocrinologist",
-      "Cardiologist",
+      "Cardiologist", 
       "Dermatologist",
       "Gastroenterologist",
       "Pediatrician",
@@ -46,11 +53,11 @@ export default function SearchId() {
    useEffect(() => {
       async function fetchData() {
          if (slug) {
-            const data = await searchDoctor(slug);
+            const data: Doctor[] = await searchDoctor(slug);
             setDoctorData(data);
          }
       }
-      fetchData();
+      void fetchData();
    }, [slug]);
 
    const router = useRouter();
@@ -142,7 +149,7 @@ export default function SearchId() {
                                     {doctorData.length} Best in Hub
                                  </h1>
                                  <div className="space-y-3 sm:space-y-5">
-                                    {doctorData.map((doctor: any) => (
+                                    {doctorData.map((doctor) => (
                                        <Card key={doctor.id} className="w-full">
                                           <CardContent className="p-4 sm:p-5">
                                              <div className="flex flex-col sm:flex-row md:flex-row gap-4 sm:gap-7 md:gap-9">
@@ -151,6 +158,7 @@ export default function SearchId() {
                                                       {doctor.image && (
                                                          <AvatarImage
                                                             src={doctor.image}
+                                                            alt={doctor.name}
                                                          />
                                                       )}
                                                       <AvatarFallback>
@@ -160,10 +168,10 @@ export default function SearchId() {
                                                 </Link>
                                                 <div className="flex-grow">
                                                    <h2 className="text-lg font-bold text-center sm:text-left">
-                                                      {doctor?.name}
+                                                      {doctor.name}
                                                    </h2>
                                                    <p className="text-gray-600 mb-1.5 text-center sm:text-left">
-                                                      {doctor?.specialization}
+                                                      {doctor.specialization}
                                                    </p>
                                                    <p className="text-gray-600 mb-3 text-center sm:text-left">
                                                       MBBS, MCPS
@@ -171,7 +179,7 @@ export default function SearchId() {
                                                    <div className="flex flex-wrap gap-5 sm:gap-7 mb-3 justify-center sm:justify-start md:justify-start">
                                                       <div>
                                                          <p className="font-bold text-center sm:text-left">
-                                                            {doctor?.experience}{" "}
+                                                            {doctor.experience}{" "}
                                                             Years
                                                          </p>
                                                          <p className="text-gray-600 text-center sm:text-left">

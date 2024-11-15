@@ -5,8 +5,15 @@ import { specialityRef } from "@/lib/action";
 import MainScreen from "./MainScreen";
 import Loader from "@/components/loader";
 
+interface Specialty {
+   id: number;
+   name: string;
+   description: string;
+   // add other relevant fields
+}
+
 export default function Page() {
-   const [specialties, setSpecialties] = useState<any[]>([]);
+   const [specialties, setSpecialties] = useState<Specialty[]>([]);
    const [loading, setLoading] = useState(true);
    const [error, setError] = useState<string | null>(null);
 
