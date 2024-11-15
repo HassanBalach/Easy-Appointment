@@ -27,7 +27,7 @@ export default function SearchId() {
 
    const filters = [
       "Endocrinologist",
-      "Cardiologist", 
+      "Cardiologist",
       "Dermatologist",
       "Gastroenterologist",
       "Pediatrician",

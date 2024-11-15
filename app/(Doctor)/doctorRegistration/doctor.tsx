@@ -11,6 +11,7 @@ import { ChevronDownIcon, Upload, X } from "lucide-react";
 import { storage } from "@/firebaseConfig";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
 import { firestoreDatabase } from "@/firebaseConfig";
+import Image from "next/image";
 
 type DoctorFormData = z.infer<typeof doctorSchema> & {
    gender: "male" | "female" | null;
@@ -24,6 +25,11 @@ type ImageData = {
 type Specialties = {
    name: string;
    description: string;
+};
+
+// Define a type for Doctor Data
+type DoctorData = Omit<DoctorFormData, 'email' | 'password' | 'image'> & {
+   image: string | null;
 };
 
 export default function DoctorRegistration({
@@ -50,6 +56,7 @@ export default function DoctorRegistration({
    const [errors, setErrors] = useState<
       Partial<Record<keyof DoctorFormData, string>>
    >({});
+   console.log(errors)
    const [selectedSpecializations, setSelectedSpecializations] = useState<
       string[]
    >([]);
@@ -120,7 +127,7 @@ export default function DoctorRegistration({
       return downloadURL; // This is the URL to save in Firestore
    };
 
-   const saveUserData = async (user: User, filteredData: any) => {
+   const saveUserData = async (user: User, filteredData: DoctorData) => {
       const doctorRef = doc(firestoreDatabase, "Doctor", user.uid);
 
       try {
@@ -186,7 +193,8 @@ export default function DoctorRegistration({
                imageUrl = await uploadImage(imageData);
                // console.log({ imageUrl });
             }
-            const { email, password, ...filteredData } = result.data;
+            const { /*email, password, */ ...filteredData } = result.data;
+            console.log({ filteredData });
 
             const doctorRef = { ...filteredData, image: imageUrl };
 
@@ -212,10 +220,12 @@ export default function DoctorRegistration({
                <div className="flex flex-col items-center mb-4">
                   <div className="w-32 h-32 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden mb-2">
                      {imagePreview ? (
-                        <img
+                        <Image
                            src={imagePreview}
                            alt="Doctor preview"
                            className="w-full h-full object-cover"
+                           width={128}
+                           height={128}
                         />
                      ) : (
                         <Upload className="w-12 h-12 text-gray-400" />
@@ -375,8 +385,7 @@ export default function DoctorRegistration({
                </button>
             </form>
             <p className="text-xs text-center mt-4 text-gray-600">
-               By signing up, you agree to oladoc's Terms of use and Privacy
-               Policy
+               By signing up, you agree to oladoc&apos;s Terms of use and Privacy Policy
             </p>
          </div>
       </div>

@@ -1,10 +1,6 @@
 import DoctorRegistration from "./doctor";
 import { cityRef, specialityRef } from "@/lib/action";
 
-interface dropdownDatas {
-  cities: string[]
-  specialities: string[]
-}
 
 export default async function Page() {
 
