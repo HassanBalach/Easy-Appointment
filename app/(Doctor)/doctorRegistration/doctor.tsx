@@ -11,6 +11,7 @@ import { ChevronDownIcon, Upload, X } from "lucide-react";
 import { storage } from "@/firebaseConfig";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
 import { firestoreDatabase } from "@/firebaseConfig";
+import Image from "next/image";
 
 type DoctorFormData = z.infer<typeof doctorSchema> & {
    gender: "male" | "female" | null;
@@ -50,6 +51,7 @@ export default function DoctorRegistration({
    const [errors, setErrors] = useState<
       Partial<Record<keyof DoctorFormData, string>>
    >({});
+   console.log(errors)
    const [selectedSpecializations, setSelectedSpecializations] = useState<
       string[]
    >([]);
@@ -124,9 +126,10 @@ export default function DoctorRegistration({
       const doctorRef = doc(firestoreDatabase, "Doctor", user.uid);
 
       try {
-         await setDoc(doctorRef, filteredData);
 
+         await setDoc(doctorRef, filteredData);
          router.push("/");
+
       } catch (e) {
          console.error("Error adding document: ", e);
       }
@@ -184,7 +187,7 @@ export default function DoctorRegistration({
                   base64: image,
                };
                imageUrl = await uploadImage(imageData);
-               // console.log({ imageUrl });
+
             }
             const { email, password, ...filteredData } = result.data;
 
@@ -212,7 +215,7 @@ export default function DoctorRegistration({
                <div className="flex flex-col items-center mb-4">
                   <div className="w-32 h-32 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden mb-2">
                      {imagePreview ? (
-                        <img
+                        <Image
                            src={imagePreview}
                            alt="Doctor preview"
                            className="w-full h-full object-cover"
@@ -370,9 +373,7 @@ export default function DoctorRegistration({
                <button
                   type="submit"
                   className="w-full bg-blue-600 text-white py-2 rounded-xl hover:bg-blue-700 transition duration-300 ease-in-out"
-               >
-                  Register
-               </button>
+               >Register</button>
             </form>
             <p className="text-xs text-center mt-4 text-gray-600">
                By signing up, you agree to oladoc's Terms of use and Privacy

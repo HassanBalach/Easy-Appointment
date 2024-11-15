@@ -43,28 +43,28 @@ export default function GetDoctorDataByID({ doctorData }: { doctorData: any }) {
 
    const { toast } = useToast();
 
-   const doctors = [
-      {
-         name: "Dr. Richard James",
-         specialty: "General physician",
-         image: "/images/Doctor.jpg",
-      },
-      {
-         name: "Dr. Richard James",
-         specialty: "General physician",
-         image: "/images/Doctor.jpg",
-      },
-      {
-         name: "Dr. Richard James",
-         specialty: "General physician",
-         image: "/images/Doctor.jpg",
-      },
-      {
-         name: "Dr. Richard James",
-         specialty: "General physician",
-         image: "/images/Doctor.jpg",
-      },
-   ];
+   // const doctors = [
+   //    {
+   //       name: "Dr. Richard James",
+   //       specialty: "General physician",
+   //       image: "/images/Doctor.jpg",
+   //    },
+   //    {
+   //       name: "Dr. Richard James",
+   //       specialty: "General physician",
+   //       image: "/images/Doctor.jpg",
+   //    },
+   //    {
+   //       name: "Dr. Richard James",
+   //       specialty: "General physician",
+   //       image: "/images/Doctor.jpg",
+   //    },
+   //    {
+   //       name: "Dr. Richard James",
+   //       specialty: "General physician",
+   //       image: "/images/Doctor.jpg",
+   //    },
+   // ];
 
    const timeSlots: { [key: string]: string[] } = {
       "2024-11-06": ["08:30", "11:30", "15:00", "18:30"],
@@ -206,13 +206,9 @@ export default function GetDoctorDataByID({ doctorData }: { doctorData: any }) {
                            <Info className="w-3 h-3 lg:w-4 lg:h-4 text-gray-400" />
                         </h2>
                         <p className="text-gray-600 text-xs leading-relaxed line-clamp-4 lg:line-clamp-none">
-                           Dr. Davis has a strong commitment to delivering
-                           comprehensive medical care, focusing on preventive
-                           medicine, early diagnosis, and effective treatment
-                           strategies. Dr. Davis has a strong commitment to
-                           delivering comprehensive medical care, focusing on
-                           preventive medicine, early diagnosis, and effective
-                           treatment strategies.
+                           {doctorData.name} is dedicated to providing exceptional patient care through a holistic approach, 
+                           emphasizing preventive measures, accurate diagnoses, and personalized treatment
+                            plans to ensure optimal health outcomes.
                         </p>
                      </div>
 
@@ -221,7 +217,7 @@ export default function GetDoctorDataByID({ doctorData }: { doctorData: any }) {
                            Appointment fee
                         </h2>
                         <p className="text-base lg:text-lg font-semibold">
-                           $50
+                          1500
                         </p>
                      </div>
                   </div>
@@ -236,7 +232,9 @@ export default function GetDoctorDataByID({ doctorData }: { doctorData: any }) {
                >
                   <AccordionItem value="booking">
                      <AccordionTrigger className="text-lg lg:text-xl bg-gray-200 px-4 py-4 rounded-t-xl">
-                        Zahid Medical Center
+                           Hospital:  
+                           Zahid Medical Center
+
                      </AccordionTrigger>
                      <AccordionContent className="px-4 py-4">
                         <div className="flex flex-col gap-8">
@@ -250,24 +248,22 @@ export default function GetDoctorDataByID({ doctorData }: { doctorData: any }) {
                               {weekDates.map((date) => (
                                  <div
                                     key={date.toString()}
-                                    className={`cursor-pointer p-3 rounded-xl text-center transition-colors ${
-                                       date.toDateString() ===
-                                       selectedDate?.toDateString()
+                                    className={`cursor-pointer p-3 rounded-xl text-center transition-colors ${date.toDateString() ===
+                                          selectedDate?.toDateString()
                                           ? "bg-blue-500 text-white"
                                           : "bg-gray-100 hover:bg-blue-100"
-                                    }`}
+                                       }`}
                                     onClick={() => {
                                        setSelectedDate(date);
                                        setSelectedTime(null);
                                     }}
                                  >
                                     <div
-                                       className={`${
-                                          date.toDateString() ===
-                                          selectedDate?.toDateString()
+                                       className={`${date.toDateString() ===
+                                             selectedDate?.toDateString()
                                              ? "text-white"
                                              : "text-gray-500"
-                                       }`}
+                                          }`}
                                     >
                                        {format(date, "EEE")}
                                     </div>
@@ -290,11 +286,10 @@ export default function GetDoctorDataByID({ doctorData }: { doctorData: any }) {
                                     ]?.map((time) => (
                                        <button
                                           key={time}
-                                          className={`p-2 rounded-xl border ${
-                                             selectedTime === time
+                                          className={`p-2 rounded-xl border ${selectedTime === time
                                                 ? "bg-blue-500 text-white border-blue-500"
                                                 : "bg-gray-100 text-gray-700 hover:bg-blue-100"
-                                          }`}
+                                             }`}
                                           onClick={() => handleTimeSelect(time)}
                                        >
                                           {time}
@@ -379,17 +374,17 @@ export default function GetDoctorDataByID({ doctorData }: { doctorData: any }) {
             </Dialog>
             <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                <div className="space-y-2 text-center mb-8">
-                  <h2 className="text-2xl font-semibold text-gray-900">
+                  {/* <h2 className="text-2xl font-semibold text-gray-900">
                      Related Doctors
                   </h2>
                   <p className="text-gray-600">
                      Simply browse through our extensive list of trusted
                      doctors.
-                  </p>
+                  </p> */}
                </div>
 
                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                  {doctors.map((doctor, index) => (
+                  {/* {doctors.map((doctor, index) => (
                      <Card
                         key={index}
                         className="overflow-hidden bg-[#F3F4F6] border-none rounded-md border-2 border-gray-200"
@@ -418,7 +413,7 @@ export default function GetDoctorDataByID({ doctorData }: { doctorData: any }) {
                            </p>
                         </div>
                      </Card>
-                  ))}
+                  ))} */}
                </div>
             </div>
          </div>

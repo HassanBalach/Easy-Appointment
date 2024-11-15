@@ -9,6 +9,7 @@ export default async function Page({
    try {
       const { id } = await params; // Awaiting Promise
       const doctorData = await getDoctorById(id); // Fetching doctor data using the id
+      
 
       // Check if doctor data exists
       if (!doctorData) {

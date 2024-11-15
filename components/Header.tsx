@@ -38,12 +38,12 @@ function Header({ isShown }: { isShown: boolean }) {
                   >
                      Home
                   </Link>
-                  <Link
+                  {/* <Link
                      href="/doctors"
                      className="text-xs sm:text-sm text-gray-700 hover:text-green-600"
                   >
                      Doctors
-                  </Link>
+                  </Link> */}
                   <Link
                      href="/about"
                      className="text-xs sm:text-sm text-gray-700 hover:text-green-600"

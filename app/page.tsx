@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { specialityRef } from "@/lib/action";
-import MainScreen from "./MainScreen";
+import MainScreen from './MainScreen'
 import Loader from "@/components/loader";
 
 export default function Page() {

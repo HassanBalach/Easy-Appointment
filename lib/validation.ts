@@ -21,4 +21,3 @@ export const doctorSchema = z.object({
 });
 
 
-type DoctorFormData = z.infer<typeof doctorSchema>
