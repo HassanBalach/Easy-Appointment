@@ -11,8 +11,8 @@ import eye_specialist from '@/public/images/eye-specialist_.png'
 import fever from '@/public/images/fever.png'
 import cardiologist from '@/public/images/cardiologist_.png'
 import pregnancy from '@/public/images/pregnancy.png'
-import hematologist from '@/public/images/hematologist.png'
-import urologist from '@/public/images/urologist.png'
+import hematologist from '@/public/images/hematologist_.png'
+import urologist from '@/public/images/urologist_.png'
 import general_physician from '@/public/images/general-physician.png'
 
 const specialities = [
