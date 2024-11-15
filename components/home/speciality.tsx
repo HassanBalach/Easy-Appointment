@@ -47,7 +47,7 @@ function Speciality() {
                      >
                         <Image
                            src={`/images/${specialty}.png`}
-                           alt={specialty}
+                           alt={`${specialty}1`}
                            width={80}
                            height={80}
                            className="rounded-full object-cover w-full h-full"
