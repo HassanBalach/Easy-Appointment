@@ -73,16 +73,16 @@ export default function Component({
    return (
       <div className="shadow-2xl">
          <Header isShown={true} />
-         console.log("Change")
+         
          {/* Hero and Search Bar */}
          <Dialog open={isOpen} onOpenChange={setIsOpen}>
-            <section className="relative py-8 sm:py-8 md:py-10 lg:pb-6 max-w-5xl mx-auto rounded-xl bg-gradient-to-l from-[#9FD3C7] to-white">
+            <section className="relative py-9 sm:py-9 md:py-10 lg:pb-6 max-w-5xl mx-auto rounded-xl bg-gradient-to-l from-[#9FD3C7] to-white">
                <div className="px-4 mx-auto max-w-5xl sm:px-6 lg:px-8">
                   <div className="flex flex-col lg:flex-row items-center justify-between gap-8 sm:gap-8">
                      <div className="lg:w-1/2 h-full mt-8 sm:mt-8">
                         <div className="text-center lg:text-left">
                            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 md:text-3xl lg:text-4xl xl:text-5xl">
-                              Find The Best Doctors Near You
+                              Find The Best Doctors Near You.
                            </h1>
                         </div>
                         <div className="relative p-3 mt-8 sm:mt-8 lg:mt-10">
