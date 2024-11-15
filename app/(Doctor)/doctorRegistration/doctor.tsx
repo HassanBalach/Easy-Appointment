@@ -27,6 +27,11 @@ type Specialties = {
    description: string;
 };
 
+// Define a type for Doctor Data
+type DoctorData = Omit<DoctorFormData, 'email' | 'password' | 'image'> & {
+   image: string | null;
+};
+
 export default function DoctorRegistration({
    cities,
    specialities,
@@ -122,7 +127,7 @@ export default function DoctorRegistration({
       return downloadURL; // This is the URL to save in Firestore
    };
 
-   const saveUserData = async (user: User, filteredData: any) => {
+   const saveUserData = async (user: User, filteredData: DoctorData) => {
       const doctorRef = doc(firestoreDatabase, "Doctor", user.uid);
 
       try {
@@ -189,7 +194,8 @@ export default function DoctorRegistration({
                imageUrl = await uploadImage(imageData);
 
             }
-            const { email, password, ...filteredData } = result.data;
+            const { /*email, password, */ ...filteredData } = result.data;
+            console.log({ filteredData });
 
             const doctorRef = { ...filteredData, image: imageUrl };
 
@@ -219,6 +225,8 @@ export default function DoctorRegistration({
                            src={imagePreview}
                            alt="Doctor preview"
                            className="w-full h-full object-cover"
+                           width={128}
+                           height={128}
                         />
                      ) : (
                         <Upload className="w-12 h-12 text-gray-400" />
@@ -376,8 +384,7 @@ export default function DoctorRegistration({
                >Register</button>
             </form>
             <p className="text-xs text-center mt-4 text-gray-600">
-               By signing up, you agree to oladoc's Terms of use and Privacy
-               Policy
+               By signing up, you agree to oladoc&apos;s Terms of use and Privacy Policy
             </p>
          </div>
       </div>

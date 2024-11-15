@@ -68,10 +68,11 @@ export default function DoctorsCarousel() {
                            </div>
                         )}
                         <div className="aspect-[4/3] relative">
-                           <img
+                           <Image
                               src={doctor.imageUrl}
                               alt="Doctor"
                               className="object-cover w-full h-full"
+                              fill
                            />
                            <div className="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-40 text-center text-white p-1"></div>
                         </div>

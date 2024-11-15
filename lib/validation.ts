@@ -20,4 +20,3 @@ export const doctorSchema = z.object({
   experience: z.string().regex(/^\d+$/, "Experience must be a number"),
 });
 
-

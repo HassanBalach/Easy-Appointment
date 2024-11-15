@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useState } from "react";
-import { CheckCircle, Circle, Info } from "lucide-react";
+import { CheckCircle, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import {
    Dialog,
    DialogContent,
@@ -13,7 +13,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-import { format, isBefore, startOfDay } from "date-fns";
+import { format } from "date-fns";
 import { realtimeDatabase } from "@/firebaseConfig";
 import { ref, push } from "firebase/database";
 import { useToast } from "@/hooks/use-toast";
@@ -25,46 +25,34 @@ import {
 } from "@/components/ui/accordion";
 
 import Header from "@/components/Header";
-import Image from "next/image";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-export default function GetDoctorDataByID({ doctorData }: { doctorData: any }) {
-   const [date, setDate] = useState<Date | undefined>(new Date());
-   const [selectedDate, setSelectedDate] = useState<Date | undefined>(
-      new Date()
-   );
+
+interface DoctorData {
+   id: string;
+   name: string;
+   specialization: string;
+   experience?: number;
+   about?: string;
+   fee?: number;
+   image?: string;
+}
+
+export default function GetDoctorDataByID({
+   doctorData,
+}: {
+   doctorData: DoctorData;
+}) {
+   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
    const [selectedTime, setSelectedTime] = useState<string | null>(null);
    const [showDialog, setShowDialog] = useState(false);
    const [patientName, setPatientName] = useState("");
    const [phoneNumber, setPhoneNumber] = useState("");
    const [email, setEmail] = useState("");
-   const [relationship, setRelationship] = useState("self");
    const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
    const { toast } = useToast();
 
-   // const doctors = [
-   //    {
-   //       name: "Dr. Richard James",
-   //       specialty: "General physician",
-   //       image: "/images/Doctor.jpg",
-   //    },
-   //    {
-   //       name: "Dr. Richard James",
-   //       specialty: "General physician",
-   //       image: "/images/Doctor.jpg",
-   //    },
-   //    {
-   //       name: "Dr. Richard James",
-   //       specialty: "General physician",
-   //       image: "/images/Doctor.jpg",
-   //    },
-   //    {
-   //       name: "Dr. Richard James",
-   //       specialty: "General physician",
-   //       image: "/images/Doctor.jpg",
-   //    },
-   // ];
 
    const timeSlots: { [key: string]: string[] } = {
       "2024-11-06": ["08:30", "11:30", "15:00", "18:30"],
@@ -89,7 +77,7 @@ export default function GetDoctorDataByID({ doctorData }: { doctorData: any }) {
       if (!phoneNumber.trim()) {
          newErrors.phone = "Phone number is required";
       } else if (!/^\d{11}$/.test(phoneNumber)) {
-         newErrors.phone = "Please enter a valid 10-digit phone number";
+         newErrors.phone = "Please enter a valid 11-digit phone number";
       }
 
       if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
@@ -110,57 +98,25 @@ export default function GetDoctorDataByID({ doctorData }: { doctorData: any }) {
             formattedPhoneNumber = `+92${phoneNumber}`;
          }
 
-         const data = {
+         const appointmentData = {
             patientName,
             phoneNumber: formattedPhoneNumber,
             email,
-            relationship,
-            date,
+            date: selectedDate.toISOString(),
             selectedTime,
          };
 
          try {
-            await push(appointmentsRef, data);
-
-            const smsResponse = await fetch("/api/sms-send", {
-               method: "POST",
-               headers: {
-                  "Content-Type": "application/json",
-               },
-               body: JSON.stringify({
-                  to: data.phoneNumber,
-                  message: `Hello ${data.patientName}, your appointment is confirmed!`,
-               }),
+            await push(appointmentsRef, appointmentData);
+            toast({
+               title: "Success",
+               description: "Congratulations! Appointment booked successfully",
             });
-
-            const result = await smsResponse.json();
-
-            if (result.success) {
-               toast({
-                  title: "Success",
-                  description:
-                     "Congratulations! Appointment booked successfully",
-               });
-            }
-
             setShowDialog(false);
          } catch (error) {
             console.error("Error booking appointment: ", error);
          }
       }
-   };
-
-   const isTimeSlotDisabled = (time: string, currentDate: Date) => {
-      if (!date) return false;
-
-      const selectedDate = startOfDay(date);
-      const currentDay = startOfDay(currentDate);
-
-      if (isBefore(selectedDate, currentDay)) {
-         return true;
-      }
-
-      return false;
    };
 
    const weekDates = Array.from({ length: 7 }, (_, i) => {
@@ -184,7 +140,10 @@ export default function GetDoctorDataByID({ doctorData }: { doctorData: any }) {
                      <div className="flex items-center gap-2">
                         <Avatar className="h-16 w-16">
                            {doctorData.image && (
-                              <AvatarImage src={doctorData.image} />
+                              <AvatarImage
+                                 src={doctorData.image}
+                                 alt={doctorData.name}
+                              />
                            )}
                            <AvatarFallback>
                               {doctorData.name.charAt(0)}
@@ -206,9 +165,7 @@ export default function GetDoctorDataByID({ doctorData }: { doctorData: any }) {
                            <Info className="w-3 h-3 lg:w-4 lg:h-4 text-gray-400" />
                         </h2>
                         <p className="text-gray-600 text-xs leading-relaxed line-clamp-4 lg:line-clamp-none">
-                           {doctorData.name} is dedicated to providing exceptional patient care through a holistic approach, 
-                           emphasizing preventive measures, accurate diagnoses, and personalized treatment
-                            plans to ensure optimal health outcomes.
+                           {doctorData.about || "No description available"}
                         </p>
                      </div>
 
@@ -217,7 +174,7 @@ export default function GetDoctorDataByID({ doctorData }: { doctorData: any }) {
                            Appointment fee
                         </h2>
                         <p className="text-base lg:text-lg font-semibold">
-                          1500
+                           ${doctorData.fee || "N/A"}
                         </p>
                      </div>
                   </div>
@@ -329,7 +286,7 @@ export default function GetDoctorDataByID({ doctorData }: { doctorData: any }) {
                      <Label htmlFor="patientName">Name</Label>
                      <Input
                         id="patientName"
-                        defaultValue={patientName}
+                        value={patientName}
                         onChange={(e) => setPatientName(e.target.value)}
                      />
                      {errors.name && (
@@ -341,7 +298,7 @@ export default function GetDoctorDataByID({ doctorData }: { doctorData: any }) {
                      <Label htmlFor="phoneNumber">Phone Number</Label>
                      <Input
                         id="phoneNumber"
-                        defaultValue={phoneNumber}
+                        value={phoneNumber}
                         onChange={(e) => setPhoneNumber(e.target.value)}
                      />
                      {errors.phone && (
@@ -353,7 +310,7 @@ export default function GetDoctorDataByID({ doctorData }: { doctorData: any }) {
                      <Label htmlFor="email">Email Address</Label>
                      <Input
                         id="email"
-                        defaultValue={email}
+                        value={email}
                         onChange={(e) => setEmail(e.target.value)}
                      />
                      {errors.email && (
@@ -372,50 +329,6 @@ export default function GetDoctorDataByID({ doctorData }: { doctorData: any }) {
                   </div>
                </DialogContent>
             </Dialog>
-            <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-               <div className="space-y-2 text-center mb-8">
-                  {/* <h2 className="text-2xl font-semibold text-gray-900">
-                     Related Doctors
-                  </h2>
-                  <p className="text-gray-600">
-                     Simply browse through our extensive list of trusted
-                     doctors.
-                  </p> */}
-               </div>
-
-               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                  {/* {doctors.map((doctor, index) => (
-                     <Card
-                        key={index}
-                        className="overflow-hidden bg-[#F3F4F6] border-none rounded-md border-2 border-gray-200"
-                     >
-                        <div className="aspect-square relative">
-                           <Image
-                              src={doctor.image}
-                              alt={doctor.name}
-                              fill
-                              className="object-cover"
-                              sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, (max-width: 1280px) 25vw, 20vw"
-                           />
-                        </div>
-                        <div className="p-3 space-y-1">
-                           <div className="flex items-center gap-1">
-                              <Circle className="w-3 h-3 fill-green-500 text-green-500" />
-                              <span className="text-green-500 text-xs">
-                                 Available
-                              </span>
-                           </div>
-                           <h3 className="font-medium text-sm text-gray-900">
-                              {doctor.name}
-                           </h3>
-                           <p className="text-xs text-gray-600">
-                              {doctor.specialty}
-                           </p>
-                        </div>
-                     </Card>
-                  ))} */}
-               </div>
-            </div>
          </div>
       </>
    );
