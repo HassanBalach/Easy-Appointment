@@ -3,12 +3,9 @@ import React, { useState } from "react";
 import { Search, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { searchDoctor } from "@/lib/action";
 import Header from "@/components/Header";
-import FeaturedDoctors from "@/components/FeaturedDoctors";
 import Speciality from "@/components/home/speciality";
 import DoctorsCarousel from "@/components/home/doctors-caraousel";
 import {
@@ -68,49 +65,12 @@ export default function Component({
          specialty.description.toLowerCase().includes(searchTerm.toLowerCase())
    );
 
-   useEffect(() => {
-      function handleClickOutside(event: MouseEvent) {
-         if (
-            dropdownRef.current &&
-            !dropdownRef.current.contains(event.target as Node)
-         ) {
-            setIsOpen(false);
-         }
-      }
-
-      document.addEventListener("mousedown", handleClickOutside);
-      return () => {
-         document.removeEventListener("mousedown", handleClickOutside);
-      };
-   }, [dropdownRef]);
    // Display the loader if loading is true
    if (loading) {
       return <Loader />;
    }
 
    return (
-      <div className="min-h-screen bg-gray-50">
-         <Header isShown={true} />
-
-         <main className="container mx-auto px-4 py-8 space-y-12">
-            <Card className="w-full max-w-7xl mx-auto">
-               <CardHeader>
-                  <CardTitle className="text-3xl font-bold text-center">
-                     Find and Book the{" "}
-                     <span className="text-orange-500">Best Doctors</span> near
-                     you
-                  </CardTitle>
-               </CardHeader>
-               <CardContent>
-                  <div className="flex flex-col space-y-4">
-                     <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
-                        <div className="relative flex-grow">
-                           <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                           <Input
-                              type="text"
-                              placeholder="Hub"
-                              className="pl-10 pr-4 py-2 w-full"
-                           />
       <div className="shadow-2xl">
          <Header isShown={true} />
 

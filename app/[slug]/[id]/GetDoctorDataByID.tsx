@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { CheckCircle, Info } from "lucide-react";
+import { CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import {
@@ -162,11 +162,11 @@ export default function GetDoctorDataByID({
                      <div>
                         <h2 className="text-xs lg:text-sm font-medium mb-1 lg:mb-2 flex items-center gap-2">
                            About{" "}
-                           <Info className="w-3 h-3 lg:w-4 lg:h-4 text-gray-400" />
+                         
                         </h2>
                         <p className="text-gray-600 text-xs leading-relaxed line-clamp-4 lg:line-clamp-none">
-                           {doctorData.about || "No description available"}
-                        </p>
+                              {doctorData.name} is dedicated to providing exceptional patient care through a holistic approach, emphasizing preventive measures, accurate diagnoses, and personalized treatment plans to ensure optimal health outcomes.
+                           </p>
                      </div>
 
                      <div>
@@ -174,7 +174,7 @@ export default function GetDoctorDataByID({
                            Appointment fee
                         </h2>
                         <p className="text-base lg:text-lg font-semibold">
-                           ${doctorData.fee || "N/A"}
+                           1000
                         </p>
                      </div>
                   </div>
@@ -189,8 +189,8 @@ export default function GetDoctorDataByID({
                >
                   <AccordionItem value="booking">
                      <AccordionTrigger className="text-lg lg:text-xl bg-gray-200 px-4 py-4 rounded-t-xl">
-                           Hospital:  
-                           Zahid Medical Center
+                        Hospital:
+                        Zahid Medical Center
 
                      </AccordionTrigger>
                      <AccordionContent className="px-4 py-4">
@@ -206,9 +206,9 @@ export default function GetDoctorDataByID({
                                  <div
                                     key={date.toString()}
                                     className={`cursor-pointer p-3 rounded-xl text-center transition-colors ${date.toDateString() ===
-                                          selectedDate?.toDateString()
-                                          ? "bg-blue-500 text-white"
-                                          : "bg-gray-100 hover:bg-blue-100"
+                                       selectedDate?.toDateString()
+                                       ? "bg-blue-500 text-white"
+                                       : "bg-gray-100 hover:bg-blue-100"
                                        }`}
                                     onClick={() => {
                                        setSelectedDate(date);
@@ -217,9 +217,9 @@ export default function GetDoctorDataByID({
                                  >
                                     <div
                                        className={`${date.toDateString() ===
-                                             selectedDate?.toDateString()
-                                             ? "text-white"
-                                             : "text-gray-500"
+                                          selectedDate?.toDateString()
+                                          ? "text-white"
+                                          : "text-gray-500"
                                           }`}
                                     >
                                        {format(date, "EEE")}
@@ -244,8 +244,8 @@ export default function GetDoctorDataByID({
                                        <button
                                           key={time}
                                           className={`p-2 rounded-xl border ${selectedTime === time
-                                                ? "bg-blue-500 text-white border-blue-500"
-                                                : "bg-gray-100 text-gray-700 hover:bg-blue-100"
+                                             ? "bg-blue-500 text-white border-blue-500"
+                                             : "bg-gray-100 text-gray-700 hover:bg-blue-100"
                                              }`}
                                           onClick={() => handleTimeSelect(time)}
                                        >

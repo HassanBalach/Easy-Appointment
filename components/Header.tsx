@@ -30,19 +30,19 @@ function Header({ isShown }: { isShown: boolean }) {
             {/* Desktop Navigation Links */}
             <div className="hidden lg:block flex-1 max-w-xl mx-6">
                <nav className="flex justify-between">
-                  <Link
+                  {/* <Link
                      href="/"
                      className="text-xs sm:text-sm text-gray-700 hover:text-green-600"
                   >
                      Home
-                  </Link>
+                  </Link> */}
                   {/* <Link
                      href="/doctors"
                      className="text-xs sm:text-sm text-gray-700 hover:text-green-600"
                   >
                      Doctors
                   </Link> */}
-                  <Link
+                  {/* <Link
                      href="/about"
                      className="text-xs sm:text-sm text-gray-700 hover:text-green-600"
                   >
@@ -53,7 +53,7 @@ function Header({ isShown }: { isShown: boolean }) {
                      className="text-xs sm:text-sm text-gray-700 hover:text-green-600"
                   >
                      Contact Us
-                  </Link>
+                  </Link> */}
                </nav>
             </div>
 

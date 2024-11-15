@@ -13,11 +13,11 @@ interface Doctor {
 }
 
 const imageUrls = [
-   "/images/Doctor.jpg",
-   "/images/doctor2.jpg",
-   "/images/doctor4.jpg",
-   "/images/Dr.Majeed.png",
-   "/images/surger.webp",
+   "/images/dr.amanullah.png",
+   "/images/dr.Anwar.png",
+   "/images/ElahiBangulzai.png",
+   "/images/Dr.Majeed.jpeg",
+   "/images/doctor.png",
 ];
 
 export default function DoctorsCarousel() {

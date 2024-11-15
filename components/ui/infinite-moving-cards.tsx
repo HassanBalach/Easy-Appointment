@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 
 export const InfiniteMovingCards = ({
    items,
@@ -23,16 +23,16 @@ export const InfiniteMovingCards = ({
    const containerRef = React.useRef<HTMLDivElement>(null);
    const scrollerRef = React.useRef<HTMLUListElement>(null);
 
-   useEffect(() => {
-      addAnimation();
-   }, []);
    const [start, setStart] = useState(false);
-   function addAnimation() {
+
+   // Memoize addAnimation with useCallback to avoid recreating it on each render
+   const addAnimation = useCallback(() => {
       if (containerRef.current && scrollerRef.current) {
          const scrollerContent = Array.from(scrollerRef.current.children);
 
          scrollerContent.forEach((item) => {
-            const duplicatedItem = item.cloneNode(true);
+            // Explicitly casting the cloned node to HTMLElement
+            const duplicatedItem = item.cloneNode(true) as HTMLElement;
             if (scrollerRef.current) {
                scrollerRef.current.appendChild(duplicatedItem);
             }
@@ -42,7 +42,12 @@ export const InfiniteMovingCards = ({
          getSpeed();
          setStart(true);
       }
-   }
+   }, [direction, speed]); // Only re-create this function if `direction` or `speed` changes
+
+   useEffect(() => {
+      addAnimation();
+   }, [addAnimation]);
+
    const getDirection = () => {
       if (containerRef.current) {
          if (direction === "left") {
@@ -58,6 +63,7 @@ export const InfiniteMovingCards = ({
          }
       }
    };
+
    const getSpeed = () => {
       if (containerRef.current) {
          if (speed === "fast") {
@@ -78,6 +84,7 @@ export const InfiniteMovingCards = ({
          }
       }
    };
+
    return (
       <div
          ref={containerRef}
@@ -101,7 +108,7 @@ export const InfiniteMovingCards = ({
                      background:
                         "linear-gradient(180deg, var(--slate-800), var(--slate-900)",
                   }}
-                  key={item.name}
+                  key={idx}
                >
                   <blockquote>
                      <div
