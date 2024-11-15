@@ -3,13 +3,13 @@ import Image from "next/image";
 import Link from "next/link";
 
 import gynecologist from '@/public/images/gynecologist.png'
-import dermatologist from '@/public/images/dermatologist.png'
+import dermatologist from '@/public/images/dermatologist_.png'
 import orthopedic_surgeon from '@/public/images/orthopedic-surgeon.png'
-import ent_specialist from '@/public/images/ent-specialist.png'
-import diabetes from '@/public/images/diabetes.png'
-import eye_specialist from '@/public/images/eye-specialist.png'
+import ent_specialist from '@/public/images/ent-specialist_.png'
+import diabetes from '@/public/images/diabetes_.png'
+import eye_specialist from '@/public/images/eye-specialist_.png'
 import fever from '@/public/images/fever.png'
-import cardiologist from '@/public/images/cardiologist.png'
+import cardiologist from '@/public/images/cardiologist_.png'
 import pregnancy from '@/public/images/pregnancy.png'
 import hematologist from '@/public/images/hematologist.png'
 import urologist from '@/public/images/urologist.png'
