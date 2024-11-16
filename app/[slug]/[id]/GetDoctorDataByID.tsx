@@ -189,8 +189,8 @@ export default function GetDoctorDataByID({
                >
                   <AccordionItem value="booking">
                      <AccordionTrigger className="text-lg lg:text-xl bg-gray-200 px-4 py-4 rounded-t-xl">
-                        Hospital:
-                        Zahid Medical Center
+                        Hospital
+                       
 
                      </AccordionTrigger>
                      <AccordionContent className="px-4 py-4">

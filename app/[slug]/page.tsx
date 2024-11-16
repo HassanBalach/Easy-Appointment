@@ -198,10 +198,6 @@ export default function SearchId() {
                                                    </div>
                                                    <div className="p-3 sm:p-3.5 bg-blue-50 rounded-lg inline-flex items-center gap-1.5 mb-3">
                                                       <Video className="w-4 h-4 text-blue-600" />
-                                                      <span>
-                                                         Online Video
-                                                         Consultation
-                                                      </span>
                                                       <span className="font-bold">
                                                          Rs. 1,400
                                                       </span>
