@@ -4,7 +4,6 @@ import { Search, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
-import { searchDoctor } from "@/lib/action";
 import Header from "@/components/Header";
 import Speciality from "@/components/home/speciality";
 import DoctorsCarousel from "@/components/home/doctors-caraousel";
@@ -53,12 +52,7 @@ export default function Component({
       };
    }, []);
 
-   const handleSearch = async () => {
-      await searchDoctor(searchTerm);
-
-      router.push(`/search-results?term=${encodeURIComponent(searchTerm)}`);
-   };
-
+  
    const filteredSpecialties = specialties.filter(
       (specialty) =>
          specialty.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -96,7 +90,9 @@ export default function Component({
                                     onClick={() => {
                                        setIsOpen(true);
                                        setIsSearchFocused(true);
+                                       
                                     }}
+                                    
                                  />
                               </div>
                            </DialogTrigger>
