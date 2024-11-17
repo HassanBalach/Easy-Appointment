@@ -73,7 +73,8 @@ export default function Component({
    return (
       <div className="shadow-2xl">
          <Header isShown={true} />
-         
+
+         {/* Hero and Search Bar */}
          {/* Hero and Search Bar */}
          <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <section className="relative py-9 sm:py-9 md:py-10 lg:pb-6 max-w-5xl mx-auto rounded-xl bg-gradient-to-l from-[#9FD3C7] to-white">
@@ -143,7 +144,7 @@ export default function Component({
                   </div>
 
                   <div className="relative" ref={searchRef}>
-                     <Search className="absolute left-3 top-4 h-5 w-5 text-gray-400 z-10" />
+                     <Search className="absolute left-3 top-5 h-5 w-6 text-gray-400 z-10" />
                      <div
                         className={`relative bg-gray-50 border border-gray-200 rounded-xl ${
                            isSearchFocused ? "ring-1 ring-blue-500" : ""
@@ -154,13 +155,18 @@ export default function Component({
                            onChange={(e) => setSearchTerm(e.target.value)}
                            onFocus={() => {
                               setIsSearchFocused(true);
-                              handleSearch();
                            }}
-                           className="w-full pl-10 pr-3 py-4 bg-transparent outline-none rounded-xl text-base"
-                           placeholder="Search for doctors, hospitals, specialties, services, diseases"
+                           className="w-full pl-10 pr-3 py-7 bg-transparent outline-none rounded-xl text-base"
+                           placeholder="Search for doctors, hospitals, specialties...."
                         />
                         {isSearchFocused && (
-                           <div className="border-t mt-3 max-h-[260px] overflow-y-auto rounded-b-lg">
+                           <div
+                              className={`border-t mt-3 max-h-[260px] overflow-y-auto rounded-b-lg ${
+                                 filteredSpecialties.length === 0
+                                    ? "border-none"
+                                    : ""
+                              }`}
+                           >
                               {filteredSpecialties.map((specialty, index) => (
                                  <button
                                     key={index}
@@ -182,39 +188,38 @@ export default function Component({
                                           {specialty.name}
                                        </span>
                                     </div>
-                                    <span className="text-gray-500 text-sm hidden sm:inline">
-                                       {specialty.description}
-                                    </span>
                                  </button>
                               ))}
                            </div>
                         )}
                      </div>
-                     {/* <Button
+                     <Button
                         onClick={async () => {
                            if (!searchTerm) return;
                            setLoading(true);
-                           await router.push(`/search-results?term=${searchTerm}`);
+                           await router.push(
+                              `/search-results?term=${searchTerm}`
+                           );
                            setLoading(false);
                            setIsOpen(false);
                         }}
                         disabled={loading}
-                        className="absolute right-3 top-2 bg-[var(--primary-accent)] text-white hover:bg-[var(--primary-accent)]/90"
+                        className="absolute right-2 top-2 py-4 bg-[var(--primary-accent)] rounded-[10px] text-white hover:bg-[var(--primary-accent)]/90"
                      >
                         {loading ? (
                            <div className="flex items-center gap-2">
-                              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                              <div className="w-4 h-6 border-2 border-white border-t-transparent rounded-full animate-spin" />
                               Searching...
                            </div>
                         ) : (
                            "Search"
                         )}
-                     </Button> */}
+                     </Button>
                   </div>
                </div>
             </DialogContent>
          </Dialog>
-                        
+
          <DoctorsCarousel />
          <Speciality />
          <Testimonials />
