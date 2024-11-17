@@ -75,7 +75,6 @@ export default function Component({
          <Header isShown={true} />
 
          {/* Hero and Search Bar */}
-         {/* Hero and Search Bar */}
          <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <section className="relative py-9 sm:py-9 md:py-10 lg:pb-6 max-w-5xl mx-auto rounded-xl bg-gradient-to-l from-[#9FD3C7] to-white">
                <div className="px-4 mx-auto max-w-5xl sm:px-6 lg:px-8">
