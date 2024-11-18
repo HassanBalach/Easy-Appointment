@@ -152,7 +152,7 @@ export default function Component({
                               setIsSearchFocused(true);
                            }}
                            className="w-full pl-10 pr-3 py-7 bg-transparent outline-none rounded-xl text-base"
-                           placeholder="Search for doctors, hospitals, specialties...."
+                           placeholder="Search by specility"
                         />
                         {isSearchFocused && (
                            <div
